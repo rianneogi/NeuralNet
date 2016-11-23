@@ -149,6 +149,21 @@ double NeuralNet::backprop(Vector input, Vector output)
 	return error;
 }
 
+double NeuralNet::train(const std::vector<Vector>& inputs, const std::vector<Vector>& outputs, unsigned int epochs)
+{
+	double error = 0.0;
+	for (int j = 0; j < epochs; j++)
+	{
+		error = 0.0;
+		for (int i = 0; i < inputs.size(); i++)
+		{
+			error += backprop(inputs[i], outputs[i]);
+		}
+		printf("Error %d: %f\n", j, error);
+	}
+	return error;
+}
+
 void NeuralNet::clear()
 {
 	Neurons.clear();

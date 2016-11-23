@@ -43,6 +43,7 @@ public:
 
 	Vector forward(Vector inputs);
 	double backprop(Vector input, Vector output);
+	double train(const std::vector<Vector>& inputs, const std::vector<Vector>& outputs, unsigned int epochs);
 
 	void clear();
 

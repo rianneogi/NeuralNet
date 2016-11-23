@@ -81,15 +81,7 @@ int main()
 		}
 	}
 
-	for (int j = 0; j < 100; j++)
-	{
-		double error = 0.0;
-		for (int i = 0; i < inputs.size(); i++)
-		{
-			error += nn.backprop(inputs[i], outputs[i]);
-		}
-		printf("FINAL ERROR: %f %d\n", error, j);
-	}
+	nn.train(inputs, outputs, 100);
 	
 	printf("%f %f %f %f\n", nn.forward(binaryrep(101,10))[0], nn.forward(binaryrep(103,10))[0], nn.forward(binaryrep(107,10))[0], nn.forward(binaryrep(109,10))[0]);
 	printf("bd");
