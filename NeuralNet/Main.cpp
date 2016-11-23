@@ -17,7 +17,7 @@ Vector binaryrep(int x, int size)
 	}
 	return v;
 }
-
+ 
 bool isprime(int x)
 {
 	if (x == 1 || x == 0) return false;
@@ -50,14 +50,16 @@ int main()
 	srand(time(0));
 
 	NeuralNet nn(10);
-	nn.addLayer();
-	for(int i = 0;i<10;i++)
-		nn.addNeuron(0);
 	//nn.addLayer();
-	//for (int i = 0; i<1; i++)
-	//	nn.addNeuron(1);
-	nn.addLayer();
-	nn.addNeuron(1);
+	//for(int i = 0;i<5;i++)
+	//	nn.addNeuron(0);
+	////nn.addLayer();
+	////for (int i = 0; i<1; i++)
+	////	nn.addNeuron(1);
+	//nn.addLayer();
+	//nn.addNeuron(1);
+
+	nn.load("net.txt");
 
 	std::vector<int> primes = genprimes(100);
 	std::vector<Vector> inputs;
@@ -79,7 +81,7 @@ int main()
 		}
 	}
 
-	for (int j = 0; j < 1000; j++)
+	for (int j = 0; j < 100; j++)
 	{
 		double error = 0.0;
 		for (int i = 0; i < inputs.size(); i++)
@@ -91,6 +93,8 @@ int main()
 	
 	printf("%f %f %f %f\n", nn.forward(binaryrep(101,10))[0], nn.forward(binaryrep(103,10))[0], nn.forward(binaryrep(107,10))[0], nn.forward(binaryrep(109,10))[0]);
 	printf("bd");
+
+	nn.save("net.txt");
 	
 	_getch();
 

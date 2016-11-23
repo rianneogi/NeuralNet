@@ -5,6 +5,7 @@
 #include "conio.h"
 #include "assert.h"
 #include "time.h"
+#include <fstream>
 
 typedef double Float;
 typedef std::vector<Float> Vector;
@@ -29,18 +30,23 @@ class NeuralNet
 {
 public:
 	std::vector<std::vector<Neuron>> Neurons;
-	int input_size;
+	int InputSize;
 	
 	NeuralNet();
 	NeuralNet(int i_s);
 	~NeuralNet();
 
 	void addLayer();
-	void addNeuron(int layer);
-	void addNeuron(Neuron n, int layer);
+	void addLayers(unsigned int count);
+	void addNeuron(unsigned int layer);
+	void addNeuron(Neuron n, unsigned int layer);
 
 	Vector forward(Vector inputs);
 	double backprop(Vector input, Vector output);
 
+	void clear();
+
+	void save(std::string filename) const;
+	void load(std::string filename);
 };
 

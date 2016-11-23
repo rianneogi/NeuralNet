@@ -40,7 +40,7 @@ double Neuron::compute(const Vector& inputs)
 
 NeuralNet::NeuralNet() {}
 
-NeuralNet::NeuralNet(int i_s) : input_size(i_s) {}
+NeuralNet::NeuralNet(int i_s) : InputSize(i_s) {}
 
 NeuralNet::~NeuralNet() {}
 
@@ -49,11 +49,19 @@ void NeuralNet::addLayer()
 	Neurons.push_back(std::vector<Neuron>(0));
 }
 
-void NeuralNet::addNeuron(int layer)
+void NeuralNet::addLayers(unsigned int count)
+{
+	for (unsigned int i = 0; i < count; i++)
+	{
+		addLayer();
+	}
+}
+
+void NeuralNet::addNeuron(unsigned int layer)
 {
 	if (layer == 0)
 	{
-		Neuron n(input_size);
+		Neuron n(InputSize);
 		Neurons[layer].push_back(n);
 	}
 	else
@@ -63,17 +71,17 @@ void NeuralNet::addNeuron(int layer)
 	}
 }
 
-void NeuralNet::addNeuron(Neuron n, int layer)
+void NeuralNet::addNeuron(Neuron n, unsigned int layer)
 {
 	Neurons[layer].push_back(n);
 }
 
 Vector NeuralNet::forward(Vector inputs)
 {
-	for (int i = 0; i < Neurons.size(); i++)
+	for (size_t i = 0; i < Neurons.size(); i++)
 	{
 		Vector newinputs;
-		for (int j = 0; j < Neurons[i].size(); j++)
+		for (size_t j = 0; j < Neurons[i].size(); j++)
 		{
 			newinputs.push_back(Neurons[i][j].compute(inputs));
 		}
@@ -88,7 +96,7 @@ double NeuralNet::backprop(Vector input, Vector output)
 	//printf("forward: %f\n", frwd[0]);
 
 	double error = 0.0;
-	for (int i = 0; i < output.size(); i++)
+	for (size_t i = 0; i < output.size(); i++)
 	{
 		double x = Neurons[Neurons.size() - 1][i].output;
 		error += (output[i] - x)*(output[i] - x);
@@ -97,12 +105,12 @@ double NeuralNet::backprop(Vector input, Vector output)
 		//printf("For neuron %d %d, setting delta %f\n", Neurons.size() - 1, i, Neurons[Neurons.size() - 1][i].delta);
 	}
 	//printf("\nError: %f\n\n", error);
-	for (int i = 0; i < Neurons.size() - 1; i++)
+	for (size_t i = 0; i < Neurons.size() - 1; i++)
 	{
-		for (int j = 0; j < Neurons[i].size(); j++)
+		for (size_t j = 0; j < Neurons[i].size(); j++)
 		{
 			double delta = 0.0;
-			for (int k = 0; k < Neurons[i + 1].size(); k++)
+			for (size_t k = 0; k < Neurons[i + 1].size(); k++)
 			{
 				delta += Neurons[i + 1][k].weights[j] * Neurons[i + 1][k].delta;
 				//delta += Neurons[i + 1][k].bias * Neurons[i + 1][k].delta;
@@ -115,15 +123,15 @@ double NeuralNet::backprop(Vector input, Vector output)
 	}
 	//printf("\n");
 	double alpha = 1;
-	for (int i = 0; i < Neurons.size(); i++)
+	for (size_t i = 0; i < Neurons.size(); i++)
 	{
-		for (int j = 0; j < Neurons[i].size(); j++)
+		for (size_t j = 0; j < Neurons[i].size(); j++)
 		{
 			//printf("Updating weight for Neuron: %d %d\n", i, j);
 			//printf("old bias: %f\n", Neurons[i][j].bias);
 			Neurons[i][j].bias += alpha*Neurons[i][j].delta;
 			//printf("new bias: %f\n", Neurons[i][j].bias);
-			for (int k = 0; k < Neurons[i][j].weights.size(); k++)
+			for (size_t k = 0; k < Neurons[i][j].weights.size(); k++)
 			{
 				double val = input[k];
 				if (i > 0)
@@ -139,4 +147,82 @@ double NeuralNet::backprop(Vector input, Vector output)
 		}
 	}
 	return error;
+}
+
+void NeuralNet::clear()
+{
+	Neurons.clear();
+	InputSize = 0;
+}
+
+void NeuralNet::save(std::string filename) const
+{
+	std::fstream file(filename, std::ios::trunc | std::ios::out);
+	if (file.is_open())
+	{
+		file << Neurons.size() << " " << InputSize << "\n";
+		for (size_t i = 0; i < Neurons.size(); i++)
+		{
+			file << Neurons[i].size() << "\n";
+			for (size_t j = 0; j < Neurons[i].size(); j++)
+			{
+				for (size_t k = 0; k < Neurons[i][j].weights.size(); k++)
+				{
+					file << Neurons[i][j].weights[k] << " ";
+				}
+				file << "\n";
+			}
+		}
+		file.close();
+	}
+	else
+	{
+		printf("ERROR opening file: %s\n", filename.c_str());
+	}
+}
+
+void NeuralNet::load(std::string filename)
+{
+	std::fstream file(filename, std::ios::in);
+	if (file.is_open())
+	{
+		clear();
+
+		size_t layers, input_size;
+		file >> layers >> input_size;
+		printf("layers = %d, %d", layers, input_size);
+		InputSize = input_size;
+		addLayers(layers);
+
+		for (unsigned int i = 0; i < layers; i++)
+		{
+			unsigned int num_neurons;
+			file >> num_neurons;
+			printf("num neurons: %d\n", num_neurons);
+
+			for (unsigned int j = 0; j < num_neurons; j++)
+			{
+				addNeuron(i);
+				printf("adding neuron to layer %d\n", i);
+
+				unsigned int weight_cnt = InputSize;
+				if (i > 0)
+					weight_cnt = Neurons[i - 1].size();
+
+				for (unsigned int k = 0; k < weight_cnt; k++)
+				{
+					double w;
+					file >> w;
+					Neurons[i][j].weights[k] = w;
+					printf("setting weight: %f\n", w);
+				}
+			}
+		}
+
+		file.close();
+	}
+	else
+	{
+		printf("ERROR opening file: %s\n", filename.c_str());
+	}
 }
