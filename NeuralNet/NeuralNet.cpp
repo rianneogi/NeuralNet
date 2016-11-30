@@ -1,15 +1,5 @@
 #include "NeuralNet.h"
 
-double clamp(double x)
-{
-	return x > 0.99 ? 0.99 : (x < 0.01 ? 0.01 : x);
-}
-
-double sigmoid(double x)
-{
-	return (1.0 / (1.0 + exp(-x)));
-}
-
 Neuron::Neuron() {}
 
 Neuron::Neuron(const Vector& w, double b) : weights(w), bias(b) {}
@@ -40,7 +30,7 @@ double Neuron::compute(const Vector& inputs)
 
 NeuralNet::NeuralNet() {}
 
-NeuralNet::NeuralNet(int i_s) : InputSize(i_s) {}
+NeuralNet::NeuralNet(int input_size, double learning_rate) : InputSize(input_size), LearningRate(learning_rate) {}
 
 NeuralNet::~NeuralNet() {}
 
@@ -93,65 +83,119 @@ Vector NeuralNet::forward(Vector inputs)
 double NeuralNet::backprop(Vector input, Vector output)
 {
 	Vector frwd = forward(input);
-	//printf("forward: %f\n", frwd[0]);
 
 	double error = 0.0;
-	for (size_t i = 0; i < output.size(); i++)
+
+	bool is_output = false;
+	bool is_input = true;
+	for (int i = Neurons.size() - 1; i >= 0; i--)
 	{
-		double x = Neurons[Neurons.size() - 1][i].output;
-		error += (output[i] - x)*(output[i] - x);
-		Neurons[Neurons.size() - 1][i].delta = ((output[i] - x) * x * (1.0 - x));
-		//printf("Desired output %d: %f, current output: %f\n", i, output[i], x);
-		//printf("For neuron %d %d, setting delta %f\n", Neurons.size() - 1, i, Neurons[Neurons.size() - 1][i].delta);
-	}
-	//printf("\nError: %f\n\n", error);
-	for (size_t i = 0; i < Neurons.size() - 1; i++)
-	{
+		if (i == Neurons.size() - 1)
+			is_output = true;
+		else
+			is_output = false;
+
+		if (i == 0)
+			is_input = true;
+		else
+			is_input = false;
+
 		for (size_t j = 0; j < Neurons[i].size(); j++)
 		{
-			double delta = 0.0;
-			for (size_t k = 0; k < Neurons[i + 1].size(); k++)
+			double x = Neurons[i][j].output;
+
+			if (is_output) //calculate error
 			{
-				delta += Neurons[i + 1][k].weights[j] * Neurons[i + 1][k].delta;
-				//delta += Neurons[i + 1][k].bias * Neurons[i + 1][k].delta;
+				error += (output[i] - x)*(output[i] - x);
 			}
 
-			double x = Neurons[i][j].output;
-			Neurons[i][j].delta = (delta * x * (1.0 - x));
-			//printf("For neuron %d %d, setting delta %f %f\n", i, j, Neurons[i][j].delta, x);
-		}
-	}
-	//printf("\n");
-	double alpha = 1;
-	for (size_t i = 0; i < Neurons.size(); i++)
-	{
-		for (size_t j = 0; j < Neurons[i].size(); j++)
-		{
-			//printf("Updating weight for Neuron: %d %d\n", i, j);
-			//printf("old bias: %f\n", Neurons[i][j].bias);
-			Neurons[i][j].bias += alpha*Neurons[i][j].delta;
-			//printf("new bias: %f\n", Neurons[i][j].bias);
+			if(is_output)
+				Neurons[i][j].delta = (x - output[j])*x*(1.0 - x);
+			else
+			{
+				Neurons[i][j].delta = 0.0;
+
+				for (size_t k = 0; k < Neurons[i + 1].size(); k++)
+				{
+					Neurons[i][j].delta = Neurons[i+1][k].weights[j]*Neurons[i+1][k].delta*x*(1.0 - x);
+				}
+			}
+			
+			Neurons[i][j].bias -= LearningRate*Neurons[i][j].delta;
 			for (size_t k = 0; k < Neurons[i][j].weights.size(); k++)
 			{
-				double val = input[k];
-				if (i > 0)
-				{
-					val = Neurons[i - 1][k].output;
-				}
-				//printf("input: %f, delta: %f\n", val, Neurons[i][j].delta);
-				//printf("old weight: %f\n", Neurons[i][j].weights[k]);
-				Neurons[i][j].weights[k] += alpha*val*Neurons[i][j].delta;
-				//printf("new weight: %f\n", Neurons[i][j].weights[k]);
+				if(is_input)
+					Neurons[i][j].weights[k] -= LearningRate*Neurons[i][j].delta*input[k];
+				else
+					Neurons[i][j].weights[k] -= LearningRate*Neurons[i][j].delta*Neurons[i-1][k].output;
 			}
-			//printf("\n");
 		}
 	}
+
 	return error;
+
+	//double error = 0.0;
+	//for (size_t i = 0; i < output.size(); i++)
+	//{
+	//	double x = Neurons[Neurons.size() - 1][i].output;
+	//	error += (output[i] - x)*(output[i] - x);
+	//	Neurons[Neurons.size() - 1][i].delta = (output[i] - x)*x*(1.0-x);
+	//	//printf("Desired output %d: %f, current output: %f\n", i, output[i], x);
+	//	//printf("For neuron %d %d, setting delta %f\n", Neurons.size() - 1, i, Neurons[Neurons.size() - 1][i].delta);
+	//}
+	////printf("\nError: %f\n\n", error);
+
+	//for (size_t i = 0; i < Neurons.size() - 1; i++)
+	//{
+	//	for (size_t j = 0; j < Neurons[i].size(); j++)
+	//	{
+	//		double delta = 0.0;
+	//		for (size_t k = 0; k < Neurons[i + 1].size(); k++)
+	//		{
+	//			delta += Neurons[i + 1][k].weights[j] * Neurons[i + 1][k].delta;
+	//			//delta += Neurons[i + 1][k].bias * Neurons[i + 1][k].delta;
+	//		}
+
+	//		double x = Neurons[i][j].output;
+	//		Neurons[i][j].delta = (delta)*x*(1.0-x);
+	//		//printf("For neuron %d %d, setting delta %f %f\n", i, j, Neurons[i][j].delta, x);
+	//	}
+	//}
+	////printf("\n");
+
+	//for (size_t i = 0; i < Neurons.size(); i++)
+	//{
+	//	for (size_t j = 0; j < Neurons[i].size(); j++)
+	//	{
+	//		//printf("Updating weight for Neuron: %d %d\n", i, j);
+	//		//printf("old bias: %f\n", Neurons[i][j].bias);
+	//		Neurons[i][j].bias += LearningRate*Neurons[i][j].delta;
+	//		//printf("new bias: %f\n", Neurons[i][j].bias);
+	//		for (size_t k = 0; k < Neurons[i][j].weights.size(); k++)
+	//		{
+	//			double val = input[k];
+	//			if (i > 0)
+	//			{
+	//				val = Neurons[i - 1][k].output;
+	//			}
+	//			//printf("input: %f, delta: %f\n", val, Neurons[i][j].delta);
+	//			//printf("old weight: %f\n", Neurons[i][j].weights[k]);
+	//			Neurons[i][j].weights[k] += LearningRate*val*Neurons[i][j].delta;
+	//			//printf("new weight: %f\n", Neurons[i][j].weights[k]);
+	//		}
+	//		//printf("\n");
+	//	}
+	//}
+	//return error;
 }
 
 double NeuralNet::train(const std::vector<Vector>& inputs, const std::vector<Vector>& outputs, unsigned int epochs)
 {
+	assert(inputs.size() == outputs.size());
 	double error = 0.0;
+	printf("Started training\n");
+	Clock clock;
+	clock.Start();
 	for (int j = 0; j < epochs; j++)
 	{
 		error = 0.0;
@@ -159,8 +203,11 @@ double NeuralNet::train(const std::vector<Vector>& inputs, const std::vector<Vec
 		{
 			error += backprop(inputs[i], outputs[i]);
 		}
-		printf("Error %d: %f\n", j, error);
+		clock.Stop();
+		printf("Error %d: %f, epochs per sec: %f\n", j, error, (j*1.0) / clock.ElapsedSeconds());
+		//printf("Error %d: %f\n", j, error);
 	}
+	printf("Done training\n");
 	return error;
 }
 
@@ -205,7 +252,7 @@ void NeuralNet::load(std::string filename)
 
 		size_t layers, input_size;
 		file >> layers >> input_size;
-		printf("layers = %d, %d", layers, input_size);
+		//printf("layers = %d, %d", layers, input_size);
 		InputSize = input_size;
 		addLayers(layers);
 
@@ -213,12 +260,12 @@ void NeuralNet::load(std::string filename)
 		{
 			unsigned int num_neurons;
 			file >> num_neurons;
-			printf("num neurons: %d\n", num_neurons);
+			//printf("num neurons: %d\n", num_neurons);
 
 			for (unsigned int j = 0; j < num_neurons; j++)
 			{
 				addNeuron(i);
-				printf("adding neuron to layer %d\n", i);
+				//printf("adding neuron to layer %d\n", i);
 
 				unsigned int weight_cnt = InputSize;
 				if (i > 0)
@@ -229,7 +276,7 @@ void NeuralNet::load(std::string filename)
 					double w;
 					file >> w;
 					Neurons[i][j].weights[k] = w;
-					printf("setting weight: %f\n", w);
+					//printf("setting weight: %f\n", w);
 				}
 			}
 		}

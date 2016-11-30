@@ -1,14 +1,6 @@
 #pragma once
 
-#include "math.h"
-#include <vector>
-#include "conio.h"
-#include "assert.h"
-#include "time.h"
-#include <fstream>
-
-typedef double Float;
-typedef std::vector<Float> Vector;
+#include "LogisticRegression.h"
 
 class Neuron
 {
@@ -19,11 +11,11 @@ public:
 	double output;
 	
 	Neuron();
-	Neuron(const Vector & w, double b);
+	Neuron(const Vector& w, double b);
 	Neuron(int num_weights);
 	~Neuron();
 
-	double compute(const Vector & inputs);
+	double compute(const Vector& inputs);
 };
 
 class NeuralNet
@@ -31,9 +23,10 @@ class NeuralNet
 public:
 	std::vector<std::vector<Neuron>> Neurons;
 	int InputSize;
+	double LearningRate;
 	
 	NeuralNet();
-	NeuralNet(int i_s);
+	NeuralNet(int input_size, double learning_rate);
 	~NeuralNet();
 
 	void addLayer();
