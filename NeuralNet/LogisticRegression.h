@@ -27,5 +27,13 @@ public:
 };
 
 double clamp(double x);
-double sigmoid(double x);
-double rand_init();
+
+inline double sigmoid(double x)
+{
+	return (1.0 / (1.0 + exp(-x)));
+}
+
+inline double rand_init()
+{
+	return ((rand() % 1024) / 1024.0) - 0.5;
+}

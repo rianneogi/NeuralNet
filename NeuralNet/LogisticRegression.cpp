@@ -5,16 +5,6 @@ double clamp(double x)
 	return x > 1.0 ? 1.0 : (x < 0.0 ? 0.0 : x);
 }
 
-double sigmoid(double x)
-{
-	return (1.0 / (1.0 + exp(-x)));
-}
-
-double rand_init()
-{
-	return ((rand() % 1024) / 1024.0) - 0.5;
-}
-
 LogisticRegression::LogisticRegression()
 {
 }

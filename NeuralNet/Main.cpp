@@ -2,23 +2,23 @@
 
 #include <intrin.h>
 
-Vector binaryrep(int x, int size)
-{
-	Vector v;
-	int cnt = 0;
-	while (x != 0)
-	{
-		v.push_back(x % 2);
-		x /= 2;
-		cnt++;
-	}
-	while (cnt < size)
-	{
-		v.push_back(0);
-		cnt++;
-	}
-	return v;
-}
+//Vector binaryrep(int x, int size)
+//{
+//	Vector v;
+//	int cnt = 0;
+//	while (x != 0)
+//	{
+//		v.push_back(x % 2);
+//		x /= 2;
+//		cnt++;
+//	}
+//	while (cnt < size)
+//	{
+//		v.push_back(0);
+//		cnt++;
+//	}
+//	return v;
+//}
  
 bool isprime(int x)
 {
@@ -240,17 +240,17 @@ int main()
 	//printf("acc: %f\n", acc / inputs.size());
 
 	NeuralNet nn(inputs[0].size(), 1.0);
-	/*nn.addLayer();
-	for(int i = 0;i<30;i++)
+	nn.addLayer();
+	for(int i = 0;i<15;i++)
 		nn.addNeuron(0);
 	nn.addLayer();
 	for (int i = 0; i<outputs[0].size(); i++)
-		nn.addNeuron(1);*/
+		nn.addNeuron(1);
 
 	
-	nn.load("net_handwriting.txt");
+	//nn.load("net_handwriting.txt");
 
-	//nn.train(inputs_train, outputs_train, 10);
+	nn.train(inputs_train, outputs_train, 10);
 	
 	int acc = 0;
 	for (size_t i = 0; i < inputs_test.size(); i++)

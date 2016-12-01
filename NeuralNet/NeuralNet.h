@@ -24,6 +24,8 @@ public:
 	std::vector<std::vector<Neuron>> Neurons;
 	int InputSize;
 	double LearningRate;
+
+	std::vector<Matrix> LayerWeights;
 	
 	NeuralNet();
 	NeuralNet(int input_size, double learning_rate);

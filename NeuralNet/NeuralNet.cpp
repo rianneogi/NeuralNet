@@ -4,7 +4,7 @@ Neuron::Neuron() {}
 
 Neuron::Neuron(const Vector& w, double b) : weights(w), bias(b) {}
 
-Neuron::Neuron(int num_weights) : weights(num_weights), bias(0.5)
+Neuron::Neuron(int num_weights) : weights(num_weights), bias(0.5) //TODO: make bias random
 {
 	for (int i = 0; i < num_weights; i++)
 	{
@@ -17,11 +17,14 @@ Neuron::~Neuron() {}
 double Neuron::compute(const Vector& inputs)
 {
 	assert(weights.size() == inputs.size());
-	double res = bias;
+
+	double res = weights.dot(inputs)+bias;
+
+	/*double res = bias;
 	for (size_t i = 0; i < inputs.size(); i++)
 	{
 		res += weights[i] * inputs[i];
-	}
+	}*/
 	//printf("old output: %f\n", output);
 	output = sigmoid(res);
 	//printf("new output: %f\n", output);
@@ -70,10 +73,13 @@ Vector NeuralNet::forward(Vector inputs)
 {
 	for (size_t i = 0; i < Neurons.size(); i++)
 	{
-		Vector newinputs;
+		//Vector tmp = (Matrix::Constant(1) + (-inputs*LayerWeights[i]).exp()).cwiseinv();
+		/*Vector tmp = inputs.unaryExpr(&sigmoid);
+		inputs = tmp;*/
+		Vector newinputs(Neurons[i].size());
 		for (size_t j = 0; j < Neurons[i].size(); j++)
 		{
-			newinputs.push_back(Neurons[i][j].compute(inputs));
+			newinputs[j] = (Neurons[i][j].compute(inputs));
 		}
 		inputs = newinputs;
 	}
@@ -87,7 +93,7 @@ double NeuralNet::backprop(Vector input, Vector output)
 	double error = 0.0;
 
 	bool is_output = false;
-	bool is_input = true;
+	bool is_input = false;
 	for (int i = Neurons.size() - 1; i >= 0; i--)
 	{
 		if (i == Neurons.size() - 1)
