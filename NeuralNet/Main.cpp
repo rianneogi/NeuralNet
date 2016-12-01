@@ -240,22 +240,22 @@ int main()
 	//printf("acc: %f\n", acc / inputs.size());
 
 	NeuralNet nn(inputs[0].size(), 1.0);
-	nn.addLayer();
+	/*nn.addLayer();
 	for(int i = 0;i<30;i++)
 		nn.addNeuron(0);
 	nn.addLayer();
 	for (int i = 0; i<outputs[0].size(); i++)
-		nn.addNeuron(1);
+		nn.addNeuron(1);*/
 
 	
-	//nn.load("net_handwriting.txt");
+	nn.load("net_handwriting.txt");
 
-	nn.train(inputs_train, outputs_train, 30);
+	//nn.train(inputs_train, outputs_train, 10);
 	
 	int acc = 0;
-	for (size_t i = 0; i < inputs_train.size(); i++)
+	for (size_t i = 0; i < inputs_test.size(); i++)
 	{
-		if (getoutput(nn.forward(inputs_train[i])) == getoutput(outputs_train[i]))
+		if (getoutput(nn.forward(inputs_test[i])) == getoutput(outputs_test[i]))
 		{
 			acc++;
 		}
@@ -266,7 +266,7 @@ int main()
 			printf("%d %d\n", getoutput(nn.forward(inputs[i])), getoutput(outputs[i]));
 		}*/
 	}
-	printf("Accuracy: %f\n", (acc*1.0) / inputs_train.size());
+	printf("Accuracy: %f\n", (acc*1.0) / inputs_test.size());
 
 	nn.save("net_handwriting.txt");
 	
