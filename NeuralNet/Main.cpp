@@ -75,7 +75,8 @@ std::vector<Vector> openidx_input(std::string filename)
 	col = _byteswap_ulong(col);
 	
 	//file >> num >> row >> col;
-	printf("input size: %d %d %d\n", (int)num, (int)row, col);
+	printf("input size: %d %d %d\n", num, row, col);
+	unsigned char tmp;
 	char byte;
 	for (size_t i = 0; i < num; i++)
 	{
@@ -84,9 +85,11 @@ std::vector<Vector> openidx_input(std::string filename)
 		{
 			//file >> byte;
 			file.read(&byte, 1);
+			memcpy(&tmp, &byte, 1);
 			//byte = _byteswap_ushort(byte);
-			result[i][j] = byte;
-			//result[i][j] = (byte-128.0)/256.0;
+			//result[i][j] = tmp;
+			result[i][j] = (tmp)/256.0;
+			//printf("%f\n", result[i][j]);
 		}
 		if(i%1000==0)
 			printf("num: %d\n",i);
@@ -236,18 +239,18 @@ int main()
 	//}
 	//printf("acc: %f\n", acc / inputs.size());
 
-	NeuralNet nn(inputs[0].size(), 0.0001);
+	NeuralNet nn(inputs[0].size(), 1.0);
 	nn.addLayer();
-	for(int i = 0;i<300;i++)
+	for(int i = 0;i<30;i++)
 		nn.addNeuron(0);
 	nn.addLayer();
 	for (int i = 0; i<outputs[0].size(); i++)
 		nn.addNeuron(1);
 
-	/*NeuralNet nn(inputs[0].size(), 0.0001);
-	nn.load("net_handwriting.txt");*/
+	
+	//nn.load("net_handwriting.txt");
 
-	nn.train(inputs_train, outputs_train, 100);
+	nn.train(inputs_train, outputs_train, 30);
 	
 	int acc = 0;
 	for (size_t i = 0; i < inputs_train.size(); i++)

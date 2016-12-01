@@ -18,7 +18,7 @@ double Neuron::compute(const Vector& inputs)
 {
 	assert(weights.size() == inputs.size());
 	double res = bias;
-	for (int i = 0; i < inputs.size(); i++)
+	for (size_t i = 0; i < inputs.size(); i++)
 	{
 		res += weights[i] * inputs[i];
 	}
@@ -102,23 +102,24 @@ double NeuralNet::backprop(Vector input, Vector output)
 
 		for (size_t j = 0; j < Neurons[i].size(); j++)
 		{
-			double x = Neurons[i][j].output;
+			double op = Neurons[i][j].output;
 
 			if (is_output) //calculate error
 			{
-				error += (output[i] - x)*(output[i] - x);
+				error += (output[j] - op)*(output[j] - op);
 			}
 
 			if(is_output)
-				Neurons[i][j].delta = (x - output[j])*x*(1.0 - x);
+				Neurons[i][j].delta = (op - output[j])*op*(1.0 - op);
 			else
 			{
 				Neurons[i][j].delta = 0.0;
 
 				for (size_t k = 0; k < Neurons[i + 1].size(); k++)
 				{
-					Neurons[i][j].delta = Neurons[i+1][k].weights[j]*Neurons[i+1][k].delta*x*(1.0 - x);
+					Neurons[i][j].delta += Neurons[i+1][k].weights[j]*Neurons[i+1][k].delta;
 				}
+				Neurons[i][j].delta *= op*(1.0 - op);
 			}
 			
 			Neurons[i][j].bias -= LearningRate*Neurons[i][j].delta;
