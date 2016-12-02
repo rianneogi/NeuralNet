@@ -237,10 +237,12 @@ int main()
 	//}
 	//printf("acc: %f\n", acc / inputs.size());
 
-	NeuralNetVectorized nn(inputs_train.rows(), 0.001);
+	NeuralNetVectorized nn(inputs_train.rows(), 0.00001);
 	nn.BatchSize = inputs_train.cols();
-	/*nn.addLayer();
-	for(int i = 0;i<15;i++)
+	/*nn.addLayer(15);
+	nn.addLayer(outputs_train.rows());
+	nn.randomizeWeights();*/
+	/*for(int i = 0;i<15;i++)
 		nn.addNeuron(0);
 	nn.addLayer();
 	for (int i = 0; i<outputs_train.rows(); i++)
@@ -249,7 +251,7 @@ int main()
 	
 	nn.load("net_handwriting.txt");
 
-	//nn.train(inputs_train, outputs_train, 10);
+	nn.train(inputs_train, outputs_train, 10);
 	
 	int acc = 0;
 	for (size_t i = 0; i < inputs_test.cols(); i++)

@@ -38,6 +38,21 @@ void NeuralNetVectorized::addLayer(unsigned int num_neurons)
 	Deltas.push_back(Matrix(num_neurons, BatchSize));
 }
 
+void NeuralNetVectorized::randomizeWeights()
+{
+	for (size_t i = 0; i < Weights.size(); i++)
+	{
+		for (int j = 0; j < Weights[i].rows(); j++)
+		{
+			Biases[i][j] = rand_init();
+			for (int k = 0; k < Weights[i].cols(); k++)
+			{
+				Weights[i](j, k) = rand_init();
+			}
+		}
+	}
+}
+
 double sigmoid_func(double x)
 {
 	return (1.0 / (1.0 + exp(-x)));
@@ -156,7 +171,7 @@ double NeuralNetVectorized::backprop(Matrix inputs, Matrix outputs)
 		{
 			//TODO: optimize transposes
 			//printf("%d %d %d %d\n", Deltas[i + 1].rows(), Deltas[i + 1].cols(), Weights[i+1].rows(), Weights[i+1].cols());
-			Deltas[i] = ((Deltas[i+1].transpose()*Weights[i + 1]).transpose()).cwiseProduct(Outputs[i].cwiseProduct(Matrix::Constant(Outputs[i].rows(), Outputs[i].cols(), 1.0) - Outputs[i]));
+			Deltas[i] = (Weights[i + 1].transpose()*Deltas[i + 1]).cwiseProduct(Outputs[i].cwiseProduct(Matrix::Constant(Outputs[i].rows(), Outputs[i].cols(), 1.0) - Outputs[i]));
 		}
 
 		Vector DeltaSum(Deltas[i].rows());
@@ -248,11 +263,11 @@ void NeuralNetVectorized::save(std::string filename) const
 		file << Weights.size() << " " << InputSize << "\n";
 		for (size_t i = 0; i < Weights.size(); i++)
 		{
-			file << Weights[i].cols() << "\n";
-			for (size_t j = 0; j < Weights[i].cols(); j++)
+			file << Weights[i].rows() << "\n";
+			for (size_t j = 0; j < Weights[i].rows(); j++)
 			{
 				file << Biases[i][j] << " ";
-				for (size_t k = 0; k < Weights[i].rows(); k++)
+				for (size_t k = 0; k < Weights[i].cols(); k++)
 				{
 					file << Weights[i](j,k) << " ";
 				}

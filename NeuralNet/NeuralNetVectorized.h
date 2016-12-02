@@ -18,9 +18,10 @@ public:
 	NeuralNetVectorized();
 	NeuralNetVectorized(unsigned int input_size, double learning_rate);
 	~NeuralNetVectorized();
-
+	
 	void setLayers(std::vector<unsigned int> layersizes);
 	void addLayer(unsigned int num_neurons);
+	void randomizeWeights();
 
 	Vector predict(Vector inputs);
 	Matrix forward(Matrix inputs);
