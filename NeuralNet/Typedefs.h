@@ -4,6 +4,7 @@
 
 #include "math.h"
 #include <vector>
+#include <iostream>
 #include "conio.h"
 #include "assert.h"
 #include "time.h"

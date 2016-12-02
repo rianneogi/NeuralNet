@@ -250,7 +250,7 @@ int main()
 	
 	nn.load("net_handwriting.txt");
 
-	//nn.train(inputs_train, outputs_train, 10);
+	nn.train(inputs_train, outputs_train, 10);
 	
 	int acc = 0;
 	for (size_t i = 0; i < inputs_test.size(); i++)

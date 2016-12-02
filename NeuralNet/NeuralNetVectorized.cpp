@@ -24,7 +24,7 @@ void NeuralNetVectorized::setLayers(std::vector<unsigned int> layersizes)
 	}
 }
 
-void NeuralNetVectorized::addLayer(unsigned num_neurons)
+void NeuralNetVectorized::addLayer(unsigned int num_neurons)
 {
 	unsigned int prev = InputSize;
 	if (Weights.size() > 0)
@@ -33,6 +33,9 @@ void NeuralNetVectorized::addLayer(unsigned num_neurons)
 	}
 	printf("creating matrix %d %d\n", num_neurons, prev);
 	Weights.push_back(Matrix(num_neurons, prev));
+	Biases.push_back(Vector(num_neurons));
+	Outputs.push_back(Vector(num_neurons));
+	Deltas.push_back(Vector(num_neurons));
 }
 
 double sigmoid_func(double x)
@@ -45,7 +48,8 @@ Vector NeuralNetVectorized::forward(Vector inputs)
 	for (size_t i = 0; i < Weights.size(); i++)
 	{
 		//Vector tmp = (Matrix::Constant(1) + (-inputs*LayerWeights[i]).exp()).cwiseinv();
-		inputs = (Weights[i]*inputs).unaryExpr(&sigmoid);
+		inputs = (Weights[i]*inputs + Biases[i]).unaryExpr(&sigmoid);
+		Outputs[i] = inputs;
 		//inputs = tmp;
 		//printf("%d %d %d %d", inputs.rows(), inputs.cols(), LayerWeights[i].rows(), LayerWeights[i].cols());
 		//inputs = LayerWeights[i]*inputs;
@@ -83,7 +87,7 @@ double NeuralNetVectorized::backprop(Vector input, Vector output)
 
 		for (size_t j = 0; j < Weights[i].rows(); j++)
 		{
-			double op = Outputs(i, j);
+			double op = Outputs[i][j];
 
 			if (is_output) //calculate error
 			{
@@ -91,25 +95,25 @@ double NeuralNetVectorized::backprop(Vector input, Vector output)
 			}
 
 			if (is_output)
-				Deltas(i,j) = (op - output[j])*op*(1.0 - op);
+				Deltas[i][j] = (op - output[j])*op*(1.0 - op);
 			else
 			{
-				Deltas(i,j) = 0.0;
+				Deltas[i][j] = 0.0;
 
 				for (size_t k = 0; k < Weights[i + 1].rows(); k++)
 				{
-					Deltas(i,j) += Weights[i + 1](k,j) * Deltas(i+1,k);
+					Deltas[i][j] += Weights[i + 1](k,j) * Deltas[i+1][k];
 				}
-				Deltas(i,j) *= op*(1.0 - op);
+				Deltas[i][j] *= op*(1.0 - op);
 			}
 
-			Biases(i,j) -= LearningRate*Deltas(i, j);
+			Biases[i][j] -= LearningRate*Deltas[i][j];
 			for (size_t k = 0; k < Weights[i].cols(); k++)
 			{
 				if (is_input)
-					Weights[i](j, k) -= LearningRate*Deltas(i, j)*input[k];
+					Weights[i](j, k) -= LearningRate*Deltas[i][j] *input[k];
 				else
-					Weights[i](j, k) -= LearningRate*Deltas(i, j)*Outputs(i - 1, k);
+					Weights[i](j, k) -= LearningRate*Deltas[i][j] *Outputs[i-1][k];
 			}
 		}
 	}
@@ -156,7 +160,7 @@ void NeuralNetVectorized::save(std::string filename) const
 			file << Weights[i].cols() << "\n";
 			for (size_t j = 0; j < Weights[i].cols(); j++)
 			{
-				file << Biases(i, j) << " ";
+				file << Biases[i][j] << " ";
 				for (size_t k = 0; k < Weights[i].rows(); k++)
 				{
 					file << Weights[i](j,k) << " ";
@@ -201,7 +205,7 @@ void NeuralNetVectorized::load(std::string filename)
 				unsigned int weight_cnt = Weights[i].cols();
 				double b;
 				file >> b;
-				Biases(i, j) = b;
+				Biases[i][j] = b;
 				for (unsigned int k = 0; k < weight_cnt; k++)
 				{
 					double w;
@@ -213,6 +217,15 @@ void NeuralNetVectorized::load(std::string filename)
 		}
 
 		file.close();
+
+		/*for (int i = 0; i < Weights.size(); i++)
+		{
+			std::cout << Weights[i] << std::endl;
+		}
+		for (int i = 0; i < Biases.size(); i++)
+		{
+			std::cout << Biases[i] << std::endl;
+		}*/
 	}
 	else
 	{

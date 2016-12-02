@@ -10,9 +10,9 @@ public:
 	double LearningRate;
 
 	std::vector<Matrix> Weights;
-	Matrix Biases;
-	Matrix Outputs;
-	Matrix Deltas;
+	std::vector<Vector> Biases;
+	std::vector<Vector> Outputs;
+	std::vector<Vector> Deltas;
 
 	NeuralNetVectorized();
 	NeuralNetVectorized(int input_size, double learning_rate);
