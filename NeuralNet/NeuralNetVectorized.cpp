@@ -4,7 +4,7 @@ NeuralNetVectorized::NeuralNetVectorized()
 {
 }
 
-NeuralNetVectorized::NeuralNetVectorized(int input_size, double learning_rate) : InputSize(input_size), LearningRate(learning_rate)
+NeuralNetVectorized::NeuralNetVectorized(unsigned int input_size, double learning_rate) : InputSize(input_size), LearningRate(learning_rate)
 {
 }
 
@@ -34,8 +34,8 @@ void NeuralNetVectorized::addLayer(unsigned int num_neurons)
 	printf("creating matrix %d %d\n", num_neurons, prev);
 	Weights.push_back(Matrix(num_neurons, prev));
 	Biases.push_back(Vector(num_neurons));
-	Outputs.push_back(Vector(num_neurons));
-	Deltas.push_back(Vector(num_neurons));
+	Outputs.push_back(Matrix(num_neurons, BatchSize));
+	Deltas.push_back(Matrix(num_neurons, BatchSize));
 }
 
 double sigmoid_func(double x)
@@ -47,29 +47,92 @@ Vector NeuralNetVectorized::forward(Vector inputs)
 {
 	for (size_t i = 0; i < Weights.size(); i++)
 	{
-		//Vector tmp = (Matrix::Constant(1) + (-inputs*LayerWeights[i]).exp()).cwiseinv();
 		inputs = (Weights[i]*inputs + Biases[i]).unaryExpr(&sigmoid);
 		Outputs[i] = inputs;
-		//inputs = tmp;
-		//printf("%d %d %d %d", inputs.rows(), inputs.cols(), LayerWeights[i].rows(), LayerWeights[i].cols());
-		//inputs = LayerWeights[i]*inputs;
-		//inputs.transform([](double val) { return 1.0 / (1.0 + exp(-val)); });
+	}
+	return inputs;
+}
 
-		/*Vector newinputs(Neurons[i].size());
-		for (size_t j = 0; j < Neurons[i].size(); j++)
+Matrix NeuralNetVectorized::forward(Matrix inputs)
+{
+	assert(inputs.cols() == BatchSize);
+	for (size_t i = 0; i < Weights.size(); i++)
+	{
+		if (i == 0)
 		{
-			newinputs[j] = (Neurons[i][j].compute(inputs));
+			//printf("%d %d %d %d\n", Weights[i].rows(), Weights[i].cols(), inputs.rows(),inputs.cols());
+			Outputs[i] = ((Weights[i] * inputs) + (Biases[i].replicate(1, inputs.cols()))).unaryExpr(&sigmoid);
 		}
-		inputs = newinputs;*/
+		else
+		{
+			Outputs[i] = ((Weights[i] * Outputs[i-1]) + (Biases[i].replicate(1, Outputs[i-1].cols()))).unaryExpr(&sigmoid);
+		}
 	}
 	return inputs;
 }
 
 double NeuralNetVectorized::backprop(Vector input, Vector output)
 {
-	Vector frwd = forward(input);
+	//Vector frwd = forward(input);
 
-	double error = 0.0;
+	//double error = 0.0;
+
+	//bool is_output = false;
+	//bool is_input = false;
+	//for (int i = Weights.size() - 1; i >= 0; i--)
+	//{
+	//	if (i == Weights.size() - 1)
+	//		is_output = true;
+	//	else
+	//		is_output = false;
+
+	//	if (i == 0)
+	//		is_input = true;
+	//	else
+	//		is_input = false;
+
+	//	for (size_t j = 0; j < Weights[i].rows(); j++)
+	//	{
+	//		double op = Outputs[i][j];
+
+	//		if (is_output) //calculate error
+	//		{
+	//			error += (output[j] - op)*(output[j] - op);
+	//		}
+
+	//		if (is_output)
+	//			Deltas[i][j] = (op - output[j])*op*(1.0 - op);
+	//		else
+	//		{
+	//			Deltas[i][j] = 0.0;
+
+	//			for (size_t k = 0; k < Weights[i + 1].rows(); k++)
+	//			{
+	//				Deltas[i][j] += Weights[i + 1](k,j) * Deltas[i+1][k];
+	//			}
+	//			Deltas[i][j] *= op*(1.0 - op);
+	//		}
+
+	//		Biases[i][j] -= LearningRate*Deltas[i][j];
+	//		for (size_t k = 0; k < Weights[i].cols(); k++)
+	//		{
+	//			if (is_input)
+	//				Weights[i](j, k) -= LearningRate*Deltas[i][j] *input[k];
+	//			else
+	//				Weights[i](j, k) -= LearningRate*Deltas[i][j] *Outputs[i-1][k];
+	//		}
+	//	}
+	//}
+
+	//return error;
+	return 0;
+}
+
+double NeuralNetVectorized::backprop(Matrix inputs, Matrix outputs)
+{
+	Matrix frwd = forward(inputs);
+
+	double error = ((outputs - Outputs[Weights.size()-1]).cwiseProduct(outputs - Outputs[Weights.size()-1])).sum();
 
 	bool is_output = false;
 	bool is_input = false;
@@ -84,57 +147,84 @@ double NeuralNetVectorized::backprop(Vector input, Vector output)
 			is_input = true;
 		else
 			is_input = false;
-
-		for (size_t j = 0; j < Weights[i].rows(); j++)
+		
+		if (is_output)
 		{
-			double op = Outputs[i][j];
-
-			if (is_output) //calculate error
-			{
-				error += (output[j] - op)*(output[j] - op);
-			}
-
-			if (is_output)
-				Deltas[i][j] = (op - output[j])*op*(1.0 - op);
-			else
-			{
-				Deltas[i][j] = 0.0;
-
-				for (size_t k = 0; k < Weights[i + 1].rows(); k++)
-				{
-					Deltas[i][j] += Weights[i + 1](k,j) * Deltas[i+1][k];
-				}
-				Deltas[i][j] *= op*(1.0 - op);
-			}
-
-			Biases[i][j] -= LearningRate*Deltas[i][j];
-			for (size_t k = 0; k < Weights[i].cols(); k++)
-			{
-				if (is_input)
-					Weights[i](j, k) -= LearningRate*Deltas[i][j] *input[k];
-				else
-					Weights[i](j, k) -= LearningRate*Deltas[i][j] *Outputs[i-1][k];
-			}
+			Deltas[i] = (Outputs[i] - outputs).cwiseProduct(Outputs[i].cwiseProduct(Matrix::Constant(Outputs[i].rows(), Outputs[i].cols(), 1.0) - Outputs[i]));
 		}
+		else
+		{
+			//printf("%d %d %d %d\n", Deltas[i + 1].rows(), Deltas[i + 1].cols(), Weights[i+1].rows(), Weights[i+1].cols());
+			Deltas[i] = ((Deltas[i+1].transpose()*Weights[i + 1]).transpose()).cwiseProduct(Outputs[i].cwiseProduct(Matrix::Constant(Outputs[i].rows(), Outputs[i].cols(), 1.0) - Outputs[i]));
+		}
+
+		Vector DeltaSum(Deltas[i].rows());
+		for (int j = 0; j < DeltaSum.size(); j++)
+			DeltaSum[j] = (Deltas[i].row(j)).sum();
+		Biases[i] -= LearningRate*DeltaSum;
+		if (is_input)
+		{
+			//printf("%d %d %d %d\n", Deltas[i + 1].rows(), Deltas[i + 1].cols(), Weights[i + 1].rows(), Weights[i + 1].cols());
+			Weights[i] -= LearningRate*(inputs*Deltas[i].transpose()).transpose();
+		}
+		else
+		{
+			//printf("%d %d %d %d\n", Outputs[i - 1].rows(), Outputs[i - 1].cols(), Deltas[i].rows(), Deltas[i].cols());
+			Weights[i] -= LearningRate*(Outputs[i - 1]*Deltas[i].transpose()).transpose();
+		}
+
+		//for (size_t j = 0; j < Weights[i].rows(); j++)
+		//{
+		//	double op = Outputs[i][j];
+
+		//	//if (is_output) //calculate error
+		//	//{
+		//	//	error += (output[j] - op)*(output[j] - op);
+		//	//}
+
+		//	/*if (is_output)
+		//		Deltas[i][j] = (op - output[j])*op*(1.0 - op);
+		//	else
+		//	{
+		//		Deltas[i][j] = Weights[i + 1] * Deltas[i + 1];
+		//		Deltas[i][j] = 0.0;
+
+		//		for (size_t k = 0; k < Weights[i + 1].rows(); k++)
+		//		{
+		//			Deltas[i][j] += Weights[i + 1](k, j) * Deltas[i + 1][k];
+		//		}
+		//		Deltas[i][j] *= op*(1.0 - op);
+		//	}*/
+
+		//	Biases[i][j] -= LearningRate*Deltas[i][j];
+		//	for (size_t k = 0; k < Weights[i].cols(); k++)
+		//	{
+		//		if (is_input)
+		//			Weights[i](j, k) -= LearningRate*Deltas[i][j] * input[k];
+		//		else
+		//			Weights[i](j, k) -= LearningRate*Deltas[i][j] * Outputs[i - 1][k];
+		//	}
+		//}
 	}
 
 	return error;
 }
 
-double NeuralNetVectorized::train(const std::vector<Vector>& inputs, const std::vector<Vector>& outputs, unsigned int epochs)
+double NeuralNetVectorized::train(const Matrix& inputs, const Matrix& outputs, unsigned int epochs)
 {
-	assert(inputs.size() == outputs.size());
+	assert(inputs.cols() == outputs.cols());
 	double error = 0.0;
 	printf("Started training\n");
 	Clock clock;
 	clock.Start();
+	assert(BatchSize == inputs.cols());
 	for (int j = 0; j < epochs; j++)
 	{
-		error = 0.0;
-		for (int i = 0; i < inputs.size(); i++)
+		error = backprop(inputs, outputs);
+		/*for (int i = 0; i < inputs.size(); i++)
 		{
 			error += backprop(inputs[i], outputs[i]);
-		}
+		}*/
 		clock.Stop();
 		printf("Error %d: %f, epochs per sec: %f\n", j, error, (j*1.0) / clock.ElapsedSeconds());
 		//printf("Error %d: %f\n", j, error);

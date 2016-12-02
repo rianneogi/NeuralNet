@@ -47,15 +47,13 @@ std::vector<int> genprimes(int num)
 	return primes;
 }
 
-std::vector<Vector> openidx_input(std::string filename)
+Matrix openidx_input(std::string filename)
 {
-	std::vector<Vector> result;
-
 	std::fstream file(filename, std::ios::in | std::ios::binary);
 	if (!(file.is_open()))
 	{
 		printf("unable to open file: %s", filename.c_str());
-		return result;
+		return Matrix(0,0);
 	}
 
 	file.seekg(4, std::ios::beg);
@@ -76,11 +74,12 @@ std::vector<Vector> openidx_input(std::string filename)
 	
 	//file >> num >> row >> col;
 	printf("input size: %d %d %d\n", num, row, col);
+	Matrix result(row*col, num);
 	unsigned char tmp;
 	char byte;
 	for (size_t i = 0; i < num; i++)
 	{
-		result.push_back(Vector(row*col));
+		//result.push_back(Vector(row*col));
 		for (size_t j = 0; j < row*col; j++)
 		{
 			//file >> byte;
@@ -88,7 +87,7 @@ std::vector<Vector> openidx_input(std::string filename)
 			memcpy(&tmp, &byte, 1);
 			//byte = _byteswap_ushort(byte);
 			//result[i][j] = tmp;
-			result[i][j] = (tmp)/256.0;
+			result(j,i) = (tmp)/256.0;
 			//printf("%f\n", result[i][j]);
 		}
 		if(i%1000==0)
@@ -99,15 +98,13 @@ std::vector<Vector> openidx_input(std::string filename)
 	return result;
 }
 
-std::vector<Vector> openidx_output(std::string filename, size_t output_size)
+Matrix openidx_output(std::string filename, size_t output_size)
 {
-	std::vector<Vector> result;
-
 	std::fstream file(filename, std::ios::in | std::ios::binary);
 	if (!(file.is_open()))
 	{
 		printf("unable to open file: %s", filename.c_str());
-		return result;
+		return Matrix(0,0);
 	}
 
 	file.seekg(4, std::ios::beg);
@@ -118,9 +115,10 @@ std::vector<Vector> openidx_output(std::string filename, size_t output_size)
 	num = _byteswap_ulong(num);
 	//file >> num;
 	printf("output size: %d\n", num);
+	Matrix result(10,num);
 	for (size_t i = 0; i < num; i++)
 	{
-		result.push_back(Vector(output_size));
+		//result.push_back(Vector(output_size));
 		char byte;
 		file.read(&byte, 1);
 		//file >> byte;
@@ -128,11 +126,11 @@ std::vector<Vector> openidx_output(std::string filename, size_t output_size)
 		{
 			if (j == byte)
 			{
-				result[i][j] = 1.0;
+				result(j,i) = 1.0;
 			}
 			else
 			{
-				result[i][j] = 0.0;
+				result(j,i) = 0.0;
 			}
 		}
 		if (i % 1000 == 0)
@@ -192,13 +190,13 @@ int main()
 {
 	srand(time(0));
 
-	auto inputs = openidx_input("Data/train-images.idx3-ubyte");
-	auto outputs = openidx_output("Data/train-labels.idx1-ubyte", 10);
-	auto inputs_train = inputs;
-	auto outputs_train = outputs;
-	std::vector<Vector> inputs_test, outputs_test;
+	auto inputs_train = openidx_input("Data/train-images.idx3-ubyte");
+	auto outputs_train = openidx_output("Data/train-labels.idx1-ubyte", 10);
+	auto inputs_test = openidx_input("Data/t10k-images.idx3-ubyte");
+	auto outputs_test = openidx_output("Data/t10k-labels.idx1-ubyte",10);
+	//Matrix inputs_test, outputs_test;
 
-	for (int i = 0; i < 10000; i++)
+	/*for (int i = 0; i < 10000; i++)
 	{
 		inputs_test.push_back(inputs_train[inputs_train.size() - 1]);
 		inputs_train.pop_back();
@@ -207,7 +205,7 @@ int main()
 	{
 		outputs_test.push_back(outputs_train[outputs_train.size() - 1]);
 		outputs_train.pop_back();
-	}
+	}*/
 
 	//LogisticRegression lr(28 * 28, 10, 0.00001);
 	//lr.train(inputs_train, outputs_train, 100);
@@ -239,7 +237,8 @@ int main()
 	//}
 	//printf("acc: %f\n", acc / inputs.size());
 
-	NeuralNetVectorized nn(inputs[0].size(), 1.0);
+	NeuralNetVectorized nn(inputs_train.rows(), 1.0);
+	nn.BatchSize = inputs_train.cols();
 	/*nn.addLayer();
 	for(int i = 0;i<15;i++)
 		nn.addNeuron(0);
@@ -252,21 +251,21 @@ int main()
 
 	nn.train(inputs_train, outputs_train, 10);
 	
-	int acc = 0;
-	for (size_t i = 0; i < inputs_test.size(); i++)
-	{
-		if (getoutput(nn.forward(inputs_test[i])) == getoutput(outputs_test[i]))
-		{
-			acc++;
-		}
-		/*else
-		{
-			printinput(inputs[i]);
-			printoutput(nn.forward(inputs[i]));
-			printf("%d %d\n", getoutput(nn.forward(inputs[i])), getoutput(outputs[i]));
-		}*/
-	}
-	printf("Accuracy: %f\n", (acc*1.0) / inputs_test.size());
+	//int acc = 0;
+	//for (size_t i = 0; i < inputs_test.size(); i++)
+	//{
+	//	if (getoutput(nn.forward(inputs_test[i])) == getoutput(outputs_test[i]))
+	//	{
+	//		acc++;
+	//	}
+	//	/*else
+	//	{
+	//		printinput(inputs[i]);
+	//		printoutput(nn.forward(inputs[i]));
+	//		printf("%d %d\n", getoutput(nn.forward(inputs[i])), getoutput(outputs[i]));
+	//	}*/
+	//}
+	//printf("Accuracy: %f\n", (acc*1.0) / inputs_test.size());
 
 	//nn.save("net_handwriting.txt");
 	
