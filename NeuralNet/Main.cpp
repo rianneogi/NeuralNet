@@ -1,4 +1,4 @@
-#include "NeuralNet.h"
+#include "NeuralNetVectorized.h"
 
 #include <intrin.h>
 
@@ -239,18 +239,18 @@ int main()
 	//}
 	//printf("acc: %f\n", acc / inputs.size());
 
-	NeuralNet nn(inputs[0].size(), 1.0);
-	nn.addLayer();
+	NeuralNetVectorized nn(inputs[0].size(), 1.0);
+	/*nn.addLayer();
 	for(int i = 0;i<15;i++)
 		nn.addNeuron(0);
 	nn.addLayer();
 	for (int i = 0; i<outputs[0].size(); i++)
-		nn.addNeuron(1);
+		nn.addNeuron(1);*/
 
 	
-	//nn.load("net_handwriting.txt");
+	nn.load("net_handwriting.txt");
 
-	nn.train(inputs_train, outputs_train, 10);
+	//nn.train(inputs_train, outputs_train, 10);
 	
 	int acc = 0;
 	for (size_t i = 0; i < inputs_test.size(); i++)
@@ -268,7 +268,7 @@ int main()
 	}
 	printf("Accuracy: %f\n", (acc*1.0) / inputs_test.size());
 
-	nn.save("net_handwriting.txt");
+	//nn.save("net_handwriting.txt");
 	
 	_getch();
 

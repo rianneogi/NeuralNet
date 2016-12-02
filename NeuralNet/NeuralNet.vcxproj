@@ -69,7 +69,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Documents\Code\Libraries\eigen-eigen-26667be4f70b;C:\Documents\Code\Libraries\boost_1_62_0\;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Documents\Code\Libraries\armadillo-7.500.2\include;C:\Documents\Code\Libraries\eigen-eigen-26667be4f70b;C:\Documents\Code\Libraries\boost_1_62_0\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>C:\Documents\Code\Libraries\armadillo-7.500.2\include;C:\Documents\Code\Libraries\eigen-eigen-26667be4f70b;C:\Documents\Code\Libraries\boost_1_62_0\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -115,11 +118,13 @@
     <ClCompile Include="Clock.cpp" />
     <ClCompile Include="LogisticRegression.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="NeuralNetVectorized.cpp" />
     <ClCompile Include="NeuralNet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clock.h" />
     <ClInclude Include="LogisticRegression.h" />
+    <ClInclude Include="NeuralNetVectorized.h" />
     <ClInclude Include="NeuralNet.h" />
     <ClInclude Include="Typedefs.h" />
   </ItemGroup>
