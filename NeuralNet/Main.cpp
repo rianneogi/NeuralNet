@@ -88,7 +88,7 @@ Matrix openidx_input(std::string filename)
 			//byte = _byteswap_ushort(byte);
 			//result[i][j] = tmp;
 			result(j,i) = (tmp)/256.0;
-			//printf("%f\n", result[i][j]);
+			//printf("%f\n", result(j,i));
 		}
 		if(i%1000==0)
 			printf("num: %d\n",i);
@@ -146,7 +146,7 @@ void printinput(Vector input)
 	{
 		for (int j = 0; j < 28; j++)
 		{
-			if (input[i * 28 + j] >= 0)
+			if (input[i * 28 + j] >= 0.1)
 			{
 				printf("1");
 			}
@@ -159,7 +159,7 @@ void printinput(Vector input)
 	}
 }
 
-void printoutput(Vector output)
+void printoutput(const Vector& output)
 {
 	for (int i = 0; i < output.size(); i++)
 	{
@@ -170,7 +170,7 @@ void printoutput(Vector output)
 	}
 }
 
-unsigned int getoutput(Vector output)
+unsigned int getoutput(const Vector& output)
 {
 	assert(output.size() > 0);
 	double max = output[0];
@@ -190,10 +190,10 @@ int main()
 {
 	srand(time(0));
 
-	auto inputs_train = openidx_input("Data/train-images.idx3-ubyte");
-	auto outputs_train = openidx_output("Data/train-labels.idx1-ubyte", 10);
-	auto inputs_test = openidx_input("Data/t10k-images.idx3-ubyte");
-	auto outputs_test = openidx_output("Data/t10k-labels.idx1-ubyte",10);
+	Matrix inputs_train = openidx_input("Data/train-images.idx3-ubyte");
+	Matrix outputs_train = openidx_output("Data/train-labels.idx1-ubyte", 10);
+	Matrix inputs_test = openidx_input("Data/t10k-images.idx3-ubyte");
+	Matrix outputs_test = openidx_output("Data/t10k-labels.idx1-ubyte",10);
 	//Matrix inputs_test, outputs_test;
 
 	/*for (int i = 0; i < 10000; i++)
@@ -237,35 +237,35 @@ int main()
 	//}
 	//printf("acc: %f\n", acc / inputs.size());
 
-	NeuralNetVectorized nn(inputs_train.rows(), 1.0);
+	NeuralNetVectorized nn(inputs_train.rows(), 0.001);
 	nn.BatchSize = inputs_train.cols();
 	/*nn.addLayer();
 	for(int i = 0;i<15;i++)
 		nn.addNeuron(0);
 	nn.addLayer();
-	for (int i = 0; i<outputs[0].size(); i++)
+	for (int i = 0; i<outputs_train.rows(); i++)
 		nn.addNeuron(1);*/
 
 	
 	nn.load("net_handwriting.txt");
 
-	nn.train(inputs_train, outputs_train, 10);
+	//nn.train(inputs_train, outputs_train, 10);
 	
-	//int acc = 0;
-	//for (size_t i = 0; i < inputs_test.size(); i++)
-	//{
-	//	if (getoutput(nn.forward(inputs_test[i])) == getoutput(outputs_test[i]))
-	//	{
-	//		acc++;
-	//	}
-	//	/*else
-	//	{
-	//		printinput(inputs[i]);
-	//		printoutput(nn.forward(inputs[i]));
-	//		printf("%d %d\n", getoutput(nn.forward(inputs[i])), getoutput(outputs[i]));
-	//	}*/
-	//}
-	//printf("Accuracy: %f\n", (acc*1.0) / inputs_test.size());
+	int acc = 0;
+	for (size_t i = 0; i < inputs_test.cols(); i++)
+	{
+		if (getoutput(nn.predict(inputs_test.col(i))) == getoutput(outputs_test.col(i)))
+		{
+			acc++;
+		}
+		/*else
+		{
+			printinput(inputs_train.col(i));
+			printoutput(nn.forward(inputs_train.col(i)));
+			printf("%d %d\n", getoutput(nn.forward(inputs_train.col(i))), getoutput(outputs_train.col(i)));
+		}*/
+	}
+	printf("Accuracy: %f\n", (acc*1.0) / inputs_test.cols());
 
 	//nn.save("net_handwriting.txt");
 	

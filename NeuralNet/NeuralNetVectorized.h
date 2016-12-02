@@ -22,7 +22,7 @@ public:
 	void setLayers(std::vector<unsigned int> layersizes);
 	void addLayer(unsigned int num_neurons);
 
-	Vector forward(Vector inputs);
+	Vector predict(Vector inputs);
 	Matrix forward(Matrix inputs);
 	double backprop(Vector input, Vector output);
 	double backprop(Matrix inputs, Matrix outputs);

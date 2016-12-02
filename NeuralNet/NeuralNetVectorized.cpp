@@ -43,7 +43,7 @@ double sigmoid_func(double x)
 	return (1.0 / (1.0 + exp(-x)));
 }
 
-Vector NeuralNetVectorized::forward(Vector inputs)
+Vector NeuralNetVectorized::predict(Vector inputs)
 {
 	for (size_t i = 0; i < Weights.size(); i++)
 	{
@@ -154,6 +154,7 @@ double NeuralNetVectorized::backprop(Matrix inputs, Matrix outputs)
 		}
 		else
 		{
+			//TODO: optimize transposes
 			//printf("%d %d %d %d\n", Deltas[i + 1].rows(), Deltas[i + 1].cols(), Weights[i+1].rows(), Weights[i+1].cols());
 			Deltas[i] = ((Deltas[i+1].transpose()*Weights[i + 1]).transpose()).cwiseProduct(Outputs[i].cwiseProduct(Matrix::Constant(Outputs[i].rows(), Outputs[i].cols(), 1.0) - Outputs[i]));
 		}
@@ -165,12 +166,12 @@ double NeuralNetVectorized::backprop(Matrix inputs, Matrix outputs)
 		if (is_input)
 		{
 			//printf("%d %d %d %d\n", Deltas[i + 1].rows(), Deltas[i + 1].cols(), Weights[i + 1].rows(), Weights[i + 1].cols());
-			Weights[i] -= LearningRate*(inputs*Deltas[i].transpose()).transpose();
+			Weights[i] -= LearningRate*Deltas[i]*inputs.transpose();
 		}
 		else
 		{
 			//printf("%d %d %d %d\n", Outputs[i - 1].rows(), Outputs[i - 1].cols(), Deltas[i].rows(), Deltas[i].cols());
-			Weights[i] -= LearningRate*(Outputs[i - 1]*Deltas[i].transpose()).transpose();
+			Weights[i] -= LearningRate*Deltas[i] * Outputs[i - 1].transpose();
 		}
 
 		//for (size_t j = 0; j < Weights[i].rows(); j++)

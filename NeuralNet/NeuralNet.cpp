@@ -142,9 +142,9 @@ double NeuralNet::backprop(Vector input, Vector output)
 	return error;
 }
 
-double NeuralNet::train(const std::vector<Vector>& inputs, const std::vector<Vector>& outputs, unsigned int epochs)
+double NeuralNet::train(const Matrix& inputs, const Matrix& outputs, unsigned int epochs)
 {
-	assert(inputs.size() == outputs.size());
+	assert(inputs.cols() == outputs.cols());
 	double error = 0.0;
 	printf("Started training\n");
 	Clock clock;
@@ -152,9 +152,9 @@ double NeuralNet::train(const std::vector<Vector>& inputs, const std::vector<Vec
 	for (int j = 0; j < epochs; j++)
 	{
 		error = 0.0;
-		for (int i = 0; i < inputs.size(); i++)
+		for (size_t i = 0; i < inputs.cols(); i++)
 		{
-			error += backprop(inputs[i], outputs[i]);
+			error += backprop(inputs.col(i), outputs.col(i));
 		}
 		clock.Stop();
 		printf("Error %d: %f, epochs per sec: %f\n", j, error, (j*1.0) / clock.ElapsedSeconds());
