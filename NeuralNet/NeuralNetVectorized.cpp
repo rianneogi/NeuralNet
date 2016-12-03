@@ -86,63 +86,6 @@ Matrix NeuralNetVectorized::forward(Matrix inputs)
 	return inputs;
 }
 
-double NeuralNetVectorized::backprop(Vector input, Vector output)
-{
-	//Vector frwd = forward(input);
-
-	//double error = 0.0;
-
-	//bool is_output = false;
-	//bool is_input = false;
-	//for (int i = Weights.size() - 1; i >= 0; i--)
-	//{
-	//	if (i == Weights.size() - 1)
-	//		is_output = true;
-	//	else
-	//		is_output = false;
-
-	//	if (i == 0)
-	//		is_input = true;
-	//	else
-	//		is_input = false;
-
-	//	for (size_t j = 0; j < Weights[i].rows(); j++)
-	//	{
-	//		double op = Outputs[i][j];
-
-	//		if (is_output) //calculate error
-	//		{
-	//			error += (output[j] - op)*(output[j] - op);
-	//		}
-
-	//		if (is_output)
-	//			Deltas[i][j] = (op - output[j])*op*(1.0 - op);
-	//		else
-	//		{
-	//			Deltas[i][j] = 0.0;
-
-	//			for (size_t k = 0; k < Weights[i + 1].rows(); k++)
-	//			{
-	//				Deltas[i][j] += Weights[i + 1](k,j) * Deltas[i+1][k];
-	//			}
-	//			Deltas[i][j] *= op*(1.0 - op);
-	//		}
-
-	//		Biases[i][j] -= LearningRate*Deltas[i][j];
-	//		for (size_t k = 0; k < Weights[i].cols(); k++)
-	//		{
-	//			if (is_input)
-	//				Weights[i](j, k) -= LearningRate*Deltas[i][j] *input[k];
-	//			else
-	//				Weights[i](j, k) -= LearningRate*Deltas[i][j] *Outputs[i-1][k];
-	//		}
-	//	}
-	//}
-
-	//return error;
-	return 0;
-}
-
 double NeuralNetVectorized::backprop(Matrix inputs, Matrix outputs)
 {
 	Matrix frwd = forward(inputs);
@@ -229,20 +172,24 @@ double NeuralNetVectorized::backprop(Matrix inputs, Matrix outputs)
 double NeuralNetVectorized::train(const Matrix& inputs, const Matrix& outputs, unsigned int epochs)
 {
 	assert(inputs.cols() == outputs.cols());
+	assert(inputs.cols() % BatchSize == 0);
 	double error = 0.0;
 	printf("Started training\n");
 	Clock clock;
 	clock.Start();
-	assert(BatchSize == inputs.cols());
-	for (int j = 0; j < epochs; j++)
+	for (int i = 0; i < epochs; i++)
 	{
-		error = backprop(inputs, outputs);
+		error = 0.0;
+		for (int j = 0; j < inputs.cols() / BatchSize; j++)
+		{
+			error += backprop(inputs.block(0, BatchSize*j, inputs.rows(), BatchSize), outputs.block(0, BatchSize*j, outputs.rows(), BatchSize));
+		}
 		/*for (int i = 0; i < inputs.size(); i++)
 		{
 			error += backprop(inputs[i], outputs[i]);
 		}*/
 		clock.Stop();
-		printf("Error %d: %f, epochs per sec: %f\n", j, error, (j*1.0) / clock.ElapsedSeconds());
+		printf("Error %d: %f, epochs per sec: %f\n", i, error, ((i+1)*1.0) / clock.ElapsedSeconds());
 		//printf("Error %d: %f\n", j, error);
 	}
 	printf("Done training\n");

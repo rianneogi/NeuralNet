@@ -25,7 +25,7 @@ public:
 
 	Vector predict(Vector inputs);
 	Matrix forward(Matrix inputs);
-	double backprop(Vector input, Vector output);
+	//double backprop(Vector input, Vector output);
 	double backprop(Matrix inputs, Matrix outputs);
 	double train(const Matrix& inputs, const Matrix& outputs, unsigned int epochs);
 
