@@ -247,3 +247,4 @@ ModelManifest.xml
 *.sln
 *.vcxproj
 *.vcxproj.filters
+/NeuralNet/Data

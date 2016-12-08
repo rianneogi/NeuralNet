@@ -4,7 +4,8 @@ NeuralNetVectorized::NeuralNetVectorized()
 {
 }
 
-NeuralNetVectorized::NeuralNetVectorized(unsigned int input_size, double learning_rate) : InputSize(input_size), LearningRate(learning_rate)
+NeuralNetVectorized::NeuralNetVectorized(unsigned int input_size, double learning_rate, unsigned int batch_size) 
+	: InputSize(input_size), LearningRate(learning_rate), BatchSize(batch_size)
 {
 }
 
@@ -31,7 +32,7 @@ void NeuralNetVectorized::addLayer(unsigned int num_neurons)
 	{
 		prev = Weights[Weights.size() - 1].rows();
 	}
-	printf("creating matrix %d %d\n", num_neurons, prev);
+	printf("creating weight matrix %d %d\n", num_neurons, prev);
 	Weights.push_back(Matrix(num_neurons, prev));
 	Biases.push_back(Vector(num_neurons));
 	Outputs.push_back(Matrix(num_neurons, BatchSize));

@@ -1,6 +1,6 @@
 #pragma once
 
-//#define EIGEN_USE_BLAS
+#define EIGEN_USE_BLAS
 
 #include "math.h"
 #include <vector>

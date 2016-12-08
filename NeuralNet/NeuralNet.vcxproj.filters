@@ -30,6 +30,9 @@
     <ClCompile Include="NeuralNetVectorized.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RecurrentNeuralNet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NeuralNet.h">
@@ -45,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NeuralNetVectorized.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RecurrentNeuralNet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -93,7 +93,7 @@ Matrix openidx_input(std::string filename)
 		if(i%1000==0)
 			printf("num: %d\n",i);
 	}
-	
+	file.close();
 	delete[] data_32;
 	return result;
 }
@@ -136,8 +136,64 @@ Matrix openidx_output(std::string filename, size_t output_size)
 		if (i % 1000 == 0)
 			printf("num: %d\n", i);
 	}
+	file.close();
 	delete[] data_32;
 	return result;
+}
+
+struct TrainingData
+{
+	Matrix inputs;
+	Matrix outputs;
+
+	TrainingData() {}
+	TrainingData(Matrix i, Matrix o) : inputs(i), outputs(o) {}
+};
+
+TrainingData load_cifar(std::string filename)
+{
+	Matrix output(10, 10000);
+	Matrix input(3072, 10000);
+	std::fstream file(filename, std::ios::in | std::ios::binary);
+
+	if (!file.is_open())
+	{
+		printf("cant open file: %s\n", filename);
+		return TrainingData();
+	}
+
+	unsigned char tmp;
+	char byte;
+	for (int i = 0; i < 10000; i++)
+	{
+		file.read(&byte, 1);
+		for (int j = 0; j < 10; j++)
+		{
+			if (byte == j)
+			{
+				output(j, i) = 1.0;
+			}
+			else
+			{
+				output(j, i) = 0.0;
+			}
+		}
+
+		for (int j = 0; j < 3072; j++)
+		{
+			file.read(&byte, 1);
+			memcpy(&tmp, &byte, 1);
+			input(j, i) = tmp/256.0;
+		}
+
+		if (i % 1000 == 0)
+			printf("%d\n", i);
+	}
+
+	file.close();
+
+	TrainingData td(input, output);
+	return td;
 }
 
 void printinput(Vector input)
@@ -190,57 +246,26 @@ int main()
 {
 	srand(time(0));
 
-	Matrix inputs_train = openidx_input("Data/train-images.idx3-ubyte");
+	/*Matrix inputs_train = openidx_input("Data/train-images.idx3-ubyte");
 	Matrix outputs_train = openidx_output("Data/train-labels.idx1-ubyte", 10);
 	Matrix inputs_test = openidx_input("Data/t10k-images.idx3-ubyte");
-	Matrix outputs_test = openidx_output("Data/t10k-labels.idx1-ubyte",10);
-	//Matrix inputs_test, outputs_test;
+	Matrix outputs_test = openidx_output("Data/t10k-labels.idx1-ubyte",10);*/
 
-	/*for (int i = 0; i < 10000; i++)
-	{
-		inputs_test.push_back(inputs_train[inputs_train.size() - 1]);
-		inputs_train.pop_back();
-	}
-	for (int i = 0; i < 10000; i++)
-	{
-		outputs_test.push_back(outputs_train[outputs_train.size() - 1]);
-		outputs_train.pop_back();
-	}*/
+	TrainingData b1 = load_cifar("Data/cifar-10-batches-bin/data_batch_1.bin");
+	TrainingData b2 = load_cifar("Data/cifar-10-batches-bin/data_batch_2.bin");
+	TrainingData b3 = load_cifar("Data/cifar-10-batches-bin/data_batch_3.bin");
+	TrainingData b4 = load_cifar("Data/cifar-10-batches-bin/data_batch_4.bin");
+	TrainingData b5 = load_cifar("Data/cifar-10-batches-bin/data_batch_5.bin");
+	TrainingData b6 = load_cifar("Data/cifar-10-batches-bin/test_batch.bin");
 
-	//LogisticRegression lr(28 * 28, 10, 0.00001);
-	//lr.train(inputs_train, outputs_train, 100);
-	//printf("FINAL ERROR: %f\n", lr.error(inputs_test, outputs_test));
+	Matrix inputs_test = b6.inputs;
+	Matrix outputs_test = b6.outputs;
 
-	//double acc = 0.0;
-	//for (size_t i = 0; i < inputs.size(); i++)
-	//{
-	//	if (getoutput(lr.calculate(inputs[i])) == getoutput(outputs[i]))
-	//	{
-	//		acc+=1;
-	//	}
-	//	/*else
-	//	{
-	//		printinput(inputs[i]);
-	//		printoutput(lr.calculate(inputs[i]));
-	//		printf("%d %d\n", getoutput(lr.calculate(inputs[i])), getoutput(outputs[i]));
-	//		for (int j = 0; j < outputs[i].size(); j++)
-	//		{
-	//			printf("%f ", lr.calculate(inputs[i])[j]);
-	//		}
-	//		printf("\n");
-	//		for (int j = 0; j < outputs[i].size(); j++)
-	//		{
-	//			printf("%f ", outputs[i][j]);
-	//		}
-	//		printf("\n");
-	//	}*/
-	//}
-	//printf("acc: %f\n", acc / inputs.size());
-
-	NeuralNetVectorized nn(inputs_train.rows(), 0.01);
-	nn.BatchSize = 8;
-	nn.addLayer(300);
-	nn.addLayer(outputs_train.rows());
+	NeuralNetVectorized nn(b1.inputs.rows(), 0.01, 100);
+	nn.addLayer(100);
+	nn.addLayer(100);
+	nn.addLayer(100);
+	nn.addLayer(b1.outputs.rows());
 	nn.randomizeWeights();
 	/*for(int i = 0;i<15;i++)
 		nn.addNeuron(0);
@@ -251,7 +276,11 @@ int main()
 	
 	//nn.load("net_handwriting.txt");
 
-	nn.train(inputs_train, outputs_train, 10);
+	nn.train(b1.inputs, b1.outputs, 10);
+	nn.train(b2.inputs, b2.outputs, 10);
+	nn.train(b3.inputs, b3.outputs, 10);
+	nn.train(b4.inputs, b4.outputs, 10);
+	nn.train(b5.inputs, b5.outputs, 10);
 	
 	int acc = 0;
 	for (size_t i = 0; i < inputs_test.cols(); i++)

@@ -16,7 +16,7 @@ public:
 	std::vector<Matrix> Deltas;
 
 	NeuralNetVectorized();
-	NeuralNetVectorized(unsigned int input_size, double learning_rate);
+	NeuralNetVectorized(unsigned int input_size, double learning_rate, unsigned int batch_size);
 	~NeuralNetVectorized();
 	
 	void setLayers(std::vector<unsigned int> layersizes);
