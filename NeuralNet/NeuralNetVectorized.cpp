@@ -54,10 +54,10 @@ void NeuralNetVectorized::randomizeWeights()
 	}
 }
 
-double sigmoid_func(double x)
-{
-	return (1.0 / (1.0 + exp(-x)));
-}
+//double sigmoid_func(double x)
+//{
+//	return (1.0 / (1.0 + exp(-x)));
+//}
 
 Vector NeuralNetVectorized::predict(Vector inputs)
 {
@@ -84,7 +84,7 @@ Matrix NeuralNetVectorized::forward(Matrix inputs)
 			Outputs[i] = ((Weights[i] * Outputs[i-1]) + (Biases[i].replicate(1, Outputs[i-1].cols()))).unaryExpr(&sigmoid);
 		}
 	}
-	return inputs;
+	return Outputs[Weights.size()-1];
 }
 
 double NeuralNetVectorized::backprop(Matrix inputs, Matrix outputs)

@@ -1,10 +1,10 @@
 #include "NeuralNet.h"
 
-Neuron::Neuron() {}
+NeuronNN::NeuronNN() {}
 
-Neuron::Neuron(const Vector& w, double b) : weights(w), bias(b) {}
+NeuronNN::NeuronNN(const Vector& w, double b) : weights(w), bias(b) {}
 
-Neuron::Neuron(int num_weights) : weights(num_weights), bias(0.5) //TODO: make bias random
+NeuronNN::NeuronNN(int num_weights) : weights(num_weights), bias(0.5) //TODO: make bias random
 {
 	for (int i = 0; i < num_weights; i++)
 	{
@@ -12,9 +12,9 @@ Neuron::Neuron(int num_weights) : weights(num_weights), bias(0.5) //TODO: make b
 		weights[i] = (((rand() % 1024) - 512)*1.0) / 1024.0;
 	}
 }
-Neuron::~Neuron() {}
+NeuronNN::~NeuronNN() {}
 
-double Neuron::compute(const Vector& inputs)
+double NeuronNN::compute(const Vector& inputs)
 {
 	assert(weights.size() == inputs.size());
 
@@ -39,7 +39,7 @@ NeuralNet::~NeuralNet() {}
 
 void NeuralNet::addLayer()
 {
-	Neurons.push_back(std::vector<Neuron>(0));
+	Neurons.push_back(std::vector<NeuronNN>(0));
 }
 
 void NeuralNet::addLayers(unsigned int count)
@@ -54,17 +54,17 @@ void NeuralNet::addNeuron(unsigned int layer)
 {
 	if (layer == 0)
 	{
-		Neuron n(InputSize);
+		NeuronNN n(InputSize);
 		Neurons[layer].push_back(n);
 	}
 	else
 	{
-		Neuron n(Neurons[layer - 1].size());
+		NeuronNN n(Neurons[layer - 1].size());
 		Neurons[layer].push_back(n);
 	}
 }
 
-void NeuralNet::addNeuron(Neuron n, unsigned int layer)
+void NeuralNet::addNeuron(NeuronNN n, unsigned int layer)
 {
 	Neurons[layer].push_back(n);
 }

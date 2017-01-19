@@ -2,7 +2,7 @@
 
 #include "LogisticRegression.h"
 
-class Neuron
+class NeuronNN
 {
 public:
 	Vector weights;
@@ -10,10 +10,10 @@ public:
 	double delta;
 	double output;
 	
-	Neuron();
-	Neuron(const Vector& w, double b);
-	Neuron(int num_weights);
-	~Neuron();
+	NeuronNN();
+	NeuronNN(const Vector& w, double b);
+	NeuronNN(int num_weights);
+	~NeuronNN();
 
 	double compute(const Vector& inputs);
 };
@@ -21,7 +21,7 @@ public:
 class NeuralNet
 {
 public:
-	std::vector<std::vector<Neuron>> Neurons;
+	std::vector<std::vector<NeuronNN>> Neurons;
 	int InputSize;
 	double LearningRate;
 	
@@ -32,7 +32,7 @@ public:
 	void addLayer();
 	void addLayers(unsigned int count);
 	void addNeuron(unsigned int layer);
-	void addNeuron(Neuron n, unsigned int layer);
+	void addNeuron(NeuronNN n, unsigned int layer);
 
 	Vector forward(Vector inputs);
 	double backprop(Vector input, Vector output);

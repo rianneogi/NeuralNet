@@ -267,12 +267,6 @@ int main()
 	nn.addLayer(100);
 	nn.addLayer(b1.outputs.rows());
 	nn.randomizeWeights();
-	/*for(int i = 0;i<15;i++)
-		nn.addNeuron(0);
-	nn.addLayer();
-	for (int i = 0; i<outputs_train.rows(); i++)
-		nn.addNeuron(1);*/
-
 	
 	//nn.load("net_handwriting.txt");
 

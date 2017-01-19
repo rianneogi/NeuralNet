@@ -5,12 +5,56 @@ RecurrentNeuralNet::RecurrentNeuralNet()
 }
 
 RecurrentNeuralNet::RecurrentNeuralNet(unsigned int input_size, unsigned int output_size, unsigned int hidden_size, double learning_rate)
-	: LearningRate(learning_rate), WeightsHH(hidden_size,hidden_size), WeightsIH(hidden_size, input_size), WeightsHO(output_size, hidden_size)
+	: LearningRate(learning_rate), WeightsHH(hidden_size,hidden_size), WeightsIH(hidden_size, input_size), WeightsHO(output_size, hidden_size),
+	BiasesH(hidden_size), BiasesO(output_size)
 {
 }
 
 RecurrentNeuralNet::~RecurrentNeuralNet()
 {
+}
+
+void RecurrentNeuralNet::forward(std::vector<Matrix> input, unsigned int time_steps)
+{
+	for (unsigned int i = 0; i < time_steps; i++)
+	{
+		if (i == 0)
+		{
+			OutputsH[i] = ((WeightsIH*input[i]) + (BiasesH.replicate(1, input[i].cols()))).unaryExpr(&sigmoid);
+		}
+		else
+		{
+			OutputsH[i] = ((WeightsHH * OutputsH[i - 1]) + (WeightsIH*input[i]) + (BiasesH.replicate(1, input[i].cols()))).unaryExpr(&sigmoid);
+		}
+
+		OutputsO[i] = WeightsHO*OutputsH[i] + BiasesO.replicate(1, OutputsH[i].cols());
+	}
+}
+
+double RecurrentNeuralNet::backprop(std::vector<Matrix> input, std::vector<Matrix> output, unsigned int time_steps)
+{
+	double error = 0.0;
+	for (unsigned int i = time_steps - 1; i >= 0; i--)
+	{
+		error += ((OutputsO[i] - output[i]).cwiseProduct(OutputsO[i] - output[i])).sum();
+
+		Matrix delta_o = (OutputsO[i] - output[i]).cwiseProduct(OutputsO[i].cwiseProduct(
+			Matrix::Constant(OutputsO[i].rows(), OutputsO[i].cols(), 1.0) - OutputsO[i]));
+
+		WeightsHO -= LearningRate*delta_o*OutputsH[i];
+		BiasesH -= LearningRate*delta_o;
+
+		Deltas[i] = (delta_o * WeightsHO).cwiseProduct(
+			OutputsH[i].cwiseProduct(Matrix::Constant(OutputsH[i].rows(), OutputsH[i].cols(), 1.0) - OutputsH[i]));
+
+		if (i != 0)
+		{
+			WeightsHH -= LearningRate*Deltas[i] * OutputsH[i - 1];
+		}
+		WeightsIH -= LearningRate*Deltas[i] * input[i];
+		BiasesH -= LearningRate*Deltas[i];
+	}
+	return error;
 }
 
 void RecurrentNeuralNet::load(std::string filename)
