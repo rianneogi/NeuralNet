@@ -7,7 +7,7 @@
 //  Output: Vector: Sigmoid nonlinearity for each of the inputs
 
 //Forward:
-//	O = 1/(1-exp(-W*I))
+//	O = 1/(1+exp(-W*I))
 
 //Backward:
 //  BO = (W^t*D)xOx(1-O)
@@ -19,7 +19,7 @@ public:
 	Vector Biases;
 
 	SigmoidNeuron();
-	SigmoidNeuron(Matrix* input, Matrix* output, Matrix* bpInput, Matrix* bpOutput);
+	SigmoidNeuron(Matrix* input, Matrix* output, Matrix* bpInput, Matrix* bpOutput, Float learning_rate);
 	~SigmoidNeuron();
 
 	void forward();

@@ -123,8 +123,10 @@
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Clock.cpp" />
+    <ClCompile Include="ErrorFunction.cpp" />
     <ClCompile Include="LogisticRegression.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MeanSquaredError.cpp" />
     <ClCompile Include="NeuralNetVectorized.cpp" />
     <ClCompile Include="NeuralNet.cpp" />
     <ClCompile Include="Neuron.cpp" />
@@ -135,7 +137,9 @@
   <ItemGroup>
     <ClInclude Include="Board.h" />
     <ClInclude Include="Clock.h" />
+    <ClInclude Include="ErrorFunction.h" />
     <ClInclude Include="LogisticRegression.h" />
+    <ClInclude Include="MeanSquaredError.h" />
     <ClInclude Include="NeuralNetVectorized.h" />
     <ClInclude Include="NeuralNet.h" />
     <ClInclude Include="Neuron.h" />

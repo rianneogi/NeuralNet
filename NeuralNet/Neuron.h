@@ -12,8 +12,10 @@ public:
 	Matrix* mBackpropInput;
 	Matrix* mBackpropOutput;
 
+	Float mLearningRate;
+
 	Neuron();
-	Neuron(Matrix* input, Matrix* output, Matrix* bpInput, Matrix* bpOutput);
+	Neuron(Matrix* input, Matrix* output, Matrix* bpInput, Matrix* bpOutput, Float learning_rate);
 	~Neuron();
 
 	virtual void forward() = 0;
