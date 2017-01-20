@@ -9,9 +9,11 @@ class Neuron
 public:
 	Matrix* mInput;
 	Matrix* mOutput;
+	Matrix* mBackpropInput;
+	Matrix* mBackpropOutput;
 
 	Neuron();
-	Neuron(Matrix* input, Matrix* output);
+	Neuron(Matrix* input, Matrix* output, Matrix* bpInput, Matrix* bpOutput);
 	~Neuron();
 
 	virtual void forward() = 0;

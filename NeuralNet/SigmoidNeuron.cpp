@@ -4,7 +4,7 @@ SigmoidNeuron::SigmoidNeuron() : Neuron()
 {
 }
 
-SigmoidNeuron::SigmoidNeuron(Matrix* input, Matrix* output) : Neuron(input, output)
+SigmoidNeuron::SigmoidNeuron(Matrix* input, Matrix* output, Matrix* bpInput, Matrix* bpOutput) : Neuron(input, output, bpInput, bpOutput)
 {
 	for (int i = 0; i < Weights.rows(); i++)
 	{
@@ -27,4 +27,5 @@ void SigmoidNeuron::forward()
 
 void SigmoidNeuron::backprop()
 {
+	*mBackpropOutput = (Weights.transpose()*(*mBackpropInput)).cwiseProduct(mOutput->cwiseProduct(Matrix::Constant(mOutput->rows(), mOutput->cols(), 1.0) - *mOutput));
 }

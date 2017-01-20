@@ -14,7 +14,7 @@ public:
 	~Board();
 
 	void addNeuron(Neuron* n);
-	void addEdge(unsigned int n1, unsigned int n2);
+	//void addEdge(unsigned int n1, unsigned int n2);
 
 	Matrix forward(Matrix input);
 	void backprop(Matrix input, Matrix output);
