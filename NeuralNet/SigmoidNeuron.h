@@ -19,7 +19,7 @@ public:
 	Vector Biases;
 
 	SigmoidNeuron();
-	SigmoidNeuron(Matrix* input, Matrix* output, Matrix* bpInput, Matrix* bpOutput, Float learning_rate);
+	SigmoidNeuron(Blob* input, Blob* output, Float learning_rate);
 	~SigmoidNeuron();
 
 	void forward();

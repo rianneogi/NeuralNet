@@ -4,18 +4,22 @@
 
 //typedef Eigen::Tensor< Tensor;
 
+struct Blob
+{
+	Matrix Data;
+	Matrix Delta;
+};
+
 class Neuron
 {
 public:
-	Matrix* mInput;
-	Matrix* mOutput;
-	Matrix* mBackpropInput;
-	Matrix* mBackpropOutput;
+	Blob* mInput;
+	Blob* mOutput;
 
 	Float mLearningRate;
 
 	Neuron();
-	Neuron(Matrix* input, Matrix* output, Matrix* bpInput, Matrix* bpOutput, Float learning_rate);
+	Neuron(Blob* input, Blob* output, Float learning_rate);
 	~Neuron();
 
 	virtual void forward() = 0;

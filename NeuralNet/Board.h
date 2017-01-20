@@ -1,14 +1,14 @@
 #pragma once
 
-#include "Neuron.h"
+#include "ErrorFunction.h"
 
 class Board
 {
 public:
 	std::vector<Neuron*> Neurons;
-	Matrix Inputs;
-	Matrix Deltas;
-	Matrix Outputs;
+	std::vector<Blob*> Blobs;
+	ErrorFunction* ErrorFunc;
+	Matrix Input;
 
 	Board();
 	~Board();

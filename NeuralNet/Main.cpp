@@ -264,7 +264,7 @@ int main()
 	NeuralNetVectorized nn(b1.inputs.rows(), 0.01, 100);
 	nn.addLayer(100);
 	nn.addLayer(100);
-	nn.addLayer(100);
+	//nn.addLayer(100);
 	nn.addLayer(b1.outputs.rows());
 	nn.randomizeWeights();
 	

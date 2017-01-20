@@ -9,12 +9,14 @@
 #include "assert.h"
 #include "time.h"
 #include <fstream>
-#include <cblas.h>
+
+//#include <cblas.h>
+
 //#include <boost\numeric\ublas\vector.hpp>
 //#include <boost\numeric\ublas\matrix.hpp>
 //#include <boost\numeric\ublas\io.hpp>
 #include <Eigen\Dense>
-#include <unsupported\Eigen\CXX11\src\Tensor\Tensor.h>
+//#include <unsupported\Eigen\CXX11\src\Tensor\Tensor.h>
 //#include <armadillo>
 
 typedef double Float;

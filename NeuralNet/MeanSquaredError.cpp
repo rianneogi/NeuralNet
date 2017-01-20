@@ -14,5 +14,6 @@ MeanSquaredError::~MeanSquaredError()
 
 Float MeanSquaredError::calculateError()
 {
-	return ((*mTarget - *mOutput).unaryExpr(square)).sum();
+	//return ((*mTarget - *mOutput).unaryExpr(square)).sum();
+	return 0.0;
 }

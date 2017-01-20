@@ -4,8 +4,7 @@ SigmoidNeuron::SigmoidNeuron() : Neuron()
 {
 }
 
-SigmoidNeuron::SigmoidNeuron(Matrix* input, Matrix* output, Matrix* bpInput, Matrix* bpOutput, Float learning_rate) 
-	: Neuron(input, output, bpInput, bpOutput, learning_rate)
+SigmoidNeuron::SigmoidNeuron(Blob* input, Blob* output, Float learning_rate) : Neuron(input, output, learning_rate)
 {
 	for (int i = 0; i < Weights.rows(); i++)
 	{
@@ -23,17 +22,17 @@ SigmoidNeuron::~SigmoidNeuron()
 
 void SigmoidNeuron::forward()
 {
-	*mOutput = ((Weights * *mInput) + (Biases.replicate(1, (*mInput).cols()))).unaryExpr(&sigmoid);
+	mOutput->Data = ((Weights * mInput->Data) + (Biases.replicate(1, (mInput->Data).cols()))).unaryExpr(&sigmoid);
 }
 
 void SigmoidNeuron::backprop()
 {
-	*mBackpropOutput = (Weights.transpose()*(*mBackpropInput)).cwiseProduct(mOutput->cwiseProduct(Matrix::Constant(mOutput->rows(), mOutput->cols(), 1.0) - *mOutput));
+	mInput->Delta = (Weights.transpose()*mOutput->Delta).cwiseProduct(mOutput->Data.cwiseProduct(Matrix::Constant(mOutput->Data.rows(), mOutput->Data.cols(), 1.0) - mOutput->Data));
 
-	Weights -= mLearningRate*(*mBackpropInput)*mOutput->transpose();
+	Weights -= mLearningRate*mOutput->Delta*mOutput->Data.transpose();
 
-	Vector DeltaSum(mBackpropInput->rows());
+	Vector DeltaSum(mOutput->Delta.rows());
 	for (int j = 0; j < DeltaSum.size(); j++)
-		DeltaSum[j] = (mBackpropInput->row(j)).sum();
+		DeltaSum[j] = (mOutput->Delta.row(j)).sum();
 	Biases -= mLearningRate*DeltaSum;
 }

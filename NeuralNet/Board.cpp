@@ -24,7 +24,7 @@ Matrix Board::forward(Matrix input)
 	{
 		Neurons[i]->forward();
 	}
-	return *Neurons[Neurons.size()-1]->mOutput;
+	return Neurons[Neurons.size()-1]->mOutput->Data;
 }
 
 void Board::backprop(Matrix input, Matrix output)
