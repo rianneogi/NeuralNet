@@ -11,11 +11,21 @@ Board::~Board()
 	{
 		delete Neurons[i];
 	}
+	for (size_t i = 0; i < Blobs.size(); i++)
+	{
+		delete Blobs[i];
+	}
 }
 
 void Board::addNeuron(Neuron* n)
 {
 	Neurons.push_back(n);
+}
+
+Blob* Board::newBlob()
+{
+	Blob* b = new Blob();
+	return b;
 }
 
 Matrix Board::forward(Matrix input)
@@ -27,7 +37,7 @@ Matrix Board::forward(Matrix input)
 	return Neurons[Neurons.size()-1]->mOutput->Data;
 }
 
-void Board::backprop(Matrix input, Matrix output)
+Float Board::backprop(Matrix input, Matrix output)
 {
 	//Forward Pass
 	for (size_t i = 0; i < Neurons.size(); i++)
@@ -35,9 +45,41 @@ void Board::backprop(Matrix input, Matrix output)
 		Neurons[i]->forward();
 	}
 
+	//Calculate Error
+	double error = ErrorFunc->calculateError();
+
 	//Backward Pass
 	for (int i = Neurons.size()-1; i >= 0; i--)
 	{
-		Neurons[i]->backward();
+		Neurons[i]->backprop();
 	}
+
+	return error;
+}
+
+double Board::train(const Matrix& inputs, const Matrix& outputs, unsigned int epochs, unsigned int batch_size)
+{
+	assert(inputs.cols() == outputs.cols());
+	assert(inputs.cols() % batch_size == 0);
+	double error = 0.0;
+	printf("Started training\n");
+	Clock clock;
+	clock.Start();
+	for (int i = 0; i < epochs; i++)
+	{
+		error = 0.0;
+		for (int j = 0; j < inputs.cols() / batch_size; j++)
+		{
+			error += backprop(inputs.block(0, batch_size*j, inputs.rows(), batch_size), outputs.block(0, batch_size*j, outputs.rows(), batch_size));
+		}
+		/*for (int i = 0; i < inputs.size(); i++)
+		{
+		error += backprop(inputs[i], outputs[i]);
+		}*/
+		clock.Stop();
+		printf("Error %d: %f, epochs per sec: %f\n", i, error, ((i + 1)*1.0) / clock.ElapsedSeconds());
+		//printf("Error %d: %f\n", j, error);
+	}
+	printf("Done training\n");
+	return error;
 }

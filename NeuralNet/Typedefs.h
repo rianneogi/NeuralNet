@@ -10,6 +10,7 @@
 #include "time.h"
 #include <fstream>
 
+//#include <clBLAS.h>
 //#include <cblas.h>
 
 //#include <boost\numeric\ublas\vector.hpp>

@@ -1,4 +1,4 @@
-#include "NeuralNetVectorized.h"
+#include "Board.h"
 
 #include <intrin.h>
 
@@ -242,10 +242,8 @@ unsigned int getoutput(const Vector& output)
 	return maxid;
 }
 
-int main()
+void test_old()
 {
-	srand(time(0));
-
 	/*Matrix inputs_train = openidx_input("Data/train-images.idx3-ubyte");
 	Matrix outputs_train = openidx_output("Data/train-labels.idx1-ubyte", 10);
 	Matrix inputs_test = openidx_input("Data/t10k-images.idx3-ubyte");
@@ -254,8 +252,8 @@ int main()
 	TrainingData b1 = load_cifar("Data/cifar-10-batches-bin/data_batch_1.bin");
 	TrainingData b2 = load_cifar("Data/cifar-10-batches-bin/data_batch_2.bin");
 	TrainingData b3 = load_cifar("Data/cifar-10-batches-bin/data_batch_3.bin");
-	TrainingData b4 = load_cifar("Data/cifar-10-batches-bin/data_batch_4.bin");
-	TrainingData b5 = load_cifar("Data/cifar-10-batches-bin/data_batch_5.bin");
+	//TrainingData b4 = load_cifar("Data/cifar-10-batches-bin/data_batch_4.bin");
+	//TrainingData b5 = load_cifar("Data/cifar-10-batches-bin/data_batch_5.bin");
 	TrainingData b6 = load_cifar("Data/cifar-10-batches-bin/test_batch.bin");
 
 	Matrix inputs_test = b6.inputs;
@@ -263,19 +261,19 @@ int main()
 
 	NeuralNetVectorized nn(b1.inputs.rows(), 0.01, 100);
 	nn.addLayer(100);
-	nn.addLayer(100);
+	//nn.addLayer(100);
 	//nn.addLayer(100);
 	nn.addLayer(b1.outputs.rows());
 	nn.randomizeWeights();
-	
+
 	//nn.load("net_handwriting.txt");
 
 	nn.train(b1.inputs, b1.outputs, 10);
 	nn.train(b2.inputs, b2.outputs, 10);
 	nn.train(b3.inputs, b3.outputs, 10);
-	nn.train(b4.inputs, b4.outputs, 10);
-	nn.train(b5.inputs, b5.outputs, 10);
-	
+	//nn.train(b4.inputs, b4.outputs, 10);
+	//nn.train(b5.inputs, b5.outputs, 10);
+
 	int acc = 0;
 	for (size_t i = 0; i < inputs_test.cols(); i++)
 	{
@@ -285,16 +283,28 @@ int main()
 		}
 		/*else
 		{
-			printinput(inputs_train.col(i));
-			printoutput(nn.forward(inputs_train.col(i)));
-			printf("%d %d\n", getoutput(nn.forward(inputs_train.col(i))), getoutput(outputs_train.col(i)));
+		printinput(inputs_train.col(i));
+		printoutput(nn.forward(inputs_train.col(i)));
+		printf("%d %d\n", getoutput(nn.forward(inputs_train.col(i))), getoutput(outputs_train.col(i)));
 		}*/
 	}
 	printf("Accuracy: %f\n", (acc*1.0) / inputs_test.cols());
 
 	//nn.save("net_handwriting.txt");
-	
 	_getch();
+}
+
+int main()
+{
+	srand(time(0));
+
+	Board b;
+
+	Blob* inputBlob = b.newBlob();
+	Blob* layer1Blob = b.newBlob();
+	Blob* outputBlob = b.newBlob();
+	b.addNeuron(new SigmoidNeuron(inputBlob, layer1Blob, 0.1));
+	b.addNeuron(new SigmoidNeuron(layer1Blob, outputBlob, 0.1));
 
 	return 0;
 }

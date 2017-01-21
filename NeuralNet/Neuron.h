@@ -23,6 +23,6 @@ public:
 	~Neuron();
 
 	virtual void forward() = 0;
-	virtual void backward() = 0;
+	virtual void backprop() = 0;
 };
 
