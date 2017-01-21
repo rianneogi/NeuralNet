@@ -305,6 +305,35 @@ int main()
 	Blob* outputBlob = b.newBlob();
 	b.addNeuron(new SigmoidNeuron(inputBlob, layer1Blob, 0.1));
 	b.addNeuron(new SigmoidNeuron(layer1Blob, outputBlob, 0.1));
+	b.setErrorFunction(new MeanSquaredError(inputBlob, outputBlob, nullptr));
+
+	TrainingData b1 = load_cifar("Data/cifar-10-batches-bin/data_batch_1.bin");
+	TrainingData b2 = load_cifar("Data/cifar-10-batches-bin/data_batch_2.bin");
+	TrainingData b3 = load_cifar("Data/cifar-10-batches-bin/data_batch_3.bin");
+
+	TrainingData b6 = load_cifar("Data/cifar-10-batches-bin/test_batch.bin");
+
+	Matrix inputs_test = b6.inputs;
+	Matrix outputs_test = b6.outputs;
+
+	int acc = 0;
+	for (size_t i = 0; i < inputs_test.cols(); i++)
+	{
+		if (getoutput(b.predict(inputs_test.col(i))) == getoutput(outputs_test.col(i)))
+		{
+			acc++;
+		}
+		/*else
+		{
+		printinput(inputs_train.col(i));
+		printoutput(nn.forward(inputs_train.col(i)));
+		printf("%d %d\n", getoutput(nn.forward(inputs_train.col(i))), getoutput(outputs_train.col(i)));
+		}*/
+	}
+	printf("Accuracy: %f\n", (acc*1.0) / inputs_test.cols());
+
+	//nn.save("net_handwriting.txt");
+	_getch();
 
 	return 0;
 }

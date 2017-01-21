@@ -5,14 +5,15 @@
 class ErrorFunction
 {
 public:
-	Matrix* mInput;
-	Matrix* mOutput;
-	Matrix* mTarget;
+	Blob* mInput;
+	Blob* mOutput;
+	const Matrix* mTarget;
 
 	ErrorFunction();
-	ErrorFunction(Matrix* input, Matrix* output, Matrix* target);
+	ErrorFunction(Blob* input, Blob* output, const Matrix* target);
 	~ErrorFunction();
 
 	virtual Float calculateError() = 0;
+	virtual void backprop() = 0;
 };
 

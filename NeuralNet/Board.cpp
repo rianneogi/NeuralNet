@@ -1,12 +1,13 @@
 #include "Board.h"
 
-Board::Board()
+Board::Board() : ErrorFunc(nullptr)
 {
 }
 
 Board::~Board()
 {
 	//Free memory
+	delete ErrorFunc;
 	for (size_t i = 0; i < Neurons.size(); i++)
 	{
 		delete Neurons[i];
@@ -28,7 +29,12 @@ Blob* Board::newBlob()
 	return b;
 }
 
-Matrix Board::forward(Matrix input)
+void Board::setErrorFunction(ErrorFunction* err_func)
+{
+	ErrorFunc = err_func;
+}
+
+Matrix Board::forward(const Matrix& input)
 {
 	for (size_t i = 0; i < Neurons.size(); i++)
 	{
@@ -37,8 +43,10 @@ Matrix Board::forward(Matrix input)
 	return Neurons[Neurons.size()-1]->mOutput->Data;
 }
 
-Float Board::backprop(Matrix input, Matrix output)
+Float Board::backprop(const Matrix& input, const Matrix& output)
 {
+	Neurons[0]->mInput->Data = input;
+	ErrorFunc->mTarget = &output;
 	//Forward Pass
 	for (size_t i = 0; i < Neurons.size(); i++)
 	{
@@ -55,6 +63,18 @@ Float Board::backprop(Matrix input, Matrix output)
 	}
 
 	return error;
+}
+
+Vector Board::predict(Vector input)
+{
+	Neurons[0]->mInput->Data = input;
+
+	//Forward Pass
+	for (size_t i = 0; i < Neurons.size(); i++)
+	{
+		Neurons[i]->forward();
+	}
+	return Neurons[Neurons.size()-1]->mOutput->Data;
 }
 
 double Board::train(const Matrix& inputs, const Matrix& outputs, unsigned int epochs, unsigned int batch_size)

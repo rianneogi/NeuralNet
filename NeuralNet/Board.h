@@ -15,10 +15,13 @@ public:
 
 	void addNeuron(Neuron* n);
 	Blob* newBlob();
+	void setErrorFunction(ErrorFunction* err_func);
 	//void addEdge(unsigned int n1, unsigned int n2);
 
-	Matrix forward(Matrix input);
-	Float backprop(Matrix input, Matrix output);
+	Matrix forward(const Matrix& input);
+	Float backprop(const Matrix& input, const Matrix& output);
+
+	Vector predict(Vector input);
 
 	double train(const Matrix& inputs, const Matrix& outputs, unsigned int epochs, unsigned int batch_size);
 };
