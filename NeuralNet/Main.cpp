@@ -300,9 +300,9 @@ int main()
 
 	Board b;
 
-	Blob* inputBlob = b.newBlob();
-	Blob* layer1Blob = b.newBlob();
-	Blob* outputBlob = b.newBlob();
+	Blob* inputBlob = b.newBlob(3072, 100);
+	Blob* layer1Blob = b.newBlob(10, 100);
+	Blob* outputBlob = b.newBlob(10, 100);
 	b.addNeuron(new SigmoidNeuron(inputBlob, layer1Blob, 0.1));
 	b.addNeuron(new SigmoidNeuron(layer1Blob, outputBlob, 0.1));
 	b.setErrorFunction(new MeanSquaredError(inputBlob, outputBlob, nullptr));
