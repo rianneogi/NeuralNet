@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RecurrentNeuralNet.h"
+#include "Blob.h"
 
 //typedef Eigen::Tensor< Tensor;
 
