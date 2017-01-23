@@ -6,6 +6,7 @@ SigmoidNeuron::SigmoidNeuron() : Neuron()
 
 SigmoidNeuron::SigmoidNeuron(Blob* input, Blob* output, Float learning_rate) : Neuron(input, output, learning_rate)
 {
+	Weights = Matrix(input->Data.rows(), output->Data.rows());
 	for (int i = 0; i < Weights.rows(); i++)
 	{
 		Biases[i] = rand_init();

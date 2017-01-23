@@ -5,16 +5,16 @@
 class Board
 {
 public:
-	std::vector<Neuron*> Neurons;
-	std::vector<Blob*> Blobs;
-	ErrorFunction* ErrorFunc;
-	Matrix Input;
+	std::vector<Neuron*> mNeurons;
+	std::vector<Blob*> mBlobs;
+	ErrorFunction* mErrorFunc;
+	//Matrix Input;
 
 	Board();
 	~Board();
 
 	void addNeuron(Neuron* n);
-	Blob* newBlob();
+	Blob* newBlob(unsigned int rows, unsigned int cols);
 	void setErrorFunction(ErrorFunction* err_func);
 	//void addEdge(unsigned int n1, unsigned int n2);
 

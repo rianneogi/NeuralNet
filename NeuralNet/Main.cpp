@@ -316,6 +316,8 @@ int main()
 	Matrix inputs_test = b6.inputs;
 	Matrix outputs_test = b6.outputs;
 
+	b.train(b1.inputs, b1.outputs, 10, 100);
+
 	int acc = 0;
 	for (size_t i = 0; i < inputs_test.cols(); i++)
 	{

@@ -1,65 +1,65 @@
 #include "Board.h"
 
-Board::Board() : ErrorFunc(nullptr)
+Board::Board() : mErrorFunc(nullptr)
 {
 }
 
 Board::~Board()
 {
 	//Free memory
-	delete ErrorFunc;
-	for (size_t i = 0; i < Neurons.size(); i++)
+	delete mErrorFunc;
+	for (size_t i = 0; i < mNeurons.size(); i++)
 	{
-		delete Neurons[i];
+		delete mNeurons[i];
 	}
-	for (size_t i = 0; i < Blobs.size(); i++)
+	for (size_t i = 0; i < mBlobs.size(); i++)
 	{
-		delete Blobs[i];
+		delete mBlobs[i];
 	}
 }
 
 void Board::addNeuron(Neuron* n)
 {
-	Neurons.push_back(n);
+	mNeurons.push_back(n);
 }
 
-Blob* Board::newBlob()
+Blob* Board::newBlob(unsigned int rows, unsigned int cols)
 {
-	Blob* b = new Blob();
+	Blob* b = new Blob(rows, cols);
 	return b;
 }
 
 void Board::setErrorFunction(ErrorFunction* err_func)
 {
-	ErrorFunc = err_func;
+	mErrorFunc = err_func;
 }
 
 Matrix Board::forward(const Matrix& input)
 {
-	for (size_t i = 0; i < Neurons.size(); i++)
+	for (size_t i = 0; i < mNeurons.size(); i++)
 	{
-		Neurons[i]->forward();
+		mNeurons[i]->forward();
 	}
-	return Neurons[Neurons.size()-1]->mOutput->Data;
+	return mNeurons[mNeurons.size()-1]->mOutput->Data;
 }
 
 Float Board::backprop(const Matrix& input, const Matrix& output)
 {
-	Neurons[0]->mInput->Data = input;
-	ErrorFunc->mTarget = &output;
+	mNeurons[0]->mInput->Data = input;
+	mErrorFunc->mTarget = &output;
 	//Forward Pass
-	for (size_t i = 0; i < Neurons.size(); i++)
+	for (size_t i = 0; i < mNeurons.size(); i++)
 	{
-		Neurons[i]->forward();
+		mNeurons[i]->forward();
 	}
 
 	//Calculate Error
-	double error = ErrorFunc->calculateError();
+	double error = mErrorFunc->calculateError();
 
 	//Backward Pass
-	for (int i = Neurons.size()-1; i >= 0; i--)
+	for (int i = mNeurons.size()-1; i >= 0; i--)
 	{
-		Neurons[i]->backprop();
+		mNeurons[i]->backprop();
 	}
 
 	return error;
@@ -67,14 +67,14 @@ Float Board::backprop(const Matrix& input, const Matrix& output)
 
 Vector Board::predict(Vector input)
 {
-	Neurons[0]->mInput->Data = input;
+	mNeurons[0]->mInput->Data = input;
 
 	//Forward Pass
-	for (size_t i = 0; i < Neurons.size(); i++)
+	for (size_t i = 0; i < mNeurons.size(); i++)
 	{
-		Neurons[i]->forward();
+		mNeurons[i]->forward();
 	}
-	return Neurons[Neurons.size()-1]->mOutput->Data;
+	return mNeurons[mNeurons.size()-1]->mOutput->Data;
 }
 
 double Board::train(const Matrix& inputs, const Matrix& outputs, unsigned int epochs, unsigned int batch_size)

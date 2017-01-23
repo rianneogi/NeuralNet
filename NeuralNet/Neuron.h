@@ -4,12 +4,6 @@
 
 //typedef Eigen::Tensor< Tensor;
 
-struct Blob
-{
-	Matrix Data;
-	Matrix Delta;
-};
-
 class Neuron
 {
 public:
