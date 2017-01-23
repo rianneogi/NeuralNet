@@ -36,6 +36,7 @@ void Board::setErrorFunction(ErrorFunction* err_func)
 
 Matrix Board::forward(const Matrix& input)
 {
+	mNeurons[0]->mInput->Data = input;
 	for (size_t i = 0; i < mNeurons.size(); i++)
 	{
 		mNeurons[i]->forward();

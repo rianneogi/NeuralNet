@@ -24,7 +24,7 @@ SigmoidNeuron::~SigmoidNeuron()
 
 void SigmoidNeuron::forward()
 {
-	printf("multiplying %d %d %d %d\n", Weights.rows(), Weights.cols(), mInput->Data.rows(), mInput->Data.cols());
+	//printf("multiplying %d %d %d %d\n", Weights.rows(), Weights.cols(), mInput->Data.rows(), mInput->Data.cols());
 	mOutput->Data = ((Weights * mInput->Data) + (Biases.replicate(1, (mInput->Data).cols()))).unaryExpr(&sigmoid);
 }
 
@@ -32,8 +32,8 @@ void SigmoidNeuron::backprop()
 {
 	mInput->Delta = (Weights.transpose()*mOutput->Delta).cwiseProduct(mOutput->Data.cwiseProduct(Matrix::Constant(mOutput->Data.rows(), mOutput->Data.cols(), 1.0) - mOutput->Data));
 
-	Weights -= mLearningRate*mOutput->Delta*mOutput->Data.transpose();
-
+	Weights -= mLearningRate*mInput->Delta*mInput->Data.transpose();
+	
 	Vector DeltaSum(mOutput->Delta.rows());
 	for (int j = 0; j < DeltaSum.size(); j++)
 		DeltaSum[j] = (mOutput->Delta.row(j)).sum();

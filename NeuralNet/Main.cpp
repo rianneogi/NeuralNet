@@ -299,12 +299,14 @@ int main()
 	srand(time(0));
 
 	Board b;
+	int batch_size = 100;
+	double learning_rate = 0.01;
 
-	Blob* inputBlob = b.newBlob(3072, 100);
-	Blob* layer1Blob = b.newBlob(10, 100);
-	Blob* outputBlob = b.newBlob(10, 100);
-	b.addNeuron(new SigmoidNeuron(inputBlob, layer1Blob, 0.1));
-	b.addNeuron(new SigmoidNeuron(layer1Blob, outputBlob, 0.1));
+	Blob* inputBlob = b.newBlob(3072, batch_size);
+	Blob* layer1Blob = b.newBlob(15, batch_size);
+	Blob* outputBlob = b.newBlob(10, batch_size);
+	b.addNeuron(new SigmoidNeuron(inputBlob, layer1Blob, learning_rate));
+	b.addNeuron(new SigmoidNeuron(layer1Blob, outputBlob, learning_rate));
 	b.setErrorFunction(new MeanSquaredError(inputBlob, outputBlob, nullptr));
 
 	TrainingData b1 = load_cifar("Data/cifar-10-batches-bin/data_batch_1.bin");
@@ -316,7 +318,13 @@ int main()
 	Matrix inputs_test = b6.inputs;
 	Matrix outputs_test = b6.outputs;
 
-	b.train(b1.inputs, b1.outputs, 10, 100);
+	for (int i = 0; i < 10; i++)
+	{
+		b.train(b1.inputs, b1.outputs, 1, 100);
+		b.train(b2.inputs, b2.outputs, 1, 100);
+		b.train(b3.inputs, b3.outputs, 1, 100);
+	}
+	
 
 	int acc = 0;
 	for (size_t i = 0; i < inputs_test.cols(); i++)
