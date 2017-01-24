@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Neuron.h"
+#include "TanhNeuron.h"
 
 //Fully connected Sigmoid Neuron
 //	Input: Matrix: Batch of input vectors

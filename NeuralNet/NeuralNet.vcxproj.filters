@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Neurons">
+      <UniqueIdentifier>{a9b40427-2b71-4e55-a99a-6828dd6c88f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Neurons">
+      <UniqueIdentifier>{60603ea3-e9fb-444a-94a3-6884ec90399c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -36,13 +42,7 @@
     <ClCompile Include="Board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Neuron.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Tensor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SigmoidNeuron.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ErrorFunction.cpp">
@@ -53,6 +53,15 @@
     </ClCompile>
     <ClCompile Include="Blob.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Neuron.cpp">
+      <Filter>Source Files\Neurons</Filter>
+    </ClCompile>
+    <ClCompile Include="SigmoidNeuron.cpp">
+      <Filter>Source Files\Neurons</Filter>
+    </ClCompile>
+    <ClCompile Include="TanhNeuron.cpp">
+      <Filter>Source Files\Neurons</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -77,13 +86,7 @@
     <ClInclude Include="Board.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Neuron.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Tensor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SigmoidNeuron.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ErrorFunction.h">
@@ -94,6 +97,15 @@
     </ClInclude>
     <ClInclude Include="Blob.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TanhNeuron.h">
+      <Filter>Header Files\Neurons</Filter>
+    </ClInclude>
+    <ClInclude Include="SigmoidNeuron.h">
+      <Filter>Header Files\Neurons</Filter>
+    </ClInclude>
+    <ClInclude Include="Neuron.h">
+      <Filter>Header Files\Neurons</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

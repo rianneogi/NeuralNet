@@ -298,32 +298,43 @@ int main()
 {
 	srand(time(0));
 
+	//MNIST input size: 28x28 = 784
+	//CIFAR input size: 3072
+
 	Board b;
 	int batch_size = 100;
-	double learning_rate = 0.01;
+	double learning_rate = 0.005;
 
-	Blob* inputBlob = b.newBlob(3072, batch_size);
+	Blob* inputBlob = b.newBlob(784, batch_size);
 	Blob* layer1Blob = b.newBlob(15, batch_size);
 	Blob* outputBlob = b.newBlob(10, batch_size);
-	b.addNeuron(new SigmoidNeuron(inputBlob, layer1Blob, learning_rate));
-	b.addNeuron(new SigmoidNeuron(layer1Blob, outputBlob, learning_rate));
+	b.addNeuron(new TanhNeuron(inputBlob, layer1Blob, learning_rate));
+	b.addNeuron(new TanhNeuron(layer1Blob, outputBlob, learning_rate));
 	b.setErrorFunction(new MeanSquaredError(inputBlob, outputBlob, nullptr));
 
-	TrainingData b1 = load_cifar("Data/cifar-10-batches-bin/data_batch_1.bin");
+	Matrix inputs_train = openidx_input("Data/train-images.idx3-ubyte");
+	Matrix outputs_train = openidx_output("Data/train-labels.idx1-ubyte", 10);
+	Matrix inputs_test = openidx_input("Data/t10k-images.idx3-ubyte");
+	Matrix outputs_test = openidx_output("Data/t10k-labels.idx1-ubyte", 10);
+
+	/*TrainingData b1 = load_cifar("Data/cifar-10-batches-bin/data_batch_1.bin");
 	TrainingData b2 = load_cifar("Data/cifar-10-batches-bin/data_batch_2.bin");
 	TrainingData b3 = load_cifar("Data/cifar-10-batches-bin/data_batch_3.bin");
 
 	TrainingData b6 = load_cifar("Data/cifar-10-batches-bin/test_batch.bin");
 
 	Matrix inputs_test = b6.inputs;
-	Matrix outputs_test = b6.outputs;
+	Matrix outputs_test = b6.outputs;*/
 
-	for (int i = 0; i < 10; i++)
+
+	b.train(inputs_train, outputs_train, 10, 100);
+
+	/*for (int i = 0; i < 10; i++)
 	{
 		b.train(b1.inputs, b1.outputs, 1, 100);
 		b.train(b2.inputs, b2.outputs, 1, 100);
 		b.train(b3.inputs, b3.outputs, 1, 100);
-	}
+	}*/
 	
 
 	int acc = 0;

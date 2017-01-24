@@ -33,6 +33,11 @@ inline double sigmoid(double x)
 	return (1.0 / (1.0 + exp(-x)));
 }
 
+inline double tanh_NN(double x)
+{
+	return std::tanh(x);
+}
+
 inline double square(double x)
 {
 	return x*x;
