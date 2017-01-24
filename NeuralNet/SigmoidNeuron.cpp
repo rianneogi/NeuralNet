@@ -47,8 +47,9 @@ void SigmoidNeuron::backprop()
 	Weights = Weights - (mLearningRate*mOutput->Delta*mInput->Data.transpose());
 	assert(Weights.cols() == InputSize && Weights.rows() == OutputSize);
 	
-	Vector DeltaSum(mOutput->Delta.rows());
-	for (int j = 0; j < DeltaSum.size(); j++)
-		DeltaSum[j] = (mOutput->Delta.row(j)).sum();
-	Biases = Biases - (mLearningRate*DeltaSum);
+	//Vector DeltaSum(mOutput->Delta.rows());
+	//for (int j = 0; j < DeltaSum.size(); j++)
+	//	DeltaSum[j] = (mOutput->Delta.row(j)).sum();
+
+	Biases = Biases - (mLearningRate*mOutput->Delta*Matrix::Constant(mOutput->Delta.cols(),1,1.0));
 }
