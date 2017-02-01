@@ -63,6 +63,9 @@
     <ClCompile Include="TanhNeuron.cpp">
       <Filter>Source Files\Neurons</Filter>
     </ClCompile>
+    <ClCompile Include="FullyConnectedNeuron.cpp">
+      <Filter>Source Files\Neurons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NeuralNet.h">
@@ -105,6 +108,9 @@
       <Filter>Header Files\Neurons</Filter>
     </ClInclude>
     <ClInclude Include="Neuron.h">
+      <Filter>Header Files\Neurons</Filter>
+    </ClInclude>
+    <ClInclude Include="FullyConnectedNeuron.h">
       <Filter>Header Files\Neurons</Filter>
     </ClInclude>
   </ItemGroup>

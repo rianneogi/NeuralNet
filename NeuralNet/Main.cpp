@@ -308,8 +308,8 @@ int main()
 	Blob* inputBlob = b.newBlob(784, batch_size);
 	Blob* layer1Blob = b.newBlob(15, batch_size);
 	Blob* outputBlob = b.newBlob(10, batch_size);
-	b.addNeuron(new TanhNeuron(inputBlob, layer1Blob, learning_rate));
-	b.addNeuron(new TanhNeuron(layer1Blob, outputBlob, learning_rate));
+	b.addNeuron(new SigmoidNeuron(inputBlob, layer1Blob, learning_rate));
+	b.addNeuron(new SigmoidNeuron(layer1Blob, outputBlob, learning_rate));
 	b.setErrorFunction(new MeanSquaredError(inputBlob, outputBlob, nullptr));
 
 	Matrix inputs_train = openidx_input("Data/train-images.idx3-ubyte");
