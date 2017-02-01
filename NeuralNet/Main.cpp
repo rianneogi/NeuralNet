@@ -306,11 +306,15 @@ int main()
 	double learning_rate = 0.005;
 
 	Blob* inputBlob = b.newBlob(784, batch_size);
-	Blob* layer1Blob = b.newBlob(15, batch_size);
-	Blob* outputBlob = b.newBlob(10, batch_size);
-	b.addNeuron(new SigmoidNeuron(inputBlob, layer1Blob, learning_rate));
-	b.addNeuron(new SigmoidNeuron(layer1Blob, outputBlob, learning_rate));
-	b.setErrorFunction(new MeanSquaredError(inputBlob, outputBlob, nullptr));
+	Blob* layer1FCBlob = b.newBlob(15, batch_size);
+	Blob* layer1SigBlob = b.newBlob(15, batch_size);
+	Blob* outputFCBlob = b.newBlob(10, batch_size);
+	Blob* outputSigBlob = b.newBlob(10, batch_size);
+	b.addNeuron(new FullyConnectedNeuron(inputBlob, layer1FCBlob, learning_rate));
+	b.addNeuron(new SigmoidNeuron(layer1FCBlob, layer1SigBlob, learning_rate));
+	b.addNeuron(new FullyConnectedNeuron(layer1SigBlob, outputFCBlob, learning_rate));
+	b.addNeuron(new SigmoidNeuron(outputFCBlob, outputSigBlob, learning_rate));
+	b.setErrorFunction(new MeanSquaredError(inputBlob, outputSigBlob, nullptr));
 
 	Matrix inputs_train = openidx_input("Data/train-images.idx3-ubyte");
 	Matrix outputs_train = openidx_output("Data/train-labels.idx1-ubyte", 10);

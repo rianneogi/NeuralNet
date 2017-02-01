@@ -15,12 +15,6 @@
 class SigmoidNeuron : public Neuron
 {
 public:
-	unsigned int InputSize;
-	unsigned int OutputSize;
-	unsigned int BatchSize;
-	Matrix Weights;
-	Vector Biases;
-
 	SigmoidNeuron();
 	SigmoidNeuron(Blob* input, Blob* output, Float learning_rate);
 	~SigmoidNeuron();
