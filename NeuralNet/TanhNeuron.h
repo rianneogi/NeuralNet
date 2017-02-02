@@ -15,12 +15,6 @@
 class TanhNeuron : public Neuron
 {
 public:
-	unsigned int InputSize;
-	unsigned int OutputSize;
-	unsigned int BatchSize;
-	Matrix Weights;
-	Vector Biases;
-
 	TanhNeuron();
 	TanhNeuron(Blob* input, Blob* output, Float learning_rate);
 	~TanhNeuron();

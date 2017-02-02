@@ -311,9 +311,9 @@ int main()
 	Blob* outputFCBlob = b.newBlob(10, batch_size);
 	Blob* outputSigBlob = b.newBlob(10, batch_size);
 	b.addNeuron(new FullyConnectedNeuron(inputBlob, layer1FCBlob, learning_rate));
-	b.addNeuron(new SigmoidNeuron(layer1FCBlob, layer1SigBlob, learning_rate));
+	b.addNeuron(new TanhNeuron(layer1FCBlob, layer1SigBlob, learning_rate));
 	b.addNeuron(new FullyConnectedNeuron(layer1SigBlob, outputFCBlob, learning_rate));
-	b.addNeuron(new SigmoidNeuron(outputFCBlob, outputSigBlob, learning_rate));
+	b.addNeuron(new TanhNeuron(outputFCBlob, outputSigBlob, learning_rate));
 	b.setErrorFunction(new MeanSquaredError(inputBlob, outputSigBlob, nullptr));
 
 	Matrix inputs_train = openidx_input("Data/train-images.idx3-ubyte");
