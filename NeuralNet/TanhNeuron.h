@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FullyConnectedNeuron.h"
+#include "ConvNeuron.h"
 
 //Fully connected Tanh Neuron
 //	Input: Matrix: Batch of input vectors

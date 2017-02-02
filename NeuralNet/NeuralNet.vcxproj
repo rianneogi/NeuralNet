@@ -124,6 +124,7 @@
     <ClCompile Include="Blob.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Clock.cpp" />
+    <ClCompile Include="ConvNeuron.cpp" />
     <ClCompile Include="ErrorFunction.cpp" />
     <ClCompile Include="FullyConnectedNeuron.cpp" />
     <ClCompile Include="LogisticRegression.cpp" />
@@ -141,6 +142,7 @@
     <ClInclude Include="Blob.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="Clock.h" />
+    <ClInclude Include="ConvNeuron.h" />
     <ClInclude Include="ErrorFunction.h" />
     <ClInclude Include="FullyConnectedNeuron.h" />
     <ClInclude Include="LogisticRegression.h" />
