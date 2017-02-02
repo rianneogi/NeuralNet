@@ -1,6 +1,6 @@
 #include "TanhNeuron.h"
 
-TanhNeuron::TanhNeuron()
+TanhNeuron::TanhNeuron() : Neuron()
 {
 }
 

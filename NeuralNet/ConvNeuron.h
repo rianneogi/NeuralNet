@@ -5,6 +5,19 @@
 class ConvNeuron : public Neuron
 {
 public:
+	unsigned int InputWidth;
+	unsigned int InputHeight;
+	unsigned int InputDepth;
+
+	unsigned int OutputWidth;
+	unsigned int OutputHeight;
+	unsigned int OutputDepth;
+
+	unsigned int BatchSize;
+
+	Matrix Weights;
+	float Bias;
+
 	ConvNeuron();
 	ConvNeuron(Blob* input, Blob* output, Float learning_rate);
 	~ConvNeuron();

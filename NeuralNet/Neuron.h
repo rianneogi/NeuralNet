@@ -2,8 +2,6 @@
 
 #include "Blob.h"
 
-//typedef Eigen::Tensor< Tensor;
-
 class Neuron
 {
 public:

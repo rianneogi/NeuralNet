@@ -1,6 +1,6 @@
 #include "FullyConnectedNeuron.h"
 
-FullyConnectedNeuron::FullyConnectedNeuron()
+FullyConnectedNeuron::FullyConnectedNeuron() : Neuron()
 {
 }
 
