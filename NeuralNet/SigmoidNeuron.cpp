@@ -28,7 +28,7 @@ void SigmoidNeuron::forward()
 void SigmoidNeuron::backprop()
 {
 	//assert(mOutput->Delta.cols() == BatchSize && mOutput->Delta.rows() == OutputSize);
-	mInput->Delta = (mOutput->Delta).cwiseProduct(mInput->Data.cwiseProduct(Matrix::Constant(mInput->Data.rows(), mInput->Data.cols(), 1.0) - mInput->Data));
+	mInput->Delta = (mOutput->Delta).cwiseProduct(mOutput->Data.cwiseProduct(Matrix::Constant(mOutput->Data.rows(), mOutput->Data.cols(), 1.0) - mOutput->Data));
 	//assert(mInput->Delta.cols() == BatchSize && mInput->Delta.rows() == InputSize);
 
 	//Weights = Weights - (mLearningRate*mOutput->Delta*mInput->Data.transpose());

@@ -4,7 +4,7 @@ FullyConnectedNeuron::FullyConnectedNeuron()
 {
 }
 
-FullyConnectedNeuron::FullyConnectedNeuron(Blob* input, Blob* output, Float learning_rate)
+FullyConnectedNeuron::FullyConnectedNeuron(Blob* input, Blob* output, Float learning_rate) : Neuron(input, output, learning_rate)
 {
 	Weights = Matrix(output->Data.rows(), input->Data.rows());
 	Biases = Vector(output->Data.rows());
