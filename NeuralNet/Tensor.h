@@ -3,6 +3,8 @@
 #include "RecurrentNeuralNet.h"
 //#include <unsupported\Eigen\CXX11\src\Tensor\TensorMap.h>
 
+typedef std::vector<unsigned int> TensorShape;
+
 class Tensor
 {
 public:
@@ -10,12 +12,19 @@ public:
 	Float* mData;
 
 	Tensor();
-	Tensor(unsigned int a);
-	Tensor(unsigned int a, unsigned int b);
-	Tensor(unsigned int a, unsigned int b, unsigned int c);
-	Tensor(unsigned int a, unsigned int b, unsigned int c, unsigned int d);
+	Tensor(const TensorShape& shape);
 	~Tensor();
+
+	Float operator()(unsigned int a, ...);
 
 	void allocate();
 	void free();
+
+	unsigned int rows();
+	unsigned int cols();
 };
+
+TensorShape make_shape(unsigned int a);
+TensorShape make_shape(unsigned int a, unsigned int b);
+TensorShape make_shape(unsigned int a, unsigned int b, unsigned int c);
+TensorShape make_shape(unsigned int a, unsigned int b, unsigned int c, unsigned int d);

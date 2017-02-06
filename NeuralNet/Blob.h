@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RecurrentNeuralNet.h"
+#include "Tensor.h"
 
 class Blob
 {

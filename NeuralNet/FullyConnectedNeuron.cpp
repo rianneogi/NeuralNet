@@ -29,6 +29,8 @@ FullyConnectedNeuron::~FullyConnectedNeuron()
 void FullyConnectedNeuron::forward()
 {
 	mOutput->Data = (Weights * mInput->Data) + (Biases.replicate(1, (mInput->Data).cols()));
+	//cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, Weights.rows(), mInput->Data.cols(),
+	//	Weights.cols(), 1, Weights.mData, Weights.cols(), mInput->Data.mData, mInput->Data.cols(), 0, mOutput->Data.mData, mOutput->Data.cols());
 }
 
 void FullyConnectedNeuron::backprop()
