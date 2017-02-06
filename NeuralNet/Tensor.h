@@ -6,9 +6,8 @@
 class Tensor
 {
 public:
-	std::vector<unsigned int> mDims;
-	//Eigen::Tensor<float, 3, Eigen::RowMajor, Eigen::DenseIndex> t;
-	//Eigen::TensorMap<Eigen::Tensor<float, 3, Eigen::RowMajor, Eigen::DenseIndex>, Eigen::Aligned, false> tm;
+	std::vector<unsigned int> mShape;
+	Float* mData;
 
 	Tensor();
 	Tensor(unsigned int a);
@@ -16,4 +15,7 @@ public:
 	Tensor(unsigned int a, unsigned int b, unsigned int c);
 	Tensor(unsigned int a, unsigned int b, unsigned int c, unsigned int d);
 	~Tensor();
+
+	void allocate();
+	void free();
 };

@@ -13,6 +13,9 @@ public:
 	unsigned int OutputHeight;
 	unsigned int OutputDepth;
 
+	unsigned int ConvWidth;
+	unsigned int ConvHeight;
+
 	unsigned int BatchSize;
 
 	Matrix Weights;
