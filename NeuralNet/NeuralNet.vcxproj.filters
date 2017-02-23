@@ -75,6 +75,15 @@
     <ClCompile Include="Neuron.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Im2ColNeuron.cpp">
+      <Filter>Source Files\Neurons</Filter>
+    </ClCompile>
+    <ClCompile Include="Col2ImNeuron.cpp">
+      <Filter>Source Files\Neurons</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NeuralNet.h">
@@ -123,6 +132,15 @@
       <Filter>Header Files\Error Functions</Filter>
     </ClInclude>
     <ClInclude Include="Neuron.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Col2ImNeuron.h">
+      <Filter>Header Files\Neurons</Filter>
+    </ClInclude>
+    <ClInclude Include="Im2ColNeuron.h">
+      <Filter>Header Files\Neurons</Filter>
+    </ClInclude>
+    <ClInclude Include="Tests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

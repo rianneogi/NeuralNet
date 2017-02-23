@@ -8,8 +8,8 @@ public:
 	unsigned int InputSize;
 	unsigned int OutputSize;
 	unsigned int BatchSize;
-	Matrix Weights;
-	Vector Biases;
+	Tensor Weights;
+	Tensor Biases;
 
 	FullyConnectedNeuron(); 
 	FullyConnectedNeuron(Blob* input, Blob* output, Float learning_rate);

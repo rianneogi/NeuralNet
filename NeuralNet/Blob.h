@@ -5,8 +5,8 @@
 class Blob
 {
 public:
-	Matrix Data;
-	Matrix Delta;
+	Tensor Data;
+	Tensor Delta;
 
 	Blob();
 	Blob(unsigned int rows, unsigned int cols);

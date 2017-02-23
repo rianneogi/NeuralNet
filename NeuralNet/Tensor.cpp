@@ -6,12 +6,33 @@ Tensor::Tensor() : mData(NULL)
 
 Tensor::Tensor(const TensorShape& shape) : mData(NULL), mShape(shape)
 {
+	assert(shape.size() <= 4 && "Max supported tensor shape is 4");
 	allocate();
 }
 
 Tensor::~Tensor()
 {
 	free();
+}
+
+Float& Tensor::operator()(unsigned int a)
+{
+	return mData[a];
+}
+
+Float& Tensor::operator()(unsigned int a, unsigned int b)
+{
+	return mData[a*mShape[0] + b];
+}
+
+Float& Tensor::operator()(unsigned int a, unsigned int b, unsigned int c)
+{
+	return mData[a*mShape[0]*mShape[1] + b*mShape[0] + c];
+}
+
+Float& Tensor::operator()(unsigned int a, unsigned int b, unsigned int c, unsigned int d)
+{
+	return mData[a*mShape[0]*mShape[1]*mShape[2] + b*mShape[0]*mShape[1] + c*mShape[0] + d];
 }
 
 void Tensor::allocate()
@@ -43,6 +64,18 @@ unsigned int Tensor::cols()
 {
 	assert(mShape.size() >= 1);
 	return mShape[0];
+}
+
+void Tensor::print()
+{
+	for (int i = 0; i < mShape[0]; i++)
+	{
+		for (int j = 0; j < mShape[1]; j++)
+		{
+			printf("%f ", operator()(i, j));
+		}
+		printf("\n");
+	}
 }
 
 TensorShape make_shape(unsigned int a)
