@@ -22,16 +22,19 @@ Float& Tensor::operator()(unsigned int a)
 
 Float& Tensor::operator()(unsigned int a, unsigned int b)
 {
+	assert(mShape.size() >= 1);
 	return mData[a*mShape[0] + b];
 }
 
 Float& Tensor::operator()(unsigned int a, unsigned int b, unsigned int c)
 {
+	assert(mShape.size() >= 2);
 	return mData[a*mShape[0]*mShape[1] + b*mShape[0] + c];
 }
 
 Float& Tensor::operator()(unsigned int a, unsigned int b, unsigned int c, unsigned int d)
 {
+	assert(mShape.size() >= 3);
 	return mData[a*mShape[0]*mShape[1]*mShape[2] + b*mShape[0]*mShape[1] + c*mShape[0] + d];
 }
 

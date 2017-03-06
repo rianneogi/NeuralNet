@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ErrorFunction.h"
+#include "../ErrorFunction.h"
 
 class MeanSquaredError : public ErrorFunction
 {

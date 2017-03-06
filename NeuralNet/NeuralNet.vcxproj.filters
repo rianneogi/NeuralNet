@@ -72,7 +72,7 @@
     <ClCompile Include="Source\Neurons\TanhNeuron.cpp">
       <Filter>Source Files\Neurons</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Error Functions\MeanSquaredError.cpp">
+    <ClCompile Include="Source\ErrorFunctions\MeanSquaredError.cpp">
       <Filter>Source Files\Error Functions</Filter>
     </ClCompile>
   </ItemGroup>
@@ -122,7 +122,7 @@
     <ClInclude Include="Source\Neurons\TanhNeuron.h">
       <Filter>Header Files\Neurons</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Error Functions\MeanSquaredError.h">
+    <ClInclude Include="Source\ErrorFunctions\MeanSquaredError.h">
       <Filter>Header Files\Error Functions</Filter>
     </ClInclude>
   </ItemGroup>

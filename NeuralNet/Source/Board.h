@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MeanSquaredError.h"
+#include "ErrorFunctions\MeanSquaredError.h"
 
 class Board
 {

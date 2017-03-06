@@ -130,7 +130,7 @@
     <ClCompile Include="Source\Neurons\FullyConnectedNeuron.cpp" />
     <ClCompile Include="Source\Neurons\Im2ColNeuron.cpp" />
     <ClCompile Include="Source\Main.cpp" />
-    <ClCompile Include="Source\Error Functions\MeanSquaredError.cpp" />
+    <ClCompile Include="Source\ErrorFunctions\MeanSquaredError.cpp" />
     <ClCompile Include="Source\Neuron.cpp" />
     <ClCompile Include="Source\Neurons\SigmoidNeuron.cpp" />
     <ClCompile Include="Source\Neurons\TanhNeuron.cpp" />
@@ -147,7 +147,7 @@
     <ClInclude Include="Source\ErrorFunction.h" />
     <ClInclude Include="Source\Neurons\FullyConnectedNeuron.h" />
     <ClInclude Include="Source\Neurons\Im2ColNeuron.h" />
-    <ClInclude Include="Source\Error Functions\MeanSquaredError.h" />
+    <ClInclude Include="Source\ErrorFunctions\MeanSquaredError.h" />
     <ClInclude Include="Source\Neuron.h" />
     <ClInclude Include="Source\Neurons\SigmoidNeuron.h" />
     <ClInclude Include="Source\Neurons\TanhNeuron.h" />

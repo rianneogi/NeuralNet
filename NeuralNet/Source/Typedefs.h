@@ -13,7 +13,7 @@
 //#include <clBLAS.h>
 //#include <cblas.h>
 
-#include <Eigen\Dense>
+//#include <Eigen\Dense>
 
 //#include <boost\numeric\ublas\vector.hpp>
 //#include <boost\numeric\ublas\matrix.hpp>
