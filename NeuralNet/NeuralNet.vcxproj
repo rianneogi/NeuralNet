@@ -129,17 +129,14 @@
     <ClCompile Include="ErrorFunction.cpp" />
     <ClCompile Include="FullyConnectedNeuron.cpp" />
     <ClCompile Include="Im2ColNeuron.cpp" />
-    <ClCompile Include="LogisticRegression.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MeanSquaredError.cpp" />
-    <ClCompile Include="NeuralNetVectorized.cpp" />
-    <ClCompile Include="NeuralNet.cpp" />
     <ClCompile Include="Neuron.cpp" />
-    <ClCompile Include="RecurrentNeuralNet.cpp" />
     <ClCompile Include="SigmoidNeuron.cpp" />
     <ClCompile Include="TanhNeuron.cpp" />
     <ClCompile Include="Tensor.cpp" />
     <ClCompile Include="Tests.cpp" />
+    <ClCompile Include="UtilFuncs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Blob.h" />
@@ -150,17 +147,14 @@
     <ClInclude Include="ErrorFunction.h" />
     <ClInclude Include="FullyConnectedNeuron.h" />
     <ClInclude Include="Im2ColNeuron.h" />
-    <ClInclude Include="LogisticRegression.h" />
     <ClInclude Include="MeanSquaredError.h" />
-    <ClInclude Include="NeuralNetVectorized.h" />
-    <ClInclude Include="NeuralNet.h" />
     <ClInclude Include="Neuron.h" />
-    <ClInclude Include="RecurrentNeuralNet.h" />
     <ClInclude Include="SigmoidNeuron.h" />
     <ClInclude Include="TanhNeuron.h" />
     <ClInclude Include="Tensor.h" />
     <ClInclude Include="Tests.h" />
     <ClInclude Include="Typedefs.h" />
+    <ClInclude Include="UtilFuncs.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

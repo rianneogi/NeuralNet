@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RecurrentNeuralNet.h"
+#include "UtilFuncs.h"
 //#include <unsupported\Eigen\CXX11\src\Tensor\TensorMap.h>
 
 typedef std::vector<unsigned int> TensorShape;

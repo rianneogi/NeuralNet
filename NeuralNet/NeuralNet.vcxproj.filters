@@ -30,19 +30,7 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NeuralNet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LogisticRegression.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Clock.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NeuralNetVectorized.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RecurrentNeuralNet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Board.cpp">
@@ -84,24 +72,15 @@
     <ClCompile Include="Tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UtilFuncs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="NeuralNet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LogisticRegression.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Typedefs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Clock.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NeuralNetVectorized.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RecurrentNeuralNet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Board.h">
@@ -141,6 +120,9 @@
       <Filter>Header Files\Neurons</Filter>
     </ClInclude>
     <ClInclude Include="Tests.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilFuncs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
