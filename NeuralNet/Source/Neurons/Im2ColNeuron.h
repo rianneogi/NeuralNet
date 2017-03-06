@@ -1,5 +1,5 @@
 #pragma once
-#include "Neuron.h"
+#include "../Neuron.h"
 class Im2ColNeuron : public Neuron
 {
 public:

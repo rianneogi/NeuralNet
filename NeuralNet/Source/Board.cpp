@@ -34,7 +34,7 @@ void Board::setErrorFunction(ErrorFunction* err_func)
 	mErrorFunc = err_func;
 }
 
-Matrix Board::forward(const Matrix& input)
+Tensor Board::forward(const Tensor& input)
 {
 	mNeurons[0]->mInput->Data = input;
 	for (size_t i = 0; i < mNeurons.size(); i++)
@@ -44,7 +44,7 @@ Matrix Board::forward(const Matrix& input)
 	return mNeurons[mNeurons.size()-1]->mOutput->Data;
 }
 
-Float Board::backprop(const Matrix& input, const Matrix& output)
+Float Board::backprop(const Tensor& input, const Tensor& output)
 {
 	mNeurons[0]->mInput->Data = input;
 	mErrorFunc->mTarget = &output;
@@ -66,7 +66,7 @@ Float Board::backprop(const Matrix& input, const Matrix& output)
 	return error;
 }
 
-Vector Board::predict(Vector input)
+Tensor Board::predict(Tensor input)
 {
 	mNeurons[0]->mInput->Data = input;
 
@@ -78,7 +78,7 @@ Vector Board::predict(Vector input)
 	return mNeurons[mNeurons.size()-1]->mOutput->Data;
 }
 
-double Board::train(const Matrix& inputs, const Matrix& outputs, unsigned int epochs, unsigned int batch_size)
+double Board::train(const Tensor& inputs, const Tensor& outputs, unsigned int epochs, unsigned int batch_size)
 {
 	assert(inputs.cols() == outputs.cols());
 	assert(inputs.cols() % batch_size == 0);

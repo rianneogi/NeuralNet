@@ -6,7 +6,7 @@ class MeanSquaredError : public ErrorFunction
 {
 public:
 	MeanSquaredError();
-	MeanSquaredError(Blob* input, Blob* output, const Matrix* target);
+	MeanSquaredError(Blob* input, Blob* output, const Tensor* target);
 	~MeanSquaredError();
 
 	Float calculateError();
