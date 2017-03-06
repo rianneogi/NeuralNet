@@ -27,103 +27,103 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
+    <ClCompile Include="Source\Blob.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Clock.cpp">
+    <ClCompile Include="Source\Board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Board.cpp">
+    <ClCompile Include="Source\Clock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tensor.cpp">
+    <ClCompile Include="Source\ErrorFunction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ErrorFunction.cpp">
+    <ClCompile Include="Source\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Blob.cpp">
+    <ClCompile Include="Source\Neuron.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SigmoidNeuron.cpp">
+    <ClCompile Include="Source\Tensor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UtilFuncs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Neurons\Col2ImNeuron.cpp">
       <Filter>Source Files\Neurons</Filter>
     </ClCompile>
-    <ClCompile Include="TanhNeuron.cpp">
+    <ClCompile Include="Source\Neurons\ConvNeuron.cpp">
       <Filter>Source Files\Neurons</Filter>
     </ClCompile>
-    <ClCompile Include="FullyConnectedNeuron.cpp">
+    <ClCompile Include="Source\Neurons\FullyConnectedNeuron.cpp">
       <Filter>Source Files\Neurons</Filter>
     </ClCompile>
-    <ClCompile Include="ConvNeuron.cpp">
+    <ClCompile Include="Source\Neurons\Im2ColNeuron.cpp">
       <Filter>Source Files\Neurons</Filter>
     </ClCompile>
-    <ClCompile Include="MeanSquaredError.cpp">
+    <ClCompile Include="Source\Neurons\SigmoidNeuron.cpp">
+      <Filter>Source Files\Neurons</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Neurons\TanhNeuron.cpp">
+      <Filter>Source Files\Neurons</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Error Functions\MeanSquaredError.cpp">
       <Filter>Source Files\Error Functions</Filter>
-    </ClCompile>
-    <ClCompile Include="Neuron.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Im2ColNeuron.cpp">
-      <Filter>Source Files\Neurons</Filter>
-    </ClCompile>
-    <ClCompile Include="Col2ImNeuron.cpp">
-      <Filter>Source Files\Neurons</Filter>
-    </ClCompile>
-    <ClCompile Include="Tests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UtilFuncs.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Typedefs.h">
+    <ClInclude Include="Source\Blob.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Clock.h">
+    <ClInclude Include="Source\Board.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Board.h">
+    <ClInclude Include="Source\Clock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tensor.h">
+    <ClInclude Include="Source\ErrorFunction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ErrorFunction.h">
+    <ClInclude Include="Source\Neuron.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Blob.h">
+    <ClInclude Include="Source\Tensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TanhNeuron.h">
+    <ClInclude Include="Source\Tests.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Typedefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UtilFuncs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Neurons\Col2ImNeuron.h">
       <Filter>Header Files\Neurons</Filter>
     </ClInclude>
-    <ClInclude Include="SigmoidNeuron.h">
+    <ClInclude Include="Source\Neurons\ConvNeuron.h">
       <Filter>Header Files\Neurons</Filter>
     </ClInclude>
-    <ClInclude Include="FullyConnectedNeuron.h">
+    <ClInclude Include="Source\Neurons\FullyConnectedNeuron.h">
       <Filter>Header Files\Neurons</Filter>
     </ClInclude>
-    <ClInclude Include="ConvNeuron.h">
+    <ClInclude Include="Source\Neurons\Im2ColNeuron.h">
       <Filter>Header Files\Neurons</Filter>
     </ClInclude>
-    <ClInclude Include="MeanSquaredError.h">
+    <ClInclude Include="Source\Neurons\SigmoidNeuron.h">
+      <Filter>Header Files\Neurons</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Neurons\TanhNeuron.h">
+      <Filter>Header Files\Neurons</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Error Functions\MeanSquaredError.h">
       <Filter>Header Files\Error Functions</Filter>
-    </ClInclude>
-    <ClInclude Include="Neuron.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Col2ImNeuron.h">
-      <Filter>Header Files\Neurons</Filter>
-    </ClInclude>
-    <ClInclude Include="Im2ColNeuron.h">
-      <Filter>Header Files\Neurons</Filter>
-    </ClInclude>
-    <ClInclude Include="Tests.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UtilFuncs.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

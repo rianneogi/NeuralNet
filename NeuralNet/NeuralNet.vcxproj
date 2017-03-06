@@ -121,40 +121,40 @@
     <Manifest />
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Blob.cpp" />
-    <ClCompile Include="Board.cpp" />
-    <ClCompile Include="Clock.cpp" />
-    <ClCompile Include="Col2ImNeuron.cpp" />
-    <ClCompile Include="ConvNeuron.cpp" />
-    <ClCompile Include="ErrorFunction.cpp" />
-    <ClCompile Include="FullyConnectedNeuron.cpp" />
-    <ClCompile Include="Im2ColNeuron.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MeanSquaredError.cpp" />
-    <ClCompile Include="Neuron.cpp" />
-    <ClCompile Include="SigmoidNeuron.cpp" />
-    <ClCompile Include="TanhNeuron.cpp" />
-    <ClCompile Include="Tensor.cpp" />
-    <ClCompile Include="Tests.cpp" />
-    <ClCompile Include="UtilFuncs.cpp" />
+    <ClCompile Include="Source\Blob.cpp" />
+    <ClCompile Include="Source\Board.cpp" />
+    <ClCompile Include="Source\Clock.cpp" />
+    <ClCompile Include="Source\Neurons\Col2ImNeuron.cpp" />
+    <ClCompile Include="Source\Neurons\ConvNeuron.cpp" />
+    <ClCompile Include="Source\ErrorFunction.cpp" />
+    <ClCompile Include="Source\Neurons\FullyConnectedNeuron.cpp" />
+    <ClCompile Include="Source\Neurons\Im2ColNeuron.cpp" />
+    <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\Error Functions\MeanSquaredError.cpp" />
+    <ClCompile Include="Source\Neuron.cpp" />
+    <ClCompile Include="Source\Neurons\SigmoidNeuron.cpp" />
+    <ClCompile Include="Source\Neurons\TanhNeuron.cpp" />
+    <ClCompile Include="Source\Tensor.cpp" />
+    <ClCompile Include="Source\Tests.cpp" />
+    <ClCompile Include="Source\UtilFuncs.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Blob.h" />
-    <ClInclude Include="Board.h" />
-    <ClInclude Include="Clock.h" />
-    <ClInclude Include="Col2ImNeuron.h" />
-    <ClInclude Include="ConvNeuron.h" />
-    <ClInclude Include="ErrorFunction.h" />
-    <ClInclude Include="FullyConnectedNeuron.h" />
-    <ClInclude Include="Im2ColNeuron.h" />
-    <ClInclude Include="MeanSquaredError.h" />
-    <ClInclude Include="Neuron.h" />
-    <ClInclude Include="SigmoidNeuron.h" />
-    <ClInclude Include="TanhNeuron.h" />
-    <ClInclude Include="Tensor.h" />
-    <ClInclude Include="Tests.h" />
-    <ClInclude Include="Typedefs.h" />
-    <ClInclude Include="UtilFuncs.h" />
+    <ClInclude Include="Source\Blob.h" />
+    <ClInclude Include="Source\Board.h" />
+    <ClInclude Include="Source\Clock.h" />
+    <ClInclude Include="Source\Neurons\Col2ImNeuron.h" />
+    <ClInclude Include="Source\Neurons\ConvNeuron.h" />
+    <ClInclude Include="Source\ErrorFunction.h" />
+    <ClInclude Include="Source\Neurons\FullyConnectedNeuron.h" />
+    <ClInclude Include="Source\Neurons\Im2ColNeuron.h" />
+    <ClInclude Include="Source\Error Functions\MeanSquaredError.h" />
+    <ClInclude Include="Source\Neuron.h" />
+    <ClInclude Include="Source\Neurons\SigmoidNeuron.h" />
+    <ClInclude Include="Source\Neurons\TanhNeuron.h" />
+    <ClInclude Include="Source\Tensor.h" />
+    <ClInclude Include="Source\Tests.h" />
+    <ClInclude Include="Source\Typedefs.h" />
+    <ClInclude Include="Source\UtilFuncs.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
