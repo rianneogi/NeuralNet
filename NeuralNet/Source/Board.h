@@ -18,11 +18,11 @@ public:
 	void setErrorFunction(ErrorFunction* err_func);
 	//void addEdge(unsigned int n1, unsigned int n2);
 
-	Matrix forward(const Matrix& input);
-	Float backprop(const Matrix& input, const Matrix& output);
+	Tensor forward(const Tensor& input);
+	Float backprop(const Tensor& input, const Tensor& output);
 
-	Vector predict(Vector input);
+	Tensor predict(Tensor input);
 
-	double train(const Matrix& inputs, const Matrix& outputs, unsigned int epochs, unsigned int batch_size);
+	double train(const Tensor& inputs, const Tensor& outputs, unsigned int epochs, unsigned int batch_size);
 };
 
