@@ -19,7 +19,7 @@ Im2ColNeuron::~Im2ColNeuron()
 
 void Im2ColNeuron::forward()
 {
-	Matrix res(1, (InputWidth - 1 - KernelWidth)*(InputHeight - 1 - KernelHeight));
+	/*Matrix res(1, (InputWidth - 1 - KernelWidth)*(InputHeight - 1 - KernelHeight));
 	for (unsigned int x = KernelWidth / 2; x < InputWidth - 1 - KernelWidth / 2; x++)
 	{
 		for (unsigned int y = KernelHeight / 2; y < InputHeight - 1 - KernelHeight / 2; y++)
@@ -29,7 +29,7 @@ void Im2ColNeuron::forward()
 			res << m;
 		}
 	}
-	mOutput->Data = res;
+	mOutput->Data = res;*/
 }
 
 void Im2ColNeuron::backprop()

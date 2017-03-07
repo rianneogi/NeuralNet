@@ -14,10 +14,9 @@ MeanSquaredError::~MeanSquaredError()
 
 Float MeanSquaredError::calculateError()
 {
-	double error = 0.5*((mOutput->Data - *mTarget).cwiseProduct(mOutput->Data - *mTarget)).sum();
-	mOutput->Delta = (mOutput->Data - *mTarget);
-	return error;
-	//return 0.0;
+	//double error = 0.5*((mOutput->Data - *mTarget).cwiseProduct(mOutput->Data - *mTarget)).sum();
+	//mOutput->Delta = (mOutput->Data - *mTarget);
+	//return error;
 }
 
 void MeanSquaredError::backprop()

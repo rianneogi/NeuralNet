@@ -80,27 +80,27 @@ Tensor Board::predict(Tensor input)
 
 double Board::train(const Tensor& inputs, const Tensor& outputs, unsigned int epochs, unsigned int batch_size)
 {
-	assert(inputs.cols() == outputs.cols());
-	assert(inputs.cols() % batch_size == 0);
-	double error = 0.0;
-	printf("Started training\n");
-	Clock clock;
-	clock.Start();
-	for (int i = 0; i < epochs; i++)
-	{
-		error = 0.0;
-		for (int j = 0; j < inputs.cols() / batch_size; j++)
-		{
-			error += backprop(inputs.block(0, batch_size*j, inputs.rows(), batch_size), outputs.block(0, batch_size*j, outputs.rows(), batch_size));
-		}
-		/*for (int i = 0; i < inputs.size(); i++)
-		{
-		error += backprop(inputs[i], outputs[i]);
-		}*/
-		clock.Stop();
-		printf("Error %d: %f, epochs per sec: %f\n", i, error, ((i + 1)*1.0) / clock.ElapsedSeconds());
-		//printf("Error %d: %f\n", j, error);
-	}
-	printf("Done training\n");
-	return error;
+	//assert(inputs.cols() == outputs.cols());
+	//assert(inputs.cols() % batch_size == 0);
+	//double error = 0.0;
+	//printf("Started training\n");
+	//Clock clock;
+	//clock.Start();
+	//for (int i = 0; i < epochs; i++)
+	//{
+	//	error = 0.0;
+	//	for (int j = 0; j < inputs.cols() / batch_size; j++)
+	//	{
+	//		error += backprop(inputs.block(0, batch_size*j, inputs.rows(), batch_size), outputs.block(0, batch_size*j, outputs.rows(), batch_size));
+	//	}
+	//	/*for (int i = 0; i < inputs.size(); i++)
+	//	{
+	//	error += backprop(inputs[i], outputs[i]);
+	//	}*/
+	//	clock.Stop();
+	//	printf("Error %d: %f, epochs per sec: %f\n", i, error, ((i + 1)*1.0) / clock.ElapsedSeconds());
+	//	//printf("Error %d: %f\n", j, error);
+	//}
+	//printf("Done training\n");
+	//return error;
 }

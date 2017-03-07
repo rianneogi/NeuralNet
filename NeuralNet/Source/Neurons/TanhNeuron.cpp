@@ -15,15 +15,15 @@ TanhNeuron::~TanhNeuron()
 
 void TanhNeuron::forward()
 {
-	mOutput->Data = mInput->Data.unaryExpr(&tanh_NN);
+	/*mOutput->Data = mInput->Data.unaryExpr(&tanh_NN);*/
 }
 
 void TanhNeuron::backprop()
 {
-	mInput->Delta = mOutput->Delta.cwiseProduct(Matrix::Constant(mOutput->Data.rows(), mOutput->Data.cols(), 1.0) - mOutput->Data.cwiseProduct(mOutput->Data));
+	//mInput->Delta = mOutput->Delta.cwiseProduct(Matrix::Constant(mOutput->Data.rows(), mOutput->Data.cols(), 1.0) - mOutput->Data.cwiseProduct(mOutput->Data));
 
-	//Weights = Weights - (mLearningRate*mOutput->Delta*mInput->Data.transpose());
-	//assert(Weights.cols() == InputSize && Weights.rows() == OutputSize);
+	////Weights = Weights - (mLearningRate*mOutput->Delta*mInput->Data.transpose());
+	////assert(Weights.cols() == InputSize && Weights.rows() == OutputSize);
 
-	//Biases = Biases - (mLearningRate*mOutput->Delta*Matrix::Constant(mOutput->Delta.cols(), 1, 1.0));
+	////Biases = Biases - (mLearningRate*mOutput->Delta*Matrix::Constant(mOutput->Delta.cols(), 1, 1.0));
 }

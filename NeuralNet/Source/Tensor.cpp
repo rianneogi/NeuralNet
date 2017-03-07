@@ -1,18 +1,25 @@
 #include "Tensor.h"
 
-Tensor::Tensor() : mData(NULL)
+#define USE_MALLOC
+
+Tensor::Tensor() : mData(NULL), mSize(0)
 {
 }
 
-Tensor::Tensor(const TensorShape& shape) : mData(NULL), mShape(shape)
+Tensor::Tensor(const TensorShape& shape) : mData(NULL), mShape(shape), mSize(1)
 {
 	assert(shape.size() <= 4 && "Max supported tensor shape is 4");
+	unsigned int mSize = 1;
+	for (unsigned int x : mShape)
+	{
+		mSize *= x;
+	}
 	allocate();
 }
 
 Tensor::~Tensor()
 {
-	free();
+	freememory();
 }
 
 Float& Tensor::operator()(unsigned int a)
@@ -40,20 +47,45 @@ Float& Tensor::operator()(unsigned int a, unsigned int b, unsigned int c, unsign
 
 void Tensor::allocate()
 {
-	unsigned int size = 1;
-	for (unsigned int x : mShape)
+#ifdef USE_MALLOC
+	mData = (Float*)malloc(mSize * sizeof(Float));
+	if (mData == NULL)
 	{
-		size *= x;
+		printf("ERROR: Cant allocate memory for tensor, Size: %d\n", mSize);
 	}
-	mData = new Float[size];
-	printf("Allocation tensor of size: %d\n", size);
+#else
+	mData = new Float[mSize];
+#endif
+	
+	printf("Allocation tensor of size: %d\n", mSize);
 }
 
-void Tensor::free()
+void Tensor::freememory()
 {
 	if (mData != NULL)
 	{
+#ifdef USE_MALLOC
+		free(mData);
+		mData = NULL;
+#else
 		delete[] mData;
+#endif
+	}
+}
+
+void Tensor::setzero()
+{
+	memset(mData, 0, sizeof(Float)*mSize);
+}
+
+void Tensor::setidentity()
+{
+	setzero();
+	assert(mShape.size() == 2 && "Not a matrix");
+	assert(mShape[0] == mShape[1] && "Not a square matrix");
+	for (int i = 0; i < mShape[0]; i++)
+	{
+		operator()(i, i) = 1;
 	}
 }
 

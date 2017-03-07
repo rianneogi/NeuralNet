@@ -9,6 +9,7 @@ class Tensor
 {
 public:
 	std::vector<unsigned int> mShape;
+	unsigned int mSize;
 	Float* mData;
 
 	Tensor();
@@ -21,7 +22,10 @@ public:
 	Float& operator()(unsigned int a, unsigned int b, unsigned int c, unsigned int d);
 
 	void allocate();
-	void free();
+	void freememory();
+
+	void setzero();
+	void setidentity();
 
 	unsigned int rows();
 	unsigned int cols();
