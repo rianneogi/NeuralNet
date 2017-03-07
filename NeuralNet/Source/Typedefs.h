@@ -11,7 +11,7 @@
 #include <fstream>
 
 //#include <clBLAS.h>
-//#include <cblas.h>
+#include <cblas.h>
 
 //#include <Eigen\Dense>
 
