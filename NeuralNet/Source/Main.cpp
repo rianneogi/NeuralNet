@@ -33,6 +33,8 @@ int main()
 	Tensor t3(make_shape(2, 4));
 
 	//Mat Mul
+	/*clblasDgemm(clblasRowMajor, clblasNoTrans, clblasNoTrans, t1.cols(), t2.rows(),
+		t1.rows(), 1, t1.mData, t1.rows(), t2.mData, t2.rows(), 0, t3.mData, t3.rows())*/
 	cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, t1.cols(), t2.rows(),
 		t1.rows(), 1, t1.mData, t1.rows(), t2.mData, t2.rows(), 0, t3.mData, t3.rows());
 	t3.print();
