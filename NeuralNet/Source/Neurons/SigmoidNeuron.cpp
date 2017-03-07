@@ -23,6 +23,11 @@ void SigmoidNeuron::forward()
 
 	//mOutput->Data = mInput->Data.unaryExpr(&sigmoid);
 	////assert(mOutput->Data.cols() == BatchSize && mOutput->Data.rows() == OutputSize);
+
+	for (unsigned int i = 0; i < mOutput->Data.mSize; i++)
+	{
+		mOutput->Data(i) = sigmoid(mInput->Data(i));
+	}
 }
 
 void SigmoidNeuron::backprop()

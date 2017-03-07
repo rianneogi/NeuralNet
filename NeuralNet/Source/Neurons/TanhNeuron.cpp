@@ -16,6 +16,10 @@ TanhNeuron::~TanhNeuron()
 void TanhNeuron::forward()
 {
 	/*mOutput->Data = mInput->Data.unaryExpr(&tanh_NN);*/
+	for (unsigned int i = 0; i < mOutput->Data.mSize; i++)
+	{
+		mOutput->Data(i) = tanh(mInput->Data(i));
+	}
 }
 
 void TanhNeuron::backprop()

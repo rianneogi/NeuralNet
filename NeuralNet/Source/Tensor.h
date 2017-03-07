@@ -37,3 +37,9 @@ TensorShape make_shape(unsigned int a);
 TensorShape make_shape(unsigned int a, unsigned int b);
 TensorShape make_shape(unsigned int a, unsigned int b, unsigned int c);
 TensorShape make_shape(unsigned int a, unsigned int b, unsigned int c, unsigned int d);
+
+inline void matmul(Tensor* m1, Tensor* m2, Tensor* res)
+{
+	cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, m1->cols(), m2->rows(),
+		m1->rows(), 1, m1->mData, m1->rows(), m2->mData, m2->rows(), 0, res->mData, res->rows());
+}

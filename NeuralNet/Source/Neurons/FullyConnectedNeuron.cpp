@@ -31,6 +31,14 @@ void FullyConnectedNeuron::forward()
 	//mOutput->Data = (Weights * mInput->Data) + (Biases.replicate(1, (mInput->Data).cols()));
 	////cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, Weights.rows(), mInput->Data.cols(),
 	////	Weights.cols(), 1, Weights.mData, Weights.cols(), mInput->Data.mData, mInput->Data.cols(), 0, mOutput->Data.mData, mOutput->Data.cols());
+	matmul(&Weights, &mInput->Data, &mOutput->Data);
+	for (unsigned int i = 0; i < mInput->Data.cols(); i++)
+	{
+		for (unsigned int j = 0; j < Biases.mSize; j++)
+		{
+			mOutput->Data(i, j) += Biases(j);
+		}
+	}
 }
 
 void FullyConnectedNeuron::backprop()
@@ -47,4 +55,6 @@ void FullyConnectedNeuron::backprop()
 	////	DeltaSum[j] = (mOutput->Delta.row(j)).sum();
 
 	//Biases = Biases - (mLearningRate*mOutput->Delta*Matrix::Constant(mOutput->Delta.cols(), 1, 1.0));
+
+	matmul(&Weights, &mOutput->Delta, &mInput->Delta);
 }
