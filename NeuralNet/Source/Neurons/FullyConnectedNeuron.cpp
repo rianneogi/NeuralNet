@@ -56,5 +56,24 @@ void FullyConnectedNeuron::backprop()
 
 	//Biases = Biases - (mLearningRate*mOutput->Delta*Matrix::Constant(mOutput->Delta.cols(), 1, 1.0));
 
-	matmul(&Weights, &mOutput->Delta, &mInput->Delta);
+	//Weights
+	gemm(&Weights, &mOutput->Delta, &mInput->Delta, CblasTrans, CblasNoTrans, 1, 0);
+
+	Tensor tmp(make_shape(Weights.cols(), Weights.rows()));
+	gemm(&mOutput->Delta, &mInput->Data, &tmp, CblasNoTrans, CblasTrans, mLearningRate, 0);
+
+	for (int i = 0; i < Weights.mSize; i++)
+	{
+		Weights(i) -= tmp(i);
+	}
+
+	//Biases
+	Tensor tmp2(make_shape(Biases.cols(), Biases.rows()));
+	Tensor ones(make_shape(mOutput->Delta.cols(), 1));
+	gemm(&mOutput->Delta, &ones, &tmp2, CblasNoTrans, CblasNoTrans, mLearningRate, 0);
+	
+	for (int i = 0; i < Biases.mSize; i++)
+	{
+		Biases(i) -= tmp2(i);
+	}
 }
