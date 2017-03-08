@@ -16,10 +16,10 @@ public:
 	Tensor(const TensorShape& shape);
 	~Tensor();
 
-	Float& operator()(unsigned int a);
-	Float& operator()(unsigned int a, unsigned int b);
-	Float& operator()(unsigned int a, unsigned int b, unsigned int c);
-	Float& operator()(unsigned int a, unsigned int b, unsigned int c, unsigned int d);
+	Float& operator()(unsigned int a) const;
+	Float& operator()(unsigned int a, unsigned int b) const;
+	Float& operator()(unsigned int a, unsigned int b, unsigned int c) const;
+	Float& operator()(unsigned int a, unsigned int b, unsigned int c, unsigned int d) const;
 
 	void allocate();
 	void freememory();
@@ -27,10 +27,10 @@ public:
 	void setzero();
 	void setidentity();
 
-	unsigned int rows();
-	unsigned int cols();
+	unsigned int rows() const;
+	unsigned int cols() const;
 
-	void print();
+	void print() const;
 };
 
 TensorShape make_shape(unsigned int a);

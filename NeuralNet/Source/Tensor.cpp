@@ -22,24 +22,24 @@ Tensor::~Tensor()
 	freememory();
 }
 
-Float& Tensor::operator()(unsigned int a)
+Float& Tensor::operator()(unsigned int a) const
 {
 	return mData[a];
 }
 
-Float& Tensor::operator()(unsigned int a, unsigned int b)
+Float& Tensor::operator()(unsigned int a, unsigned int b) const
 {
 	assert(mShape.size() >= 1);
 	return mData[a*mShape[1] + b];
 }
 
-Float& Tensor::operator()(unsigned int a, unsigned int b, unsigned int c)
+Float& Tensor::operator()(unsigned int a, unsigned int b, unsigned int c) const
 {
 	assert(mShape.size() >= 2);
 	return mData[a*mShape[1]*mShape[2] + b*mShape[2] + c];
 }
 
-Float& Tensor::operator()(unsigned int a, unsigned int b, unsigned int c, unsigned int d)
+Float& Tensor::operator()(unsigned int a, unsigned int b, unsigned int c, unsigned int d) const
 {
 	assert(mShape.size() >= 3);
 	return mData[a*mShape[1]*mShape[2]*mShape[3] + b*mShape[2]*mShape[3] + c*mShape[3] + d];
@@ -89,19 +89,19 @@ void Tensor::setidentity()
 	}
 }
 
-unsigned int Tensor::rows()
+unsigned int Tensor::rows() const
 {
 	assert(mShape.size() >= 2);
 	return mShape[1];
 }
 
-unsigned int Tensor::cols()
+unsigned int Tensor::cols() const
 {
 	assert(mShape.size() >= 1);
 	return mShape[0];
 }
 
-void Tensor::print()
+void Tensor::print() const
 {
 	for (int i = 0; i < mShape[0]; i++)
 	{
