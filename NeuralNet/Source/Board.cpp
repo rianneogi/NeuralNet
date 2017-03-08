@@ -80,8 +80,8 @@ Tensor Board::predict(Tensor input)
 
 double Board::train(const Tensor& inputs, const Tensor& outputs, unsigned int epochs, unsigned int batch_size)
 {
-	assert(inputs.cols() == outputs.cols());
-	assert(inputs.cols() % batch_size == 0);
+	assert(inputs.rows() == outputs.rows());
+	assert(inputs.rows() % batch_size == 0);
 	double error = 0.0;
 	printf("Started training\n");
 	Clock clock;
@@ -89,7 +89,7 @@ double Board::train(const Tensor& inputs, const Tensor& outputs, unsigned int ep
 	for (int i = 0; i < epochs; i++)
 	{
 		error = 0.0;
-		for (int j = 0; j < inputs.cols() / batch_size; j++)
+		for (int j = 0; j < inputs.rows() / batch_size; j++)
 		{
 			//error += backprop(inputs.block(0, batch_size*j, inputs.rows(), batch_size), outputs.block(0, batch_size*j, outputs.rows(), batch_size));
 			error += backprop(inputs.cut(batch_size*j, batch_size), outputs.cut(batch_size*j, batch_size));

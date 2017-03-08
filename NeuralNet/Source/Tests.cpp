@@ -303,17 +303,17 @@ void test_new()
 	double learning_rate = 0.005;
 
 	Blob* inputBlob = b.newBlob(784, batch_size);
-	Blob* layer1FCBlob = b.newBlob(14, batch_size);
-	Blob* layer1SigBlob = b.newBlob(14, batch_size);
-	Blob* layer2FCBlob = b.newBlob(12, batch_size);
-	Blob* layer2SigBlob = b.newBlob(12, batch_size);
+	Blob* layer1FCBlob = b.newBlob(10, batch_size);
+	Blob* layer1SigBlob = b.newBlob(10, batch_size);
+	//Blob* layer2FCBlob = b.newBlob(12, batch_size);
+	//Blob* layer2SigBlob = b.newBlob(12, batch_size);
 	Blob* outputFCBlob = b.newBlob(10, batch_size);
 	Blob* outputSigBlob = b.newBlob(10, batch_size);
 	b.addNeuron(new FullyConnectedNeuron(inputBlob, layer1FCBlob, learning_rate));
 	b.addNeuron(new TanhNeuron(layer1FCBlob, layer1SigBlob, learning_rate));
-	b.addNeuron(new FullyConnectedNeuron(layer1SigBlob, layer2FCBlob, learning_rate));
-	b.addNeuron(new TanhNeuron(layer2FCBlob, layer2SigBlob, learning_rate));
-	b.addNeuron(new FullyConnectedNeuron(layer2SigBlob, outputFCBlob, learning_rate));
+	//b.addNeuron(new FullyConnectedNeuron(layer1SigBlob, layer2FCBlob, learning_rate));
+	//b.addNeuron(new TanhNeuron(layer2FCBlob, layer2SigBlob, learning_rate));
+	b.addNeuron(new FullyConnectedNeuron(layer1SigBlob, outputFCBlob, learning_rate));
 	b.addNeuron(new TanhNeuron(outputFCBlob, outputSigBlob, learning_rate));
 	b.setErrorFunction(new MeanSquaredError(inputBlob, outputSigBlob, nullptr));
 

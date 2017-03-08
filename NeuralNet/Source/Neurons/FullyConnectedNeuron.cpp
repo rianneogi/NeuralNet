@@ -6,8 +6,8 @@ FullyConnectedNeuron::FullyConnectedNeuron() : Neuron()
 
 FullyConnectedNeuron::FullyConnectedNeuron(Blob* input, Blob* output, Float learning_rate) : Neuron(input, output, learning_rate)
 {
-	Weights = Tensor(make_shape(input->Data.rows(), output->Data.rows()));
-	Biases = Tensor(make_shape(output->Data.rows()));
+	Weights = Tensor(make_shape(input->Data.cols(), output->Data.cols()));
+	Biases = Tensor(make_shape(output->Data.cols()));
 	for (int i = 0; i < Weights.rows(); i++)
 	{
 		Biases(i) = rand_init();
@@ -57,7 +57,7 @@ void FullyConnectedNeuron::backprop()
 	//Biases = Biases - (mLearningRate*mOutput->Delta*Matrix::Constant(mOutput->Delta.cols(), 1, 1.0));
 
 	//Weights
-	gemm(&Weights, &mOutput->Delta, &mInput->Delta, CblasTrans, CblasNoTrans, 1, 0);
+	gemm(&Weights, &mOutput->Delta, &mInput->Delta, CblasNoTrans, CblasNoTrans, 1, 0);
 
 	Tensor tmp(make_shape(Weights.cols(), Weights.rows()));
 	gemm(&mOutput->Delta, &mInput->Data, &tmp, CblasNoTrans, CblasTrans, mLearningRate, 0);
