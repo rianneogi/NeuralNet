@@ -2,11 +2,11 @@
 
 #define USE_MALLOC
 
-Tensor::Tensor() : mData(NULL), mSize(0)
+Tensor::Tensor() : mData(NULL), mSize(0), mSelfAllocated(false)
 {
 }
 
-Tensor::Tensor(const TensorShape& shape) : mData(NULL), mShape(shape), mSize(1)
+Tensor::Tensor(const TensorShape& shape) : mData(NULL), mShape(shape), mSize(1), mSelfAllocated(true)
 {
 	assert(shape.size() <= 4 && "Max supported tensor shape is 4");
 	for (unsigned int x : mShape)
@@ -17,9 +17,19 @@ Tensor::Tensor(const TensorShape& shape) : mData(NULL), mShape(shape), mSize(1)
 	allocate();
 }
 
+Tensor::Tensor(Float* data, const TensorShape & shape) : mData(data), mShape(shape), mSelfAllocated(false)
+{
+	assert(shape.size() <= 4 && "Max supported tensor shape is 4");
+	for (unsigned int x : mShape)
+	{
+		mSize *= x;
+	}
+}
+
 Tensor::~Tensor()
 {
-	freememory();
+	if(!mSelfAllocated)
+		freememory();
 }
 
 Float& Tensor::operator()(unsigned int a) const
@@ -87,6 +97,18 @@ void Tensor::setidentity()
 	{
 		operator()(i, i) = 1;
 	}
+}
+
+Tensor Tensor::subtensor(const TensorShape& begin, const TensorShape& size)
+{
+	assert(begin.size() == mShape.size() && size.size() == mShape.size());
+	unsigned int ptr = 0;
+	for (unsigned int i = 0; i <= begin.size(); i++)
+	{
+		ptr *= mShape[i];
+		ptr += begin[i];
+	}
+	return Tensor(&mData[ptr], size);
 }
 
 unsigned int Tensor::rows() const

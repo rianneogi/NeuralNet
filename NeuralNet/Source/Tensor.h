@@ -11,9 +11,11 @@ public:
 	std::vector<unsigned int> mShape;
 	unsigned int mSize;
 	Float* mData;
+	bool mSelfAllocated;
 
 	Tensor();
-	Tensor(const TensorShape& shape);
+	Tensor(const TensorShape& shape); //initialize tensor allocated with given shape
+	Tensor(Float* data, const TensorShape& shape); //initialize tensor pointing to existing data
 	~Tensor();
 
 	Float& operator()(unsigned int a) const;
@@ -26,6 +28,8 @@ public:
 
 	void setzero();
 	void setidentity();
+
+	Tensor subtensor(const TensorShape& begin, const TensorShape& size);
 
 	unsigned int rows() const;
 	unsigned int cols() const;

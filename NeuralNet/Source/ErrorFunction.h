@@ -7,10 +7,10 @@ class ErrorFunction
 public:
 	Blob* mInput;
 	Blob* mOutput;
-	Tensor* mTarget;
+	const Tensor* mTarget;
 
 	ErrorFunction();
-	ErrorFunction(Blob* input, Blob* output, Tensor* target);
+	ErrorFunction(Blob* input, Blob* output, const Tensor* target);
 	~ErrorFunction();
 
 	virtual Float calculateError() = 0;
