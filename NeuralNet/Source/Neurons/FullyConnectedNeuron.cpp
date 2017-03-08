@@ -6,11 +6,11 @@ FullyConnectedNeuron::FullyConnectedNeuron() : Neuron()
 
 FullyConnectedNeuron::FullyConnectedNeuron(Blob* input, Blob* output, Float learning_rate) : Neuron(input, output, learning_rate)
 {
-	/*Weights = Matrix(output->Data.rows(), input->Data.rows());
-	Biases = Vector(output->Data.rows());
+	Weights = Tensor(make_shape(input->Data.rows(), output->Data.rows()));
+	Biases = Tensor(make_shape(output->Data.rows()));
 	for (int i = 0; i < Weights.rows(); i++)
 	{
-		Biases[i] = rand_init();
+		Biases(i) = rand_init();
 		for (int j = 0; j < Weights.cols(); j++)
 		{
 			Weights(i, j) = rand_init();
@@ -19,7 +19,7 @@ FullyConnectedNeuron::FullyConnectedNeuron(Blob* input, Blob* output, Float lear
 	InputSize = Weights.cols();
 	OutputSize = Weights.rows();
 	BatchSize = output->Data.cols();
-	assert(input->Data.cols() == output->Data.cols());*/
+	assert(input->Data.cols() == output->Data.cols());
 }
 
 FullyConnectedNeuron::~FullyConnectedNeuron()
@@ -31,7 +31,7 @@ void FullyConnectedNeuron::forward()
 	//mOutput->Data = (Weights * mInput->Data) + (Biases.replicate(1, (mInput->Data).cols()));
 	////cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, Weights.rows(), mInput->Data.cols(),
 	////	Weights.cols(), 1, Weights.mData, Weights.cols(), mInput->Data.mData, mInput->Data.cols(), 0, mOutput->Data.mData, mOutput->Data.cols());
-	matmul(&Weights, &mInput->Data, &mOutput->Data);
+	gemm(&mInput->Data, &Weights, &mOutput->Data, CblasNoTrans, CblasNoTrans, 1, 0);
 	for (unsigned int i = 0; i < mInput->Data.cols(); i++)
 	{
 		for (unsigned int j = 0; j < Biases.mSize; j++)

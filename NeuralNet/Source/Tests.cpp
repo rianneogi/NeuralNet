@@ -73,7 +73,7 @@ Tensor openidx_input(std::string filename)
 
 	//file >> num >> row >> col;
 	printf("input size: %d %d %d\n", num, row, col);
-	Tensor result(make_shape(row*col, num));
+	Tensor result(make_shape(num, row*col));
 	unsigned char tmp;
 	char byte;
 	for (size_t i = 0; i < num; i++)
@@ -86,7 +86,7 @@ Tensor openidx_input(std::string filename)
 			memcpy(&tmp, &byte, 1);
 			//byte = _byteswap_ushort(byte);
 			//result[i][j] = tmp;
-			result(j, i) = (tmp) / 256.0;
+			result(i, j) = (tmp) / 256.0;
 			//printf("%f\n", result(j,i));
 		}
 		if (i % 1000 == 0)
@@ -114,7 +114,7 @@ Tensor openidx_output(std::string filename, size_t output_size)
 	num = _byteswap_ulong(num);
 	//file >> num;
 	printf("output size: %d\n", num);
-	Tensor result(make_shape(10, num));
+	Tensor result(make_shape(num, 10));
 	for (size_t i = 0; i < num; i++)
 	{
 		//result.push_back(Vector(output_size));
@@ -125,11 +125,11 @@ Tensor openidx_output(std::string filename, size_t output_size)
 		{
 			if (j == byte)
 			{
-				result(j, i) = 1.0;
+				result(i, j) = 1.0;
 			}
 			else
 			{
-				result(j, i) = 0.0;
+				result(i, j) = 0.0;
 			}
 		}
 		if (i % 1000 == 0)
@@ -151,8 +151,8 @@ struct TrainingData
 
 TrainingData load_cifar(std::string filename)
 {
-	Tensor output(make_shape(10, 10000));
-	Tensor input(make_shape(3072, 10000));
+	Tensor output(make_shape(10000, 10));
+	Tensor input(make_shape(10000, 3072));
 	std::fstream file(filename, std::ios::in | std::ios::binary);
 
 	if (!file.is_open())
@@ -170,11 +170,11 @@ TrainingData load_cifar(std::string filename)
 		{
 			if (byte == j)
 			{
-				output(j, i) = 1.0;
+				output(i, j) = 1.0;
 			}
 			else
 			{
-				output(j, i) = 0.0;
+				output(i, j) = 0.0;
 			}
 		}
 
@@ -182,7 +182,7 @@ TrainingData load_cifar(std::string filename)
 		{
 			file.read(&byte, 1);
 			memcpy(&tmp, &byte, 1);
-			input(j, i) = tmp / 256.0;
+			input(i, j) = tmp / 256.0;
 		}
 
 		if (i % 1000 == 0)

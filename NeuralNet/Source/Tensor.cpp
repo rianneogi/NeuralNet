@@ -121,14 +121,14 @@ Tensor Tensor::cut(unsigned int begin, unsigned int len) const
 
 unsigned int Tensor::rows() const
 {
-	assert(mShape.size() >= 2);
-	return mShape[1];
+	assert(mShape.size() >= 1);
+	return mShape[0];
 }
 
 unsigned int Tensor::cols() const
 {
-	assert(mShape.size() >= 1);
-	return mShape[0];
+	assert(mShape.size() >= 2);
+	return mShape[1];
 }
 
 void Tensor::print() const
