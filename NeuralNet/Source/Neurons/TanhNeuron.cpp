@@ -30,4 +30,9 @@ void TanhNeuron::backprop()
 	////assert(Weights.cols() == InputSize && Weights.rows() == OutputSize);
 
 	////Biases = Biases - (mLearningRate*mOutput->Delta*Matrix::Constant(mOutput->Delta.cols(), 1, 1.0));
+
+	for (int i = 0; i < mInput->Delta.mSize; i++)
+	{
+		mInput->Delta(i) = mOutput->Delta(i)*(1.0 - mOutput->Data(i)*mOutput->Data(i));
+	}
 }

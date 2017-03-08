@@ -44,4 +44,9 @@ void SigmoidNeuron::backprop()
 	////	DeltaSum[j] = (mOutput->Delta.row(j)).sum();
 
 	////Biases = Biases - (mLearningRate*mOutput->Delta*Matrix::Constant(mOutput->Delta.cols(),1,1.0));
+
+	for (int i = 0; i < mInput->Delta.mSize; i++)
+	{
+		mInput->Delta(i) = mOutput->Delta(i)*mOutput->Data(i)*(1.0 - mOutput->Data(i));
+	}
 }
