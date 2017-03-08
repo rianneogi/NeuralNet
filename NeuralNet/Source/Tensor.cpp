@@ -99,16 +99,24 @@ void Tensor::setidentity()
 	}
 }
 
-Tensor Tensor::subtensor(const TensorShape& begin, const TensorShape& size)
+//Tensor Tensor::subtensor(const TensorShape& begin, const TensorShape& size)
+//{
+//	assert(begin.size() == mShape.size() && size.size() == mShape.size());
+//	unsigned int ptr = 0;
+//	for (unsigned int i = 0; i <= begin.size(); i++)
+//	{
+//		ptr *= mShape[i];
+//		ptr += begin[i];
+//	}
+//	return Tensor(&mData[ptr], size);
+//}
+
+Tensor Tensor::cut(unsigned int begin, unsigned int len) const
 {
-	assert(begin.size() == mShape.size() && size.size() == mShape.size());
-	unsigned int ptr = 0;
-	for (unsigned int i = 0; i <= begin.size(); i++)
-	{
-		ptr *= mShape[i];
-		ptr += begin[i];
-	}
-	return Tensor(&mData[ptr], size);
+	assert(begin + len < mShape[0]);
+	TensorShape shape = mShape;
+	shape[0] = len;
+	return Tensor(&mData[begin], shape);
 }
 
 unsigned int Tensor::rows() const

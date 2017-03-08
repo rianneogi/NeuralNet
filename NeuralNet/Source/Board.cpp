@@ -91,7 +91,8 @@ double Board::train(const Tensor& inputs, const Tensor& outputs, unsigned int ep
 		error = 0.0;
 		for (int j = 0; j < inputs.cols() / batch_size; j++)
 		{
-			error += backprop(inputs.block(0, batch_size*j, inputs.rows(), batch_size), outputs.block(0, batch_size*j, outputs.rows(), batch_size));
+			//error += backprop(inputs.block(0, batch_size*j, inputs.rows(), batch_size), outputs.block(0, batch_size*j, outputs.rows(), batch_size));
+			error += backprop(inputs.cut(batch_size*j, batch_size), outputs.cut(batch_size*j, batch_size));
 		}
 		/*for (int i = 0; i < inputs.size(); i++)
 		{

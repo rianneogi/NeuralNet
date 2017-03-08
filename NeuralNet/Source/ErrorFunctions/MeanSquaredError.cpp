@@ -24,6 +24,7 @@ Float MeanSquaredError::calculateError()
 		error += 0.5*(mOutput->Data(i) - (*mTarget)(i))*(mOutput->Data(i) - (*mTarget)(i));
 		mOutput->Delta(i) = mOutput->Data(i) - (*mTarget)(i);
 	}
+	return error;
 }
 
 void MeanSquaredError::backprop()

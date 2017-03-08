@@ -345,7 +345,7 @@ void test_new()
 	int acc = 0;
 	for (size_t i = 0; i < inputs_test.cols(); i++)
 	{
-		if (getoutput(b.predict(inputs_test.col(i))) == getoutput(outputs_test.col(i)))
+		if (getoutput(b.predict(inputs_test.cut(i,1))) == getoutput(outputs_test.cut(i,1)))
 		{
 			acc++;
 		}
