@@ -38,6 +38,21 @@ void Im2ColNeuron::forward()
 		}
 	}
 	mOutput->Data = res;*/
+	for (int batch = 0; batch < BatchSize; batch++)
+	{
+		int id = 0;
+		for (int d = 0; d < InputDepth; d++)
+		{
+			for (int y = FieldHeight / 2; y < InputHeight - 1 - FieldHeight / 2; y++)
+			{
+				for (int x = FieldWidth / 2; x < InputWidth - 1 - FieldWidth / 2; x++)
+				{
+					mOutput->Data(batch, id) = mInput->Data(batch, d, y, x);
+					id++;
+				}
+			}
+		}
+	}
 }
 
 void Im2ColNeuron::backprop()
