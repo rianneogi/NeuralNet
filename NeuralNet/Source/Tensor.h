@@ -45,7 +45,16 @@ TensorShape make_shape(unsigned int a, unsigned int b, unsigned int c, unsigned 
 
 inline void gemm(Tensor* m1, Tensor* m2, Tensor* res, CBLAS_TRANSPOSE trans_m1, CBLAS_TRANSPOSE trans_m2, Float alpha, Float beta)
 {
-	cblas_dgemm(CblasRowMajor, trans_m1, trans_m2, m1->rows(), m2->cols(), m1->cols(), alpha, m1->mData,
-		trans_m1 == CblasTrans? m1->rows(): m1->cols(), m2->mData, trans_m2 == CblasTrans? m2->rows(): m2->cols(),
-		beta, res->mData, res->cols());
+	/*unsigned int M = trans_m1 == CblasNoTrans ? m1->rows() : m1->cols();
+	unsigned int N = trans_m2 == CblasNoTrans ? m2->rows() : m2->cols();
+	unsigned int K = trans_m1 == CblasNoTrans ? m1->cols() : m1->rows();*/
+	cblas_dgemm(CblasRowMajor, trans_m1, trans_m2, 
+		trans_m1 == CblasNoTrans ? m1->rows() : m1->cols(), //M
+		trans_m2 == CblasNoTrans ? m2->rows() : m2->cols(), //N
+		trans_m1 == CblasNoTrans ? m1->cols() : m1->rows(), //K
+		alpha, 
+		m1->mData, m1->rows(), 
+		m2->mData, m2->rows(),
+		beta, 
+		res->mData, res->rows());
 }

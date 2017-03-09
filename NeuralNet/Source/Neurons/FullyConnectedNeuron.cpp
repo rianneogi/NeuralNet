@@ -64,7 +64,8 @@ void FullyConnectedNeuron::backprop()
 	assert(mOutput->Delta.rows() == mInput->Data.rows());
 	assert(tmp.cols() == mInput->Data.cols());
 	assert(tmp.rows() == mOutput->Delta.cols());
-	printf("ff\n");
+	printf("%d %d %d %d %d %d\n", mOutput->Delta.rows(), mOutput->Delta.cols(), 
+		mInput->Data.rows(), mInput->Data.cols(), tmp.rows(), tmp.cols());
 	gemm(&mOutput->Delta, &mInput->Data, &tmp, CblasTrans, CblasNoTrans, mLearningRate, 0);
 	printf("ff\n");
 	for (int i = 0; i < Weights.mSize; i++)
