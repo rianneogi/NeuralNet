@@ -6,8 +6,6 @@ int main()
 
 	test_new();
 
-	
-
 	_getch();
 
 	return 0;

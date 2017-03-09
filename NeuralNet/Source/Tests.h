@@ -4,4 +4,4 @@
 
 void test_old();
 void test_new();
-void test_dgemm();
+void test_gemm();

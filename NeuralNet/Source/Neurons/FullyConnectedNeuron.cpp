@@ -33,7 +33,10 @@ void FullyConnectedNeuron::forward()
 	////	Weights.cols(), 1, Weights.mData, Weights.cols(), mInput->Data.mData, mInput->Data.cols(), 0, mOutput->Data.mData, mOutput->Data.cols());
 	assert(mInput->Data.cols() == Weights.rows());
 	assert(mOutput->Data.cols() == Weights.cols());
+	assert(mOutput->Data.rows() == mInput->Data.rows());
+	printf("mul\n");
 	gemm(&mInput->Data, &Weights, &mOutput->Data, CblasNoTrans, CblasNoTrans, 1, 0);
+	printf("done\n");
 	for (unsigned int i = 0; i < mInput->Data.cols(); i++)
 	{
 		for (unsigned int j = 0; j < Biases.mSize; j++)
@@ -41,6 +44,7 @@ void FullyConnectedNeuron::forward()
 			mOutput->Data(i, j) += Biases(j);
 		}
 	}
+	printf("f\n");
 }
 
 void FullyConnectedNeuron::backprop()
@@ -58,25 +62,24 @@ void FullyConnectedNeuron::backprop()
 
 	//Biases = Biases - (mLearningRate*mOutput->Delta*Matrix::Constant(mOutput->Delta.cols(), 1, 1.0));
 	//Weights
-	gemm(&Weights, &mOutput->Delta, &mInput->Delta, CblasNoTrans, CblasNoTrans, 1, 0);
-
+	printf("mul1\n");
+	gemm(&mOutput->Delta, &Weights, &mInput->Delta, CblasNoTrans, CblasTrans, 1, 0);
+	printf("done\n");
 	Tensor tmp(make_shape(Weights.rows(), Weights.cols()));
-	assert(mOutput->Delta.rows() == mInput->Data.rows());
-	assert(tmp.cols() == mInput->Data.cols());
-	assert(tmp.rows() == mOutput->Delta.cols());
-	printf("%d %d %d %d %d %d\n", mOutput->Delta.rows(), mOutput->Delta.cols(), 
-		mInput->Data.rows(), mInput->Data.cols(), tmp.rows(), tmp.cols());
-	gemm(&mOutput->Delta, &mInput->Data, &tmp, CblasTrans, CblasNoTrans, mLearningRate, 0);
-	printf("ff\n");
+	printf("mul2\n");
+	gemm(&mInput->Data, &mOutput->Delta, &tmp, CblasTrans, CblasNoTrans, mLearningRate, 0);
+	printf("done\n");
 	for (int i = 0; i < Weights.mSize; i++)
 	{
 		Weights(i) -= tmp(i);
 	}
 
 	//Biases
-	Tensor tmp2(make_shape(Biases.rows(), Biases.cols()));
+	Tensor tmp2(make_shape(Biases.rows(), 1));
 	Tensor ones(make_shape(mOutput->Delta.cols(), 1));
+	printf("mul3\n");
 	gemm(&mOutput->Delta, &ones, &tmp2, CblasNoTrans, CblasNoTrans, mLearningRate, 0);
+	printf("done\n");
 	
 	for (int i = 0; i < Biases.mSize; i++)
 	{
