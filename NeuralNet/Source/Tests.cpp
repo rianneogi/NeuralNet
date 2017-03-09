@@ -380,7 +380,7 @@ void test_conv()
 	double learning_rate = 0.005;
 
 	Blob* inputBlob = b.newBlob(make_shape(batch_size, 1, 28, 28));
-	Blob* l1convBlob = b.newBlob(make_shape(batch_size, 9));
+	Blob* l1convBlob = b.newBlob(make_shape(batch_size*26*26, 9));
 	Blob* l1fcBlob = b.newBlob(make_shape(batch_size, 12));
 	Blob* l1tanhBlob = b.newBlob(make_shape(batch_size, 12));
 	Blob* l2fcBlob = b.newBlob(make_shape(batch_size, 10));

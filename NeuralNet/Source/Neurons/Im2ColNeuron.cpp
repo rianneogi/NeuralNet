@@ -7,7 +7,6 @@ Im2ColNeuron::Im2ColNeuron() : Neuron()
 Im2ColNeuron::Im2ColNeuron(Blob* input, Blob* output, Float learning_rate, unsigned int field_width, unsigned int field_height)
 	: Neuron(input, output, learning_rate), FieldWidth(field_width), FieldHeight(field_height)
 {
-	assert(input->Data.mShape[0] == output->Data.mShape[0]);
 	BatchSize = input->Data.mShape[0];
 
 	assert(input->Data.mShape.size() == 4);
@@ -17,8 +16,10 @@ Im2ColNeuron::Im2ColNeuron(Blob* input, Blob* output, Float learning_rate, unsig
 	InputWidth = input->Data.mShape[3];
 
 	assert(output->Data.mShape.size() == 2);
-	OutputSize = output->Data.mShape[1];
-	assert(OutputSize == FieldHeight*FieldWidth*InputDepth);
+	OutputCols = output->Data.mShape[1];
+	assert(OutputCols == FieldHeight*FieldWidth*InputDepth);
+	OutputRows = output->Data.mShape[0];
+	assert(OutputRows == BatchSize*(InputWidth - FieldWidth + 1)*(InputHeight - FieldHeight + 1));
 }
 
 Im2ColNeuron::~Im2ColNeuron()
@@ -38,18 +39,28 @@ void Im2ColNeuron::forward()
 		}
 	}
 	mOutput->Data = res;*/
+
+	//Works only for odd receptive fields
 	for (int batch = 0; batch < BatchSize; batch++)
 	{
 		int id = 0;
-		for (int d = 0; d < InputDepth; d++)
+		int sub_batch = 0;
+		for (int y = FieldHeight / 2; y < InputHeight - FieldHeight / 2; y++)
 		{
-			for (int y = FieldHeight / 2; y < InputHeight - 1 - FieldHeight / 2; y++)
+			for (int x = FieldWidth / 2; x < InputWidth - FieldWidth / 2; x++)
 			{
-				for (int x = FieldWidth / 2; x < InputWidth - 1 - FieldWidth / 2; x++)
+				for (int d = 0; d < InputDepth; d++)
 				{
-					mOutput->Data(batch, id) = mInput->Data(batch, d, y, x);
-					id++;
+					for (int i = y - FieldHeight / 2; i <= y + FieldHeight / 2; i++)
+					{
+						for (int j = x - FieldWidth / 2; j <= x + FieldWidth / 2; j++)
+						{
+							mOutput->Data(batch + sub_batch, id) = mInput->Data(batch, d, i, j);
+							id++;
+						}
+					}
 				}
+				sub_batch++;
 			}
 		}
 	}
