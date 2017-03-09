@@ -87,6 +87,14 @@ void Tensor::setzero()
 	memset(mData, 0, sizeof(Float)*mSize);
 }
 
+void Tensor::setconstant(Float c)
+{
+	for (int i = 0; i < mSize; i++)
+	{
+		mData[i] = c;
+	}
+}
+
 void Tensor::setidentity()
 {
 	setzero();

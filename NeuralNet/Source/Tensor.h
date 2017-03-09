@@ -27,6 +27,7 @@ public:
 	void freememory();
 
 	void setzero();
+	void setconstant(Float c);
 	void setidentity();
 
 	//Tensor subtensor(const TensorShape& begin, const TensorShape& size);

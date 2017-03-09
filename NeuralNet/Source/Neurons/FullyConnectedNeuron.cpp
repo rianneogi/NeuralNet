@@ -34,6 +34,7 @@ void FullyConnectedNeuron::forward()
 	assert(mInput->Data.cols() == Weights.rows());
 	assert(mOutput->Data.cols() == Weights.cols());
 	assert(mOutput->Data.rows() == mInput->Data.rows());
+	printf("%d %d %d %d %d %d\n", mInput->Data.rows(), mInput->Data.cols(), mOutput->Data.rows(), mOutput->Data.cols(),  Weights.rows(), Weights.cols());
 	printf("mul\n");
 	gemm(&mInput->Data, &Weights, &mOutput->Data, CblasNoTrans, CblasNoTrans, 1, 0);
 	printf("done\n");
@@ -77,6 +78,7 @@ void FullyConnectedNeuron::backprop()
 	//Biases
 	Tensor tmp2(make_shape(Biases.rows(), 1));
 	Tensor ones(make_shape(mOutput->Delta.cols(), 1));
+	ones.setconstant(1);
 	printf("mul3\n");
 	gemm(&mOutput->Delta, &ones, &tmp2, CblasNoTrans, CblasNoTrans, mLearningRate, 0);
 	printf("done\n");
