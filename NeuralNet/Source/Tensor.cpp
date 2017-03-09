@@ -17,7 +17,7 @@ Tensor::Tensor(const TensorShape& shape) : mData(NULL), mShape(shape), mSize(1),
 	allocate();
 }
 
-Tensor::Tensor(Float* data, const TensorShape& shape) : mData(data), mShape(shape), mSelfAllocated(false)
+Tensor::Tensor(Float* data, const TensorShape& shape) : mData(data), mShape(shape), mSize(1), mSelfAllocated(false)
 {
 	assert(shape.size() <= 4 && "Max supported tensor shape is 4");
 	for (unsigned int x : mShape)
@@ -28,8 +28,8 @@ Tensor::Tensor(Float* data, const TensorShape& shape) : mData(data), mShape(shap
 
 Tensor::~Tensor()
 {
-	if(!mSelfAllocated)
-		freememory();
+	//if(mSelfAllocated)
+	//	freememory();
 }
 
 void Tensor::operator=(const Tensor& other)
@@ -69,7 +69,7 @@ Float& Tensor::operator()(unsigned int a, unsigned int b, unsigned int c, unsign
 
 void Tensor::allocate()
 {
-	printf("Allocation tensor of size: %d\n", mSize);
+	//printf("Allocation tensor of size: %d\n", mSize);
 #ifdef USE_MALLOC
 	mData = (Float*)malloc(mSize * sizeof(Float));
 	if (mData == NULL)
@@ -89,7 +89,7 @@ void Tensor::freememory()
 		free(mData);
 		mData = NULL;
 #else
-		printf("Freeing memory: %d\n", mSize);
+		//printf("Freeing memory: %d\n", mSize);
 		delete[] mData;
 		mData = NULL;
 #endif
@@ -134,7 +134,7 @@ void Tensor::setidentity()
 
 Tensor Tensor::cut(unsigned int begin, unsigned int len) const
 {
-	assert(begin + len < mShape[0]);
+	assert(begin + len <= mShape[0]);
 	TensorShape shape = mShape;
 	shape[0] = len;
 	return Tensor(&mData[begin*(mSize/mShape[0])], shape);

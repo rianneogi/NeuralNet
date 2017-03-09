@@ -11,4 +11,6 @@ Blob::Blob(unsigned int rows, unsigned int cols) : Data(make_shape(rows, cols)),
 
 Blob::~Blob()
 {
+	Data.freememory();
+	Delta.freememory();
 }

@@ -34,11 +34,11 @@ void FullyConnectedNeuron::forward()
 	assert(mInput->Data.cols() == Weights.rows());
 	assert(mOutput->Data.cols() == Weights.cols());
 	assert(mOutput->Data.rows() == mInput->Data.rows());
-	printf("%d %d %d %d %d %d\n", mInput->Data.rows(), mInput->Data.cols(), mOutput->Data.rows(), mOutput->Data.cols(),  Weights.rows(), Weights.cols());
-	printf("mul\n");
+	//printf("%d %d %d %d %d %d\n", mInput->Data.rows(), mInput->Data.cols(), mOutput->Data.rows(), mOutput->Data.cols(),  Weights.rows(), Weights.cols());
+	//printf("mul\n");
 	//mInput->Data.print();
 	gemm(&mInput->Data, &Weights, &mOutput->Data, CblasNoTrans, CblasNoTrans, 1, 0);
-	printf("done\n");
+	//printf("done\n");
 	for (unsigned int i = 0; i < mInput->Data.cols(); i++)
 	{
 		for (unsigned int j = 0; j < Biases.mSize; j++)
@@ -64,13 +64,13 @@ void FullyConnectedNeuron::backprop()
 
 	//Biases = Biases - (mLearningRate*mOutput->Delta*Matrix::Constant(mOutput->Delta.cols(), 1, 1.0));
 	//Weights
-	printf("mul1\n");
+	//printf("mul1\n");
 	gemm(&mOutput->Delta, &Weights, &mInput->Delta, CblasNoTrans, CblasTrans, 1, 0);
-	printf("done\n");
+	//printf("done\n");
 	Tensor tmp(make_shape(Weights.rows(), Weights.cols()));
-	printf("mul2\n");
+	//printf("mul2\n");
 	gemm(&mInput->Data, &mOutput->Delta, &tmp, CblasTrans, CblasNoTrans, mLearningRate, 0);
-	printf("done\n");
+	//printf("done\n");
 	for (int i = 0; i < Weights.mSize; i++)
 	{
 		Weights(i) -= tmp(i);
@@ -80,12 +80,16 @@ void FullyConnectedNeuron::backprop()
 	Tensor tmp2(make_shape(Biases.rows(), 1));
 	Tensor ones(make_shape(mOutput->Delta.cols(), 1));
 	ones.setconstant(1);
-	printf("mul3\n");
+	//printf("mul3\n");
 	gemm(&mOutput->Delta, &ones, &tmp2, CblasNoTrans, CblasNoTrans, mLearningRate, 0);
-	printf("done\n");
+	//printf("done\n");
 	
 	for (int i = 0; i < Biases.mSize; i++)
 	{
 		Biases(i) -= tmp2(i);
 	}
+
+	tmp.freememory();
+	tmp2.freememory();
+	ones.freememory();
 }

@@ -358,7 +358,10 @@ void test_new()
 	}
 	printf("Accuracy: %f\n", (acc*1.0) / inputs_test.cols());
 
-
+	inputs_train.freememory();
+	inputs_test.freememory();
+	outputs_train.freememory();
+	outputs_test.freememory();
 
 	//nn.save("net_handwriting.txt");
 	_getch();
