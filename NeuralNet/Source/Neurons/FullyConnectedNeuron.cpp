@@ -44,7 +44,7 @@ void FullyConnectedNeuron::forward()
 	//mInput->Data.print();
 	gemm(&mInput->Data, &Weights, &mOutput->Data, CblasNoTrans, CblasNoTrans, 1, 0);
 	//printf("done\n");
-	for (unsigned int i = 0; i < mInput->Data.cols(); i++)
+	for (unsigned int i = 0; i < mInput->Data.rows(); i++)
 	{
 		for (unsigned int j = 0; j < Biases.mSize; j++)
 		{
@@ -77,7 +77,7 @@ void FullyConnectedNeuron::backprop()
 	//printf("done\n");
 	for (int i = 0; i < Weights.mSize; i++)
 	{
-		//printf("%f\n", tmp(i));
+		//printf("%f\n", Tmp1(i));
 		Weights(i) -= Tmp1(i);
 	}
 
@@ -91,7 +91,7 @@ void FullyConnectedNeuron::backprop()
 	
 	for (int i = 0; i < Biases.mSize; i++)
 	{
-		//printf("%f\n", tmp2(i));
+		//printf("%f\n", Tmp2(i));
 		Biases(i) -= Tmp2(i);
 	}
 
