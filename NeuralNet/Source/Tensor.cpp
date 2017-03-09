@@ -123,7 +123,7 @@ Tensor Tensor::cut(unsigned int begin, unsigned int len) const
 	assert(begin + len < mShape[0]);
 	TensorShape shape = mShape;
 	shape[0] = len;
-	return Tensor(&mData[begin], shape);
+	return Tensor(&mData[begin*(mSize/mShape[0])], shape);
 }
 
 unsigned int Tensor::rows() const

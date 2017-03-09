@@ -5,3 +5,4 @@
 void test_old();
 void test_new();
 void test_gemm();
+void test_tensor();
