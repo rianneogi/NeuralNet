@@ -134,6 +134,7 @@ void Tensor::setidentity()
 
 Tensor Tensor::cut(unsigned int begin, unsigned int len) const
 {
+	//printf("%d %d %d\n", begin, len, mShape[0]);
 	assert(begin + len <= mShape[0]);
 	TensorShape shape = mShape;
 	shape[0] = len;
