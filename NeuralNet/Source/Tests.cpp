@@ -299,7 +299,7 @@ void test_new()
 	//CIFAR input size: 3072
 
 	Board b;
-	int batch_size = 100;
+	int batch_size = 10;
 	double learning_rate = 0.005;
 
 	Blob* inputBlob = b.newBlob(batch_size, 784);
@@ -332,7 +332,7 @@ void test_new()
 	Matrix outputs_test = b6.outputs;*/
 
 
-	b.train(inputs_train, outputs_train, 10, 100);
+	b.train(inputs_train, outputs_train, 10, batch_size);
 
 	/*for (int i = 0; i < 10; i++)
 	{

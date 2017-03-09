@@ -36,6 +36,7 @@ void FullyConnectedNeuron::forward()
 	assert(mOutput->Data.rows() == mInput->Data.rows());
 	printf("%d %d %d %d %d %d\n", mInput->Data.rows(), mInput->Data.cols(), mOutput->Data.rows(), mOutput->Data.cols(),  Weights.rows(), Weights.cols());
 	printf("mul\n");
+	//mInput->Data.print();
 	gemm(&mInput->Data, &Weights, &mOutput->Data, CblasNoTrans, CblasNoTrans, 1, 0);
 	printf("done\n");
 	for (unsigned int i = 0; i < mInput->Data.cols(); i++)

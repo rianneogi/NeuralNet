@@ -14,9 +14,12 @@ public:
 	bool mSelfAllocated;
 
 	Tensor();
+	Tensor(const Tensor& other);
 	Tensor(const TensorShape& shape); //initialize tensor allocated with given shape
 	Tensor(Float* data, const TensorShape& shape); //initialize tensor pointing to existing data
 	~Tensor();
+
+	void operator=(const Tensor& other);
 
 	Float& operator()(unsigned int a) const;
 	Float& operator()(unsigned int a, unsigned int b) const;

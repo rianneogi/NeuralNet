@@ -17,7 +17,7 @@ Tensor::Tensor(const TensorShape& shape) : mData(NULL), mShape(shape), mSize(1),
 	allocate();
 }
 
-Tensor::Tensor(Float* data, const TensorShape & shape) : mData(data), mShape(shape), mSelfAllocated(false)
+Tensor::Tensor(Float* data, const TensorShape& shape) : mData(data), mShape(shape), mSelfAllocated(false)
 {
 	assert(shape.size() <= 4 && "Max supported tensor shape is 4");
 	for (unsigned int x : mShape)
@@ -30,6 +30,18 @@ Tensor::~Tensor()
 {
 	if(!mSelfAllocated)
 		freememory();
+}
+
+void Tensor::operator=(const Tensor& other)
+{
+	mData = other.mData;
+	mSize = other.mSize;
+	mShape = other.mShape;
+	mSelfAllocated = false;
+}
+
+Tensor::Tensor(const Tensor& other) : mData(other.mData), mShape(other.mShape), mSize(other.mSize), mSelfAllocated(false)
+{
 }
 
 Float& Tensor::operator()(unsigned int a) const
@@ -77,7 +89,9 @@ void Tensor::freememory()
 		free(mData);
 		mData = NULL;
 #else
+		printf("Freeing memory: %d\n", mSize);
 		delete[] mData;
+		mData = NULL;
 #endif
 	}
 }
