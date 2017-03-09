@@ -14,7 +14,7 @@ public:
 	~Board();
 
 	void addNeuron(Neuron* n);
-	Blob* newBlob(unsigned int rows, unsigned int cols);
+	Blob* newBlob(const TensorShape& shape);
 	void setErrorFunction(ErrorFunction* err_func);
 	//void addEdge(unsigned int n1, unsigned int n2);
 

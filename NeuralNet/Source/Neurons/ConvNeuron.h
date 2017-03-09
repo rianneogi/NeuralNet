@@ -5,9 +5,7 @@
 class ConvNeuron : public Neuron
 {
 public:
-	unsigned int InputWidth;
-	unsigned int InputHeight;
-	unsigned int InputDepth;
+	unsigned int InputSize;
 
 	unsigned int OutputWidth;
 	unsigned int OutputHeight;
@@ -26,7 +24,7 @@ public:
 	Tensor Ones;
 
 	ConvNeuron();
-	ConvNeuron(Blob* input, Blob* output, Float learning_rate, unsigned int field_width, unsigned int field_height);
+	ConvNeuron(Blob* input, Blob* output, Float learning_rate);
 	~ConvNeuron();
 
 	void forward();

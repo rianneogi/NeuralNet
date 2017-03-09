@@ -4,21 +4,19 @@ ConvNeuron::ConvNeuron() : Neuron()
 {
 }
 
-ConvNeuron::ConvNeuron(Blob* input, Blob* output, Float learning_rate, unsigned int field_width, unsigned int field_height)
-	: Neuron(input, output, learning_rate), FieldWidth(field_width), FieldHeight(field_height)
+ConvNeuron::ConvNeuron(Blob* input, Blob* output, Float learning_rate)
+	: Neuron(input, output, learning_rate)
 {
 	assert(input->Data.mShape[0] == output->Data.mShape[0]);
 	BatchSize = input->Data.mShape[0];
 
-	InputDepth = input->Data.mShape[1];
-	InputHeight = input->Data.mShape[2];
-	InputWidth = input->Data.mShape[3];
+	InputSize = input->Data.mShape[1];
 
 	OutputDepth = output->Data.mShape[1];
-	OutputHeight = output->Data.mShape[2];
-	OutputWidth = output->Data.mShape[3];
+	//OutputHeight = output->Data.mShape[2];
+	//OutputWidth = output->Data.mShape[3];
 
-	Weights = Tensor(make_shape(FieldHeight*FieldWidth*InputDepth, OutputDepth));
+	Weights = Tensor(make_shape(InputSize, OutputDepth));
 	Biases = Tensor(make_shape(OutputDepth));
 
 	Tmp1 = Tensor(make_shape(Weights.rows(), Weights.cols()));

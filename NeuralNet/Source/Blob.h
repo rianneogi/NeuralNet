@@ -9,6 +9,6 @@ public:
 	Tensor Delta;
 
 	Blob();
-	Blob(unsigned int rows, unsigned int cols);
+	Blob(const TensorShape& shape);
 	~Blob();
 };

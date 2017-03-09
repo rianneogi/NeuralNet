@@ -1,6 +1,8 @@
 #include <intrin.h>
 #include "Tests.h"
 
+#include "Neurons\Im2ColNeuron.h"
+
 //Vector binaryrep(int x, int size)
 //{
 //	Vector v;
@@ -293,7 +295,7 @@ void test_old()
 	//_getch();
 }
 
-void test_new()
+void test_fc()
 {
 	//MNIST input size: 28x28 = 784
 	//CIFAR input size: 3072
@@ -302,13 +304,13 @@ void test_new()
 	int batch_size = 100;
 	double learning_rate = 0.005;
 
-	Blob* inputBlob = b.newBlob(batch_size, 784);
-	Blob* layer1FCBlob = b.newBlob(batch_size, 14);
-	Blob* layer1SigBlob = b.newBlob(batch_size, 14);
-	Blob* layer2FCBlob = b.newBlob(batch_size, 12);
-	Blob* layer2SigBlob = b.newBlob(batch_size, 12);
-	Blob* outputFCBlob = b.newBlob(batch_size, 10);
-	Blob* outputSigBlob = b.newBlob(batch_size, 10);
+	Blob* inputBlob = b.newBlob(make_shape(batch_size, 784));
+	Blob* layer1FCBlob = b.newBlob(make_shape(batch_size, 14));
+	Blob* layer1SigBlob = b.newBlob(make_shape(batch_size, 14));
+	Blob* layer2FCBlob = b.newBlob(make_shape(batch_size, 12));
+	Blob* layer2SigBlob = b.newBlob(make_shape(batch_size, 12));
+	Blob* outputFCBlob = b.newBlob(make_shape(batch_size, 10));
+	Blob* outputSigBlob = b.newBlob(make_shape(batch_size, 10));
 	b.addNeuron(new FullyConnectedNeuron(inputBlob, layer1FCBlob, learning_rate));
 	b.addNeuron(new TanhNeuron(layer1FCBlob, layer1SigBlob, learning_rate));
 	b.addNeuron(new FullyConnectedNeuron(layer1SigBlob, layer2FCBlob, learning_rate));
@@ -368,6 +370,56 @@ void test_new()
 	outputs_test.freememory();
 
 	//nn.save("net_handwriting.txt");
+	_getch();
+}
+
+void test_conv()
+{
+	Board b;
+	int batch_size = 100;
+	double learning_rate = 0.005;
+
+	Blob* inputBlob = b.newBlob(make_shape(batch_size, 1, 28, 28));
+	Blob* l1convBlob = b.newBlob(make_shape(batch_size, 9));
+	Blob* l1fcBlob = b.newBlob(make_shape(batch_size, 12));
+	Blob* l1tanhBlob = b.newBlob(make_shape(batch_size, 12));
+	Blob* l2fcBlob = b.newBlob(make_shape(batch_size, 10));
+	Blob* l2tanhBlob = b.newBlob(make_shape(batch_size, 10));
+	b.addNeuron(new Im2ColNeuron(inputBlob, l1convBlob, learning_rate, 3, 3));
+	b.addNeuron(new ConvNeuron(l1convBlob, l1fcBlob, learning_rate));
+	b.addNeuron(new TanhNeuron(l1fcBlob, l1tanhBlob, learning_rate));
+	b.addNeuron(new FullyConnectedNeuron(l1tanhBlob, l2fcBlob, learning_rate));
+	b.addNeuron(new TanhNeuron(l2fcBlob, l2tanhBlob, learning_rate));
+	//b.addNeuron(new FullyConnectedNeuron(layer2SigBlob, outputFCBlob, learning_rate));
+	//b.addNeuron(new TanhNeuron(outputFCBlob, outputSigBlob, learning_rate));
+	b.setErrorFunction(new MeanSquaredError(inputBlob, l2tanhBlob, nullptr));
+
+	Tensor inputs_train = openidx_input("Data/train-images.idx3-ubyte");
+	Tensor outputs_train = openidx_output("Data/train-labels.idx1-ubyte", 10);
+	Tensor inputs_test = openidx_input("Data/t10k-images.idx3-ubyte");
+	Tensor outputs_test = openidx_output("Data/t10k-labels.idx1-ubyte", 10);
+
+	b.train(inputs_train, outputs_train, 10, batch_size);
+
+	int acc = 0;
+	for (size_t i = 0; i < inputs_test.rows() / batch_size; i++)
+	{
+		Tensor o = b.predict(inputs_test.cut(i*batch_size, batch_size));
+		for (int j = 0; j < batch_size; j++)
+		{
+			if (getoutput(o.cut(j, 1)) == getoutput(outputs_test.cut(i*batch_size + j, 1)))
+			{
+				acc++;
+			}
+		}
+	}
+	printf("Accuracy: %f\n", (acc*1.0) / inputs_test.rows());
+
+	inputs_train.freememory();
+	inputs_test.freememory();
+	outputs_train.freememory();
+	outputs_test.freememory();
+
 	_getch();
 }
 

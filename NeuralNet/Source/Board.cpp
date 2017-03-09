@@ -23,9 +23,9 @@ void Board::addNeuron(Neuron* n)
 	mNeurons.push_back(n);
 }
 
-Blob* Board::newBlob(unsigned int rows, unsigned int cols)
+Blob* Board::newBlob(const TensorShape& shape)
 {
-	Blob* b = new Blob(rows, cols);
+	Blob* b = new Blob(shape);
 	return b;
 }
 
