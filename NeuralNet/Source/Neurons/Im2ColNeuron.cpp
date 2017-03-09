@@ -4,13 +4,21 @@ Im2ColNeuron::Im2ColNeuron() : Neuron()
 {
 }
 
-Im2ColNeuron::Im2ColNeuron(Blob* input, Blob* output, Float learning_rate, unsigned int kernel_width, unsigned int kernel_height) 
-	: Neuron(input, output, learning_rate), KernelWidth(kernel_width), KernelHeight(kernel_height)
+Im2ColNeuron::Im2ColNeuron(Blob* input, Blob* output, Float learning_rate, unsigned int field_width, unsigned int field_height)
+	: Neuron(input, output, learning_rate), FieldWidth(field_width), FieldHeight(field_height)
 {
-	InputWidth = input->Data.cols();
-	InputHeight = input->Data.rows();
+	assert(input->Data.mShape[0] == output->Data.mShape[0]);
+	BatchSize = input->Data.mShape[0];
 
-	assert(output->Data.cols() == KernelHeight*KernelWidth);
+	assert(input->Data.mShape.size() == 4);
+
+	InputDepth = input->Data.mShape[1];
+	InputHeight = input->Data.mShape[2];
+	InputWidth = input->Data.mShape[3];
+
+	assert(output->Data.mShape.size() == 2);
+	OutputSize = output->Data.mShape[1];
+	assert(OutputSize == FieldHeight*FieldWidth*InputDepth);
 }
 
 Im2ColNeuron::~Im2ColNeuron()

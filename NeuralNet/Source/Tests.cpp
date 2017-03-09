@@ -299,22 +299,22 @@ void test_new()
 	//CIFAR input size: 3072
 
 	Board b;
-	int batch_size = 10;
+	int batch_size = 100;
 	double learning_rate = 0.005;
 
 	Blob* inputBlob = b.newBlob(batch_size, 784);
-	Blob* layer1FCBlob = b.newBlob(batch_size, 10);
-	Blob* layer1SigBlob = b.newBlob(batch_size, 10);
-	//Blob* layer2FCBlob = b.newBlob(12, batch_size);
-	//Blob* layer2SigBlob = b.newBlob(12, batch_size);
+	Blob* layer1FCBlob = b.newBlob(batch_size, 14);
+	Blob* layer1SigBlob = b.newBlob(batch_size, 14);
+	Blob* layer2FCBlob = b.newBlob(batch_size, 12);
+	Blob* layer2SigBlob = b.newBlob(batch_size, 12);
 	Blob* outputFCBlob = b.newBlob(batch_size, 10);
 	Blob* outputSigBlob = b.newBlob(batch_size, 10);
 	b.addNeuron(new FullyConnectedNeuron(inputBlob, layer1FCBlob, learning_rate));
-	b.addNeuron(new SigmoidNeuron(layer1FCBlob, layer1SigBlob, learning_rate));
-	//b.addNeuron(new FullyConnectedNeuron(layer1SigBlob, layer2FCBlob, learning_rate));
-	//b.addNeuron(new TanhNeuron(layer2FCBlob, layer2SigBlob, learning_rate));
-	b.addNeuron(new FullyConnectedNeuron(layer1SigBlob, outputFCBlob, learning_rate));
-	b.addNeuron(new SigmoidNeuron(outputFCBlob, outputSigBlob, learning_rate));
+	b.addNeuron(new TanhNeuron(layer1FCBlob, layer1SigBlob, learning_rate));
+	b.addNeuron(new FullyConnectedNeuron(layer1SigBlob, layer2FCBlob, learning_rate));
+	b.addNeuron(new TanhNeuron(layer2FCBlob, layer2SigBlob, learning_rate));
+	b.addNeuron(new FullyConnectedNeuron(layer2SigBlob, outputFCBlob, learning_rate));
+	b.addNeuron(new TanhNeuron(outputFCBlob, outputSigBlob, learning_rate));
 	b.setErrorFunction(new MeanSquaredError(inputBlob, outputSigBlob, nullptr));
 
 	Tensor inputs_train = openidx_input("Data/train-images.idx3-ubyte");

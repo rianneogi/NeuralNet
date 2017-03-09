@@ -13,16 +13,20 @@ public:
 	unsigned int OutputHeight;
 	unsigned int OutputDepth;
 
-	unsigned int KernelWidth;
-	unsigned int KernelHeight;
+	unsigned int FieldWidth;
+	unsigned int FieldHeight;
 
 	unsigned int BatchSize;
 
 	Tensor Weights;
-	float Bias;
+	Tensor Biases;
+
+	Tensor Tmp1;
+	Tensor Tmp2;
+	Tensor Ones;
 
 	ConvNeuron();
-	ConvNeuron(Blob* input, Blob* output, Float learning_rate, unsigned int kernel_width, unsigned int kernel_height);
+	ConvNeuron(Blob* input, Blob* output, Float learning_rate, unsigned int field_width, unsigned int field_height);
 	~ConvNeuron();
 
 	void forward();
