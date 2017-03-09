@@ -1,6 +1,6 @@
 #include "Tensor.h"
 
-#define USE_MALLOC
+//#define USE_MALLOC
 
 Tensor::Tensor() : mData(NULL), mSize(0), mSelfAllocated(false)
 {
@@ -57,6 +57,7 @@ Float& Tensor::operator()(unsigned int a, unsigned int b, unsigned int c, unsign
 
 void Tensor::allocate()
 {
+	printf("Allocation tensor of size: %d\n", mSize);
 #ifdef USE_MALLOC
 	mData = (Float*)malloc(mSize * sizeof(Float));
 	if (mData == NULL)
@@ -66,8 +67,6 @@ void Tensor::allocate()
 #else
 	mData = new Float[mSize];
 #endif
-	
-	printf("Allocation tensor of size: %d\n", mSize);
 }
 
 void Tensor::freememory()

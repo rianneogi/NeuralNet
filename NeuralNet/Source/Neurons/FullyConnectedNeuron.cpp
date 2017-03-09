@@ -8,18 +8,18 @@ FullyConnectedNeuron::FullyConnectedNeuron(Blob* input, Blob* output, Float lear
 {
 	Weights = Tensor(make_shape(input->Data.cols(), output->Data.cols()));
 	Biases = Tensor(make_shape(output->Data.cols()));
-	for (int i = 0; i < Weights.rows(); i++)
+	for (int i = 0; i < Weights.cols(); i++)
 	{
 		Biases(i) = rand_init();
-		for (int j = 0; j < Weights.cols(); j++)
+		for (int j = 0; j < Weights.rows(); j++)
 		{
 			Weights(i, j) = rand_init();
 		}
 	}
-	InputSize = Weights.cols();
-	OutputSize = Weights.rows();
-	BatchSize = output->Data.cols();
-	assert(input->Data.cols() == output->Data.cols());
+	InputSize = Weights.rows();
+	OutputSize = Weights.cols();
+	BatchSize = output->Data.rows();
+	assert(input->Data.rows() == output->Data.rows());
 }
 
 FullyConnectedNeuron::~FullyConnectedNeuron()
@@ -31,6 +31,8 @@ void FullyConnectedNeuron::forward()
 	//mOutput->Data = (Weights * mInput->Data) + (Biases.replicate(1, (mInput->Data).cols()));
 	////cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, Weights.rows(), mInput->Data.cols(),
 	////	Weights.cols(), 1, Weights.mData, Weights.cols(), mInput->Data.mData, mInput->Data.cols(), 0, mOutput->Data.mData, mOutput->Data.cols());
+	assert(mInput->Data.cols() == Weights.rows());
+	assert(mOutput->Data.cols() == Weights.cols());
 	gemm(&mInput->Data, &Weights, &mOutput->Data, CblasNoTrans, CblasNoTrans, 1, 0);
 	for (unsigned int i = 0; i < mInput->Data.cols(); i++)
 	{
@@ -55,20 +57,23 @@ void FullyConnectedNeuron::backprop()
 	////	DeltaSum[j] = (mOutput->Delta.row(j)).sum();
 
 	//Biases = Biases - (mLearningRate*mOutput->Delta*Matrix::Constant(mOutput->Delta.cols(), 1, 1.0));
-
 	//Weights
 	gemm(&Weights, &mOutput->Delta, &mInput->Delta, CblasNoTrans, CblasNoTrans, 1, 0);
 
-	Tensor tmp(make_shape(Weights.cols(), Weights.rows()));
-	gemm(&mOutput->Delta, &mInput->Data, &tmp, CblasNoTrans, CblasTrans, mLearningRate, 0);
-
+	Tensor tmp(make_shape(Weights.rows(), Weights.cols()));
+	assert(mOutput->Delta.rows() == mInput->Data.rows());
+	assert(tmp.cols() == mInput->Data.cols());
+	assert(tmp.rows() == mOutput->Delta.cols());
+	printf("ff\n");
+	gemm(&mOutput->Delta, &mInput->Data, &tmp, CblasTrans, CblasNoTrans, mLearningRate, 0);
+	printf("ff\n");
 	for (int i = 0; i < Weights.mSize; i++)
 	{
 		Weights(i) -= tmp(i);
 	}
 
 	//Biases
-	Tensor tmp2(make_shape(Biases.cols(), Biases.rows()));
+	Tensor tmp2(make_shape(Biases.rows(), Biases.cols()));
 	Tensor ones(make_shape(mOutput->Delta.cols(), 1));
 	gemm(&mOutput->Delta, &ones, &tmp2, CblasNoTrans, CblasNoTrans, mLearningRate, 0);
 	
