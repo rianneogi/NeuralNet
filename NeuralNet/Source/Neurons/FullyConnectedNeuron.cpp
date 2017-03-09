@@ -20,6 +20,11 @@ FullyConnectedNeuron::FullyConnectedNeuron(Blob* input, Blob* output, Float lear
 	OutputSize = Weights.cols();
 	BatchSize = output->Data.rows();
 	assert(input->Data.rows() == output->Data.rows());
+
+	Tmp1 = Tensor(make_shape(Weights.rows(), Weights.cols()));
+	Tmp2 = Tensor(make_shape(Biases.rows(), 1));
+	Ones = Tensor(make_shape(mOutput->Delta.cols(), 1));
+	Ones.setconstant(1);
 }
 
 FullyConnectedNeuron::~FullyConnectedNeuron()
@@ -46,7 +51,6 @@ void FullyConnectedNeuron::forward()
 			mOutput->Data(i, j) += Biases(j);
 		}
 	}
-	printf("f\n");
 }
 
 void FullyConnectedNeuron::backprop()
@@ -67,29 +71,31 @@ void FullyConnectedNeuron::backprop()
 	//printf("mul1\n");
 	gemm(&mOutput->Delta, &Weights, &mInput->Delta, CblasNoTrans, CblasTrans, 1, 0);
 	//printf("done\n");
-	Tensor tmp(make_shape(Weights.rows(), Weights.cols()));
+	//Tensor tmp(make_shape(Weights.rows(), Weights.cols()));
 	//printf("mul2\n");
-	gemm(&mInput->Data, &mOutput->Delta, &tmp, CblasTrans, CblasNoTrans, mLearningRate, 0);
+	gemm(&mInput->Data, &mOutput->Delta, &Tmp1, CblasTrans, CblasNoTrans, mLearningRate, 0);
 	//printf("done\n");
 	for (int i = 0; i < Weights.mSize; i++)
 	{
-		Weights(i) -= tmp(i);
+		//printf("%f\n", tmp(i));
+		Weights(i) -= Tmp1(i);
 	}
 
 	//Biases
-	Tensor tmp2(make_shape(Biases.rows(), 1));
-	Tensor ones(make_shape(mOutput->Delta.cols(), 1));
-	ones.setconstant(1);
+	//Tensor tmp2(make_shape(Biases.rows(), 1));
+	//Tensor ones(make_shape(mOutput->Delta.cols(), 1));
+	//ones.setconstant(1);
 	//printf("mul3\n");
-	gemm(&mOutput->Delta, &ones, &tmp2, CblasNoTrans, CblasNoTrans, mLearningRate, 0);
+	gemm(&mOutput->Delta, &Ones, &Tmp2, CblasNoTrans, CblasNoTrans, mLearningRate, 0);
 	//printf("done\n");
 	
 	for (int i = 0; i < Biases.mSize; i++)
 	{
-		Biases(i) -= tmp2(i);
+		//printf("%f\n", tmp2(i));
+		Biases(i) -= Tmp2(i);
 	}
 
-	tmp.freememory();
-	tmp2.freememory();
-	ones.freememory();
+	//tmp.freememory();
+	//tmp2.freememory();
+	//ones.freememory();
 }

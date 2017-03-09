@@ -85,11 +85,11 @@ void Tensor::freememory()
 {
 	if (mData != NULL)
 	{
+		//printf("Freeing memory: %d\n", mSize);
 #ifdef USE_MALLOC
 		free(mData);
 		mData = NULL;
 #else
-		//printf("Freeing memory: %d\n", mSize);
 		delete[] mData;
 		mData = NULL;
 #endif

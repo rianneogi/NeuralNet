@@ -342,21 +342,21 @@ void test_new()
 	}*/
 
 
-	int acc = 0;
-	for (size_t i = 0; i < inputs_test.cols(); i++)
-	{
-		if (getoutput(b.predict(inputs_test.cut(i,1))) == getoutput(outputs_test.cut(i,1)))
-		{
-			acc++;
-		}
-		/*else
-		{
-		printinput(inputs_train.col(i));
-		printoutput(nn.forward(inputs_train.col(i)));
-		printf("%d %d\n", getoutput(nn.forward(inputs_train.col(i))), getoutput(outputs_train.col(i)));
-		}*/
-	}
-	printf("Accuracy: %f\n", (acc*1.0) / inputs_test.cols());
+	//int acc = 0;
+	//for (size_t i = 0; i < inputs_test.cols(); i++)
+	//{
+	//	if (getoutput(b.predict(inputs_test.cut(i,1))) == getoutput(outputs_test.cut(i,1)))
+	//	{
+	//		acc++;
+	//	}
+	//	/*else
+	//	{
+	//	printinput(inputs_train.col(i));
+	//	printoutput(nn.forward(inputs_train.col(i)));
+	//	printf("%d %d\n", getoutput(nn.forward(inputs_train.col(i))), getoutput(outputs_train.col(i)));
+	//	}*/
+	//}
+	//printf("Accuracy: %f\n", (acc*1.0) / inputs_test.cols());
 
 	inputs_train.freememory();
 	inputs_test.freememory();

@@ -47,11 +47,12 @@ Tensor Board::forward(const Tensor& input)
 Float Board::backprop(const Tensor& input, const Tensor& output)
 {
 	mNeurons[0]->mInput->Data = input;
-	printf("input size: %d\n", mNeurons[0]->mInput->Data.mSize);
-	printf("input size: %d\n", input.mSize);
+	//printf("input size: %d\n", mNeurons[0]->mInput->Data.mSize);
+	//printf("input size: %d\n", input.mSize);
 	mErrorFunc->mTarget = &output;
-	printf("forward\n");
+	//printf("forward\n");
 	//Forward Pass
+	//printf("%d\n", output.mSize);
 	for (size_t i = 0; i < mNeurons.size(); i++)
 	{
 		mNeurons[i]->forward();
@@ -59,7 +60,7 @@ Float Board::backprop(const Tensor& input, const Tensor& output)
 
 	//Calculate Error
 	double error = mErrorFunc->calculateError();
-	printf("backward\n");
+	//printf("backward\n");
 	//Backward Pass
 	for (int i = mNeurons.size()-1; i >= 0; i--)
 	{
@@ -95,7 +96,7 @@ double Board::train(const Tensor& inputs, const Tensor& outputs, unsigned int ep
 		for (int j = 0; j < inputs.rows() / batch_size; j++)
 		{
 			//error += backprop(inputs.block(0, batch_size*j, inputs.rows(), batch_size), outputs.block(0, batch_size*j, outputs.rows(), batch_size));
-			printf("Batch: %d\n", j);
+			//printf("Batch: %d\n", j);
 			//printf("bs: %d\n", batch_size);
 			//Tensor in = inputs.cut(batch_size*j, batch_size);
 			//printf("I: %d %d\n", inputs.cut(batch_size*j, batch_size).mSize, int(in.mSelfAllocated));
