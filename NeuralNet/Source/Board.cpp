@@ -73,7 +73,7 @@ Float Board::backprop(const Tensor& input, const Tensor& output)
 
 Tensor Board::predict(Tensor input)
 {
-	mNeurons[0]->mInput->Data = input;
+	mNeurons[0]->mInput->Data.mData = input.mData;
 
 	//Forward Pass
 	for (size_t i = 0; i < mNeurons.size(); i++)
