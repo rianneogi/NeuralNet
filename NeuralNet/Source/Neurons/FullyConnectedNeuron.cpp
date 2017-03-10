@@ -73,7 +73,7 @@ void FullyConnectedNeuron::backprop()
 	//printf("done\n");
 	//Tensor tmp(make_shape(Weights.rows(), Weights.cols()));
 	//printf("mul2\n");
-	gemm(&mInput->Data, &mOutput->Delta, &Tmp1, CblasTrans, CblasNoTrans, mLearningRate, 0);
+	gemm(&mInput->Data, &mOutput->Delta, &Tmp1, CblasTrans, CblasNoTrans, LearningRate, 0);
 	//printf("done\n");
 	for (int i = 0; i < Weights.mSize; i++)
 	{
@@ -86,7 +86,7 @@ void FullyConnectedNeuron::backprop()
 	//Tensor ones(make_shape(mOutput->Delta.cols(), 1));
 	//ones.setconstant(1);
 	//printf("mul3\n");
-	gemm(&mOutput->Delta, &Ones, &Tmp2, CblasNoTrans, CblasNoTrans, mLearningRate, 0);
+	gemm(&mOutput->Delta, &Ones, &Tmp2, CblasNoTrans, CblasNoTrans, LearningRate, 0);
 	//printf("done\n");
 	
 	for (int i = 0; i < Biases.mSize; i++)

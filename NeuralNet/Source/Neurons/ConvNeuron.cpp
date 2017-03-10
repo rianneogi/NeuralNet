@@ -41,15 +41,12 @@ ConvNeuron::~ConvNeuron()
 
 void ConvNeuron::forward()
 {
-	gemm_conv(&mInput->Data, &Weights, &mOutput->Data, CblasNoTrans, CblasNoTrans, 1, 0, 26*26);
+	gemm(&mInput->Data, &Weights, &mOutput->Data, CblasNoTrans, CblasNoTrans, 1, 0);
 	for (unsigned int i = 0; i < mOutput->Data.mShape[0]; i++)
 	{
 		for (unsigned int j = 0; j < Biases.mSize; j++)
 		{
-			for (unsigned int k = 0; k < 26 * 26; k++)
-			{
-				mOutput->Data(i, j*26*26+k) += Biases(j);
-			}
+			mOutput->Data(i, j) += Biases(j);
 		}
 	}
 }
@@ -57,14 +54,14 @@ void ConvNeuron::forward()
 void ConvNeuron::backprop()
 {
 	gemm(&mOutput->Delta, &Weights, &mInput->Delta, CblasNoTrans, CblasTrans, 1, 0);
-	gemm(&mInput->Data, &mOutput->Delta, &Tmp1, CblasTrans, CblasNoTrans, mLearningRate, 0);
+	gemm(&mInput->Data, &mOutput->Delta, &Tmp1, CblasTrans, CblasNoTrans, LearningRate, 0);
 	for (int i = 0; i < Weights.mSize; i++)
 	{
 		Weights(i) -= Tmp1(i);
 	}
 
 	//Biases
-	gemm(&mOutput->Delta, &Ones, &Tmp2, CblasNoTrans, CblasNoTrans, mLearningRate, 0);
+	gemm(&mOutput->Delta, &Ones, &Tmp2, CblasNoTrans, CblasNoTrans, LearningRate, 0);
 
 	for (int i = 0; i < Biases.mSize; i++)
 	{

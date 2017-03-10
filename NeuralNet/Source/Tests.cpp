@@ -2,6 +2,7 @@
 #include "Tests.h"
 
 #include "Neurons\Im2ColNeuron.h"
+#include "Neurons\ReshapeNeuron.h"
 
 //Vector binaryrep(int x, int size)
 //{
@@ -312,11 +313,11 @@ void test_fc()
 	Blob* outputFCBlob = b.newBlob(make_shape(batch_size, 10));
 	Blob* outputSigBlob = b.newBlob(make_shape(batch_size, 10));
 	b.addNeuron(new FullyConnectedNeuron(inputBlob, layer1FCBlob, learning_rate));
-	b.addNeuron(new TanhNeuron(layer1FCBlob, layer1SigBlob, learning_rate));
+	b.addNeuron(new TanhNeuron(layer1FCBlob, layer1SigBlob));
 	b.addNeuron(new FullyConnectedNeuron(layer1SigBlob, layer2FCBlob, learning_rate));
-	b.addNeuron(new TanhNeuron(layer2FCBlob, layer2SigBlob, learning_rate));
+	b.addNeuron(new TanhNeuron(layer2FCBlob, layer2SigBlob));
 	b.addNeuron(new FullyConnectedNeuron(layer2SigBlob, outputFCBlob, learning_rate));
-	b.addNeuron(new TanhNeuron(outputFCBlob, outputSigBlob, learning_rate));
+	b.addNeuron(new TanhNeuron(outputFCBlob, outputSigBlob));
 	b.setErrorFunction(new MeanSquaredError(inputBlob, outputSigBlob, nullptr));
 
 	Tensor inputs_train = openidx_input("Data/train-images.idx3-ubyte");
@@ -381,15 +382,17 @@ void test_conv()
 
 	Blob* inputBlob = b.newBlob(make_shape(batch_size, 1, 28, 28));
 	Blob* l1convBlob = b.newBlob(make_shape(batch_size*26*26, 9));
-	Blob* l1fcBlob = b.newBlob(make_shape(batch_size, 10*26*26));
-	Blob* l1tanhBlob = b.newBlob(make_shape(batch_size, 10 * 26 * 26));
+	Blob* l1fcBlob = b.newBlob(make_shape(batch_size * 26 * 26, 10));
+	Blob* l1tanhBlob = b.newBlob(make_shape(batch_size * 26 * 26, 10));
+	Blob* l2inputBlob = b.newBlob(make_shape(batch_size, 10 * 26 * 26));
 	Blob* l2fcBlob = b.newBlob(make_shape(batch_size, 10));
 	Blob* l2tanhBlob = b.newBlob(make_shape(batch_size, 10));
-	b.addNeuron(new Im2ColNeuron(inputBlob, l1convBlob, learning_rate, 3, 3));
+	b.addNeuron(new Im2ColNeuron(inputBlob, l1convBlob, 3, 3));
 	b.addNeuron(new ConvNeuron(l1convBlob, l1fcBlob, learning_rate));
-	b.addNeuron(new TanhNeuron(l1fcBlob, l1tanhBlob, learning_rate));
-	b.addNeuron(new FullyConnectedNeuron(l1tanhBlob, l2fcBlob, learning_rate));
-	b.addNeuron(new TanhNeuron(l2fcBlob, l2tanhBlob, learning_rate));
+	b.addNeuron(new TanhNeuron(l1fcBlob, l1tanhBlob));
+	b.addNeuron(new ReshapeNeuron(l1tanhBlob, l2inputBlob));
+	b.addNeuron(new FullyConnectedNeuron(l2inputBlob, l2fcBlob, learning_rate));
+	b.addNeuron(new TanhNeuron(l2fcBlob, l2tanhBlob));
 	//b.addNeuron(new FullyConnectedNeuron(layer2SigBlob, outputFCBlob, learning_rate));
 	//b.addNeuron(new TanhNeuron(outputFCBlob, outputSigBlob, learning_rate));
 	b.setErrorFunction(new MeanSquaredError(inputBlob, l2tanhBlob, nullptr));

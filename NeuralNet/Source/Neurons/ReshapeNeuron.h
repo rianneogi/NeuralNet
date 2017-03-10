@@ -7,5 +7,8 @@ public:
 	ReshapeNeuron();
 	ReshapeNeuron(Blob* input, Blob* output);
 	~ReshapeNeuron();
+
+	void forward();
+	void backprop();
 };
 

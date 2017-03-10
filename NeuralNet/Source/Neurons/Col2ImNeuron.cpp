@@ -4,7 +4,7 @@ Col2ImNeuron::Col2ImNeuron() : Neuron()
 {
 }
 
-Col2ImNeuron::Col2ImNeuron(Blob * input, Blob * output, Float learning_rate) : Neuron(input, output, learning_rate)
+Col2ImNeuron::Col2ImNeuron(Blob * input, Blob * output) : Neuron(input, output)
 {
 }
 
