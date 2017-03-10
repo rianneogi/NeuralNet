@@ -47,23 +47,24 @@ Tensor Board::forward(const Tensor& input)
 Float Board::backprop(const Tensor& input, const Tensor& output)
 {
 	mNeurons[0]->mInput->Data.mData = input.mData;
-	//printf("input size: %d\n", mNeurons[0]->mInput->Data.mSize);
-	//printf("input size: %d\n", input.mSize);
 	mErrorFunc->mTarget = &output;
 	//printf("forward\n");
+
 	//Forward Pass
-	//printf("%d\n", output.mSize);
 	for (size_t i = 0; i < mNeurons.size(); i++)
 	{
+		//printf("ff: %d\n", i);
 		mNeurons[i]->forward();
 	}
 
 	//Calculate Error
 	double error = mErrorFunc->calculateError();
+
 	//printf("backward\n");
 	//Backward Pass
 	for (int i = mNeurons.size()-1; i >= 0; i--)
 	{
+		//printf("bb: %d\n", i);
 		mNeurons[i]->backprop();
 	}
 

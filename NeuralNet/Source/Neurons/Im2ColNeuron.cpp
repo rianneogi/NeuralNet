@@ -39,7 +39,6 @@ void Im2ColNeuron::forward()
 		}
 	}
 	mOutput->Data = res;*/
-	printf("forward\n");
 	assert(mInput->Data.mShape.size() == 4);
 	//Works only for odd receptive fields
 	for (int batch = 0; batch < BatchSize; batch++)
@@ -69,5 +68,4 @@ void Im2ColNeuron::forward()
 
 void Im2ColNeuron::backprop()
 {
-	printf("backward\n");
 }

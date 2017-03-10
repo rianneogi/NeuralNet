@@ -37,6 +37,11 @@ ConvNeuron::ConvNeuron(Blob* input, Blob* output, Float learning_rate)
 
 ConvNeuron::~ConvNeuron()
 {
+	Weights.freememory();
+	Biases.freememory();
+	Tmp1.freememory();
+	Tmp2.freememory();
+	Ones.freememory();
 }
 
 void ConvNeuron::forward()
