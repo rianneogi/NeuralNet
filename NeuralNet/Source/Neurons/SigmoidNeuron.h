@@ -16,7 +16,7 @@ class SigmoidNeuron : public Neuron
 {
 public:
 	SigmoidNeuron();
-	SigmoidNeuron(Blob* input, Blob* output, Float learning_rate);
+	SigmoidNeuron(Blob* input, Blob* output);
 	~SigmoidNeuron();
 
 	void forward();

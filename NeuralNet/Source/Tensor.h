@@ -19,7 +19,7 @@ public:
 	Tensor(Float* data, const TensorShape& shape); //initialize tensor pointing to existing data
 	~Tensor();
 
-	void operator=(const Tensor& other);
+	//void operator=(const Tensor& other);
 
 	Float& operator()(unsigned int a) const;
 	Float& operator()(unsigned int a, unsigned int b) const;
@@ -61,4 +61,21 @@ inline void gemm(Tensor* m1, Tensor* m2, Tensor* res, CBLAS_TRANSPOSE trans_m1, 
 		m2->mData, m2->cols(),
 		beta, 
 		res->mData, res->cols());
+}
+
+inline void gemm_conv(Tensor* m1, Tensor* m2, Tensor* res, CBLAS_TRANSPOSE trans_m1, CBLAS_TRANSPOSE trans_m2, Float alpha, Float beta, 
+	unsigned int conv_size)
+{
+	/*unsigned int M = trans_m1 == CblasNoTrans ? m1->rows() : m1->cols();
+	unsigned int N = trans_m2 == CblasNoTrans ? m2->rows() : m2->cols();
+	unsigned int K = trans_m1 == CblasNoTrans ? m1->cols() : m1->rows();*/
+	cblas_dgemm(CblasRowMajor, trans_m1, trans_m2,
+		res->rows() * conv_size, //M
+		res->cols() / conv_size, //N
+		trans_m1 == CblasNoTrans ? m1->cols() : m1->rows(), //K
+		alpha,
+		m1->mData, m1->cols(),
+		m2->mData, m2->cols(),
+		beta,
+		res->mData, res->cols() / conv_size);
 }

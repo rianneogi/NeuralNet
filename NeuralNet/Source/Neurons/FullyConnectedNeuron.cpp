@@ -4,7 +4,7 @@ FullyConnectedNeuron::FullyConnectedNeuron() : Neuron()
 {
 }
 
-FullyConnectedNeuron::FullyConnectedNeuron(Blob* input, Blob* output, Float learning_rate) : Neuron(input, output, learning_rate)
+FullyConnectedNeuron::FullyConnectedNeuron(Blob* input, Blob* output, Float learning_rate) : Neuron(input, output), LearningRate(learning_rate)
 {
 	Weights = Tensor(make_shape(input->Data.cols(), output->Data.cols()));
 	Biases = Tensor(make_shape(output->Data.cols()));
@@ -13,7 +13,7 @@ FullyConnectedNeuron::FullyConnectedNeuron(Blob* input, Blob* output, Float lear
 		Biases(i) = rand_init();
 		for (int j = 0; j < Weights.rows(); j++)
 		{
-			Weights(i, j) = rand_init();
+			Weights(j, i) = rand_init();
 		}
 	}
 	InputSize = Weights.rows();

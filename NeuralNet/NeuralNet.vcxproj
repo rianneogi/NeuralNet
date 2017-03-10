@@ -121,6 +121,7 @@
     <Manifest />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Neurons\ReshapeNeuron.cpp" />
     <ClCompile Include="Source\Blob.cpp" />
     <ClCompile Include="Source\Board.cpp" />
     <ClCompile Include="Source\Clock.cpp" />
@@ -139,6 +140,7 @@
     <ClCompile Include="Source\UtilFuncs.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Neurons\ReshapeNeuron.h" />
     <ClInclude Include="Source\Blob.h" />
     <ClInclude Include="Source\Board.h" />
     <ClInclude Include="Source\Clock.h" />

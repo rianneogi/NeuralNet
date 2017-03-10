@@ -32,14 +32,6 @@ Tensor::~Tensor()
 	//	freememory();
 }
 
-void Tensor::operator=(const Tensor& other)
-{
-	mData = other.mData;
-	mSize = other.mSize;
-	mShape = other.mShape;
-	mSelfAllocated = false;
-}
-
 Tensor::Tensor(const Tensor& other) : mData(other.mData), mShape(other.mShape), mSize(other.mSize), mSelfAllocated(false)
 {
 }

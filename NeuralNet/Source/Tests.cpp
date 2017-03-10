@@ -381,8 +381,8 @@ void test_conv()
 
 	Blob* inputBlob = b.newBlob(make_shape(batch_size, 1, 28, 28));
 	Blob* l1convBlob = b.newBlob(make_shape(batch_size*26*26, 9));
-	Blob* l1fcBlob = b.newBlob(make_shape(batch_size, 12));
-	Blob* l1tanhBlob = b.newBlob(make_shape(batch_size, 12));
+	Blob* l1fcBlob = b.newBlob(make_shape(batch_size, 10*26*26));
+	Blob* l1tanhBlob = b.newBlob(make_shape(batch_size, 10 * 26 * 26));
 	Blob* l2fcBlob = b.newBlob(make_shape(batch_size, 10));
 	Blob* l2tanhBlob = b.newBlob(make_shape(batch_size, 10));
 	b.addNeuron(new Im2ColNeuron(inputBlob, l1convBlob, learning_rate, 3, 3));

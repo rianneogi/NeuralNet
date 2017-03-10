@@ -14,6 +14,8 @@ public:
 	Tensor Tmp2;
 	Tensor Ones;
 
+	Float LearningRate;
+
 	FullyConnectedNeuron(); 
 	FullyConnectedNeuron(Blob* input, Blob* output, Float learning_rate);
 	~FullyConnectedNeuron();

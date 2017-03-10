@@ -23,6 +23,8 @@ public:
 	Tensor Tmp2;
 	Tensor Ones;
 
+	Float LearningRate;
+
 	ConvNeuron();
 	ConvNeuron(Blob* input, Blob* output, Float learning_rate);
 	~ConvNeuron();

@@ -16,7 +16,7 @@ class TanhNeuron : public Neuron
 {
 public:
 	TanhNeuron();
-	TanhNeuron(Blob* input, Blob* output, Float learning_rate);
+	TanhNeuron(Blob* input, Blob* output);
 	~TanhNeuron();
 
 	void forward();

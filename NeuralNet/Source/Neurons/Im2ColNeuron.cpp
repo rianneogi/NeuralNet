@@ -4,8 +4,8 @@ Im2ColNeuron::Im2ColNeuron() : Neuron()
 {
 }
 
-Im2ColNeuron::Im2ColNeuron(Blob* input, Blob* output, Float learning_rate, unsigned int field_width, unsigned int field_height)
-	: Neuron(input, output, learning_rate), FieldWidth(field_width), FieldHeight(field_height)
+Im2ColNeuron::Im2ColNeuron(Blob* input, Blob* output, unsigned int field_width, unsigned int field_height)
+	: Neuron(input, output), FieldWidth(field_width), FieldHeight(field_height)
 {
 	BatchSize = input->Data.mShape[0];
 
@@ -39,7 +39,8 @@ void Im2ColNeuron::forward()
 		}
 	}
 	mOutput->Data = res;*/
-
+	printf("forward\n");
+	assert(mInput->Data.mShape.size() == 4);
 	//Works only for odd receptive fields
 	for (int batch = 0; batch < BatchSize; batch++)
 	{
@@ -68,4 +69,5 @@ void Im2ColNeuron::forward()
 
 void Im2ColNeuron::backprop()
 {
+	printf("backward\n");
 }

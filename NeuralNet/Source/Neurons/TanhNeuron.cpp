@@ -4,7 +4,7 @@ TanhNeuron::TanhNeuron() : Neuron()
 {
 }
 
-TanhNeuron::TanhNeuron(Blob* input, Blob* output, Float learning_rate) : Neuron(input, output, learning_rate)
+TanhNeuron::TanhNeuron(Blob* input, Blob* output) : Neuron(input, output)
 {
 	assert(input->Data.cols() == output->Data.cols() && input->Data.rows() == output->Data.rows());
 }

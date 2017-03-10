@@ -8,10 +8,8 @@ public:
 	Blob* mInput;
 	Blob* mOutput;
 
-	Float mLearningRate;
-
 	Neuron();
-	Neuron(Blob* input, Blob* output, Float learning_rate);
+	Neuron(Blob* input, Blob* output);
 	~Neuron();
 
 	virtual void forward() = 0;

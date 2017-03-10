@@ -22,7 +22,7 @@ public:
 	unsigned int BatchSize;
 
 	Im2ColNeuron();
-	Im2ColNeuron(Blob* input, Blob* output, Float learning_rate, unsigned int field_width, unsigned int field_height);
+	Im2ColNeuron(Blob* input, Blob* output, unsigned int field_width, unsigned int field_height);
 	~Im2ColNeuron();
 
 	void forward();
