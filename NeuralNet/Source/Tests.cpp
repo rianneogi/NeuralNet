@@ -384,14 +384,14 @@ void test_conv()
 	Blob* l1convBlob = b.newBlob(make_shape(batch_size*26*26, 9));
 	Blob* l1fcBlob = b.newBlob(make_shape(batch_size * 26 * 26, 10));
 	Blob* l1tanhBlob = b.newBlob(make_shape(batch_size * 26 * 26, 10));
-	Blob* l2inputBlob = b.newBlob(make_shape(batch_size, 10 * 26 * 26));
+	//Blob* l2inputBlob = b.newBlob(make_shape(batch_size, 10 * 26 * 26));
 	Blob* l2fcBlob = b.newBlob(make_shape(batch_size, 10));
 	Blob* l2tanhBlob = b.newBlob(make_shape(batch_size, 10));
 	b.addNeuron(new Im2ColNeuron(inputBlob, l1convBlob, 3, 3));
 	b.addNeuron(new ConvNeuron(l1convBlob, l1fcBlob, learning_rate));
 	b.addNeuron(new TanhNeuron(l1fcBlob, l1tanhBlob));
-	b.addNeuron(new ReshapeNeuron(l1tanhBlob, l2inputBlob));
-	b.addNeuron(new FullyConnectedNeuron(l2inputBlob, l2fcBlob, learning_rate));
+	b.addNeuron(new ReshapeNeuron(l1tanhBlob, l1tanhBlob, make_shape(batch_size, 10 * 26 * 26)));
+	b.addNeuron(new FullyConnectedNeuron(l2fcBlob, l2fcBlob, learning_rate));
 	b.addNeuron(new TanhNeuron(l2fcBlob, l2tanhBlob));
 	//b.addNeuron(new FullyConnectedNeuron(layer2SigBlob, outputFCBlob, learning_rate));
 	//b.addNeuron(new TanhNeuron(outputFCBlob, outputSigBlob, learning_rate));
