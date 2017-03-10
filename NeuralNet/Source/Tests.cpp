@@ -3,6 +3,7 @@
 
 #include "Neurons\Im2ColNeuron.h"
 #include "Neurons\ReshapeNeuron.h"
+#include "Neurons\LeakyReLUNeuron.h"
 
 //Vector binaryrep(int x, int size)
 //{
@@ -389,10 +390,10 @@ void test_conv()
 	Blob* l2tanhBlob = b.newBlob(make_shape(batch_size, 10));
 	b.addNeuron(new Im2ColNeuron(inputBlob, l1convBlob, 3, 3));
 	b.addNeuron(new ConvNeuron(l1convBlob, l1fcBlob, learning_rate));
-	b.addNeuron(new TanhNeuron(l1fcBlob, l1tanhBlob));
+	b.addNeuron(new LeakyReLUNeuron(l1fcBlob, l1tanhBlob, 0.05));
 	b.addNeuron(new ReshapeNeuron(l1tanhBlob, l1tanhBlob, make_shape(batch_size, 10 * 26 * 26)));
 	b.addNeuron(new FullyConnectedNeuron(l2fcBlob, l2fcBlob, learning_rate));
-	b.addNeuron(new TanhNeuron(l2fcBlob, l2tanhBlob));
+	b.addNeuron(new LeakyReLUNeuron(l2fcBlob, l2tanhBlob, 0.05));
 	//b.addNeuron(new FullyConnectedNeuron(layer2SigBlob, outputFCBlob, learning_rate));
 	//b.addNeuron(new TanhNeuron(outputFCBlob, outputSigBlob, learning_rate));
 	b.setErrorFunction(new MeanSquaredError(inputBlob, l2tanhBlob, nullptr));

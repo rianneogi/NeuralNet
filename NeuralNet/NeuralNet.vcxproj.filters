@@ -78,6 +78,9 @@
     <ClCompile Include="Source\Neurons\ReshapeNeuron.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Neurons\LeakyReLUNeuron.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Blob.h">
@@ -129,6 +132,9 @@
       <Filter>Header Files\Error Functions</Filter>
     </ClInclude>
     <ClInclude Include="Source\Neurons\ReshapeNeuron.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Neurons\LeakyReLUNeuron.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

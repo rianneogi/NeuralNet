@@ -121,6 +121,7 @@
     <Manifest />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Neurons\LeakyReLUNeuron.cpp" />
     <ClCompile Include="Source\Neurons\ReshapeNeuron.cpp" />
     <ClCompile Include="Source\Blob.cpp" />
     <ClCompile Include="Source\Board.cpp" />
@@ -140,6 +141,7 @@
     <ClCompile Include="Source\UtilFuncs.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Neurons\LeakyReLUNeuron.h" />
     <ClInclude Include="Source\Neurons\ReshapeNeuron.h" />
     <ClInclude Include="Source\Blob.h" />
     <ClInclude Include="Source\Board.h" />
