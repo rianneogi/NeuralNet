@@ -11,4 +11,6 @@ public:
 	Blob();
 	Blob(const TensorShape& shape);
 	~Blob();
+
+	void reshape(const TensorShape& shape);
 };

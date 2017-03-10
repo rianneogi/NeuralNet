@@ -1,6 +1,6 @@
 #include "ConvNeuron.h"
 
-ConvNeuron::ConvNeuron() : Neuron()
+ConvNeuron::ConvNeuron() : Neuron(), LearningRate(1)
 {
 }
 

@@ -379,7 +379,7 @@ void test_conv()
 {
 	Board b;
 	int batch_size = 100;
-	double learning_rate = 0.005;
+	double learning_rate = 0.0005;
 
 	Blob* inputBlob = b.newBlob(make_shape(batch_size, 1, 28, 28));
 	Blob* l1convBlob = b.newBlob(make_shape(batch_size*26*26, 9));
@@ -392,11 +392,14 @@ void test_conv()
 	b.addNeuron(new ConvNeuron(l1convBlob, l1fcBlob, learning_rate));
 	b.addNeuron(new LeakyReLUNeuron(l1fcBlob, l1tanhBlob, 0.05));
 	b.addNeuron(new ReshapeNeuron(l1tanhBlob, l1tanhBlob, make_shape(batch_size, 10 * 26 * 26)));
-	b.addNeuron(new FullyConnectedNeuron(l2fcBlob, l2fcBlob, learning_rate));
+
+	l1tanhBlob->reshape(make_shape(batch_size, 10 * 26 * 26));
+	b.addNeuron(new FullyConnectedNeuron(l1tanhBlob, l2fcBlob, learning_rate));
 	b.addNeuron(new LeakyReLUNeuron(l2fcBlob, l2tanhBlob, 0.05));
 	//b.addNeuron(new FullyConnectedNeuron(layer2SigBlob, outputFCBlob, learning_rate));
 	//b.addNeuron(new TanhNeuron(outputFCBlob, outputSigBlob, learning_rate));
 	b.setErrorFunction(new MeanSquaredError(inputBlob, l2tanhBlob, nullptr));
+	l1tanhBlob->reshape(make_shape(batch_size * 26 * 26, 10));
 
 	Tensor inputs_train = openidx_input("Data/train-images.idx3-ubyte");
 	Tensor outputs_train = openidx_output("Data/train-labels.idx1-ubyte", 10);

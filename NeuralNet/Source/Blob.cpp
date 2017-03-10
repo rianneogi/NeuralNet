@@ -14,3 +14,9 @@ Blob::~Blob()
 	Data.freememory();
 	Delta.freememory();
 }
+
+void Blob::reshape(const TensorShape& shape)
+{
+	Data.mShape = shape;
+	Delta.mShape = shape;
+}
