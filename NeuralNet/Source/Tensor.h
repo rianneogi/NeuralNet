@@ -3,13 +3,13 @@
 #include "UtilFuncs.h"
 //#include <unsupported\Eigen\CXX11\src\Tensor\TensorMap.h>
 
-typedef std::vector<unsigned int> TensorShape;
+typedef std::vector<uint64_t> TensorShape;
 
 class Tensor
 {
 public:
-	std::vector<unsigned int> mShape;
-	unsigned int mSize;
+	TensorShape mShape;
+	uint64_t mSize;
 	Float* mData;
 	bool mSelfAllocated;
 
@@ -21,10 +21,10 @@ public:
 
 	//void operator=(const Tensor& other);
 
-	Float& operator()(unsigned int a) const;
-	Float& operator()(unsigned int a, unsigned int b) const;
-	Float& operator()(unsigned int a, unsigned int b, unsigned int c) const;
-	Float& operator()(unsigned int a, unsigned int b, unsigned int c, unsigned int d) const;
+	Float& operator()(uint64_t a) const;
+	Float& operator()(uint64_t a, uint64_t b) const;
+	Float& operator()(uint64_t a, uint64_t b, uint64_t c) const;
+	Float& operator()(uint64_t a, uint64_t b, uint64_t c, uint64_t d) const;
 
 	void allocate();
 	void freememory();
@@ -34,7 +34,7 @@ public:
 	void setidentity();
 
 	//Tensor subtensor(const TensorShape& begin, const TensorShape& size);
-	Tensor cut(unsigned int begin, unsigned int len) const; //cuts the tensor based on primary dimension
+	Tensor cut(uint64_t begin, uint64_t len) const; //cuts the tensor based on primary dimension
 
 	unsigned int rows() const;
 	unsigned int cols() const;
@@ -42,10 +42,10 @@ public:
 	void print() const;
 };
 
-TensorShape make_shape(unsigned int a);
-TensorShape make_shape(unsigned int a, unsigned int b);
-TensorShape make_shape(unsigned int a, unsigned int b, unsigned int c);
-TensorShape make_shape(unsigned int a, unsigned int b, unsigned int c, unsigned int d);
+TensorShape make_shape(uint64_t a);
+TensorShape make_shape(uint64_t a, uint64_t b);
+TensorShape make_shape(uint64_t a, uint64_t b, uint64_t c);
+TensorShape make_shape(uint64_t a, uint64_t b, uint64_t c, uint64_t d);
 
 inline void gemm(Tensor* m1, Tensor* m2, Tensor* res, CBLAS_TRANSPOSE trans_m1, CBLAS_TRANSPOSE trans_m2, Float alpha, Float beta)
 {

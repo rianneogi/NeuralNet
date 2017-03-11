@@ -5,16 +5,16 @@
 class ConvNeuron : public Neuron
 {
 public:
-	unsigned int InputSize;
+	uint64_t InputSize;
 
-	unsigned int OutputWidth;
-	unsigned int OutputHeight;
-	unsigned int OutputDepth;
+	uint64_t OutputWidth;
+	uint64_t OutputHeight;
+	uint64_t OutputDepth;
 
-	unsigned int FieldWidth;
-	unsigned int FieldHeight;
+	uint64_t FieldWidth;
+	uint64_t FieldHeight;
 
-	unsigned int BatchSize;
+	uint64_t BatchSize;
 
 	Tensor Weights;
 	Tensor Biases;

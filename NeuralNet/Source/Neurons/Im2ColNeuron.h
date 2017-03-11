@@ -9,20 +9,22 @@
 class Im2ColNeuron : public Neuron
 {
 public:
-	unsigned int InputWidth;
-	unsigned int InputHeight;
-	unsigned int InputDepth;
+	uint64_t InputWidth;
+	uint64_t InputHeight;
+	uint64_t InputDepth;
 
-	unsigned int OutputCols;
-	unsigned int OutputRows;
+	uint64_t OutputCols;
+	uint64_t OutputRows;
 
-	unsigned int FieldWidth;
-	unsigned int FieldHeight;
+	uint64_t FieldWidth;
+	uint64_t FieldHeight;
 
-	unsigned int BatchSize;
+	uint64_t FieldCount;
+
+	uint64_t BatchSize;
 
 	Im2ColNeuron();
-	Im2ColNeuron(Blob* input, Blob* output, unsigned int field_width, unsigned int field_height);
+	Im2ColNeuron(Blob* input, Blob* output, uint64_t field_width, uint64_t field_height);
 	~Im2ColNeuron();
 
 	void forward();

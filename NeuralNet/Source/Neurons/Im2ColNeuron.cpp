@@ -19,7 +19,8 @@ Im2ColNeuron::Im2ColNeuron(Blob* input, Blob* output, unsigned int field_width, 
 	OutputCols = output->Data.mShape[1];
 	assert(OutputCols == FieldHeight*FieldWidth*InputDepth);
 	OutputRows = output->Data.mShape[0];
-	assert(OutputRows == BatchSize*(InputWidth - FieldWidth + 1)*(InputHeight - FieldHeight + 1));
+	FieldCount = (InputWidth - FieldWidth + 1)*(InputHeight - FieldHeight + 1);
+	assert(OutputRows == BatchSize*FieldCount);
 }
 
 Im2ColNeuron::~Im2ColNeuron()
@@ -55,7 +56,7 @@ void Im2ColNeuron::forward()
 					{
 						for (int j = x - FieldWidth / 2; j <= x + FieldWidth / 2; j++)
 						{
-							mOutput->Data(batch + sub_batch, id) = mInput->Data(batch, d, i, j);
+							mOutput->Data(batch*FieldCount + sub_batch, id) = mInput->Data(batch, d, i, j);
 							id++;
 						}
 					}

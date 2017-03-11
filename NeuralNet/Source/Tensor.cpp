@@ -36,24 +36,24 @@ Tensor::Tensor(const Tensor& other) : mData(other.mData), mShape(other.mShape), 
 {
 }
 
-Float& Tensor::operator()(unsigned int a) const
+Float& Tensor::operator()(uint64_t a) const
 {
 	return mData[a];
 }
 
-Float& Tensor::operator()(unsigned int a, unsigned int b) const
+Float& Tensor::operator()(uint64_t a, uint64_t b) const
 {
 	assert(mShape.size() >= 1);
 	return mData[a*mShape[1] + b];
 }
 
-Float& Tensor::operator()(unsigned int a, unsigned int b, unsigned int c) const
+Float& Tensor::operator()(uint64_t a, uint64_t b, uint64_t c) const
 {
 	assert(mShape.size() >= 2);
 	return mData[a*mShape[1]*mShape[2] + b*mShape[2] + c];
 }
 
-Float& Tensor::operator()(unsigned int a, unsigned int b, unsigned int c, unsigned int d) const
+Float& Tensor::operator()(uint64_t a, uint64_t b, uint64_t c, uint64_t d) const
 {
 	assert(mShape.size() >= 3);
 	return mData[a*mShape[1]*mShape[2]*mShape[3] + b*mShape[2]*mShape[3] + c*mShape[3] + d];
@@ -124,7 +124,7 @@ void Tensor::setidentity()
 //	return Tensor(&mData[ptr], size);
 //}
 
-Tensor Tensor::cut(unsigned int begin, unsigned int len) const
+Tensor Tensor::cut(uint64_t begin, uint64_t len) const
 {
 	//printf("%d %d %d\n", begin, len, mShape[0]);
 	assert(begin + len <= mShape[0]);
@@ -157,14 +157,14 @@ void Tensor::print() const
 	}
 }
 
-TensorShape make_shape(unsigned int a)
+TensorShape make_shape(uint64_t a)
 {
 	TensorShape shape;
 	shape.push_back(a);
 	return shape;
 }
 
-TensorShape make_shape(unsigned int a, unsigned int b)
+TensorShape make_shape(uint64_t a, uint64_t b)
 {
 	TensorShape shape;
 	shape.push_back(a);
@@ -172,7 +172,7 @@ TensorShape make_shape(unsigned int a, unsigned int b)
 	return shape;
 }
 
-TensorShape make_shape(unsigned int a, unsigned int b, unsigned int c)
+TensorShape make_shape(uint64_t a, uint64_t b, uint64_t c)
 {
 	TensorShape shape;
 	shape.push_back(a);
@@ -181,7 +181,7 @@ TensorShape make_shape(unsigned int a, unsigned int b, unsigned int c)
 	return shape;
 }
 
-TensorShape make_shape(unsigned int a, unsigned int b, unsigned int c, unsigned int d)
+TensorShape make_shape(uint64_t a, uint64_t b, uint64_t c, uint64_t d)
 {
 	TensorShape shape;
 	shape.push_back(a);

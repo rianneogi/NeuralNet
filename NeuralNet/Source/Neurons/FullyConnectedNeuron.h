@@ -5,9 +5,9 @@
 class FullyConnectedNeuron : public Neuron
 {
 public:
-	unsigned int InputSize;
-	unsigned int OutputSize;
-	unsigned int BatchSize;
+	uint64_t InputSize;
+	uint64_t OutputSize;
+	uint64_t BatchSize;
 	Tensor Weights;
 	Tensor Biases;
 	Tensor Tmp1;

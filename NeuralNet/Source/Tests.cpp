@@ -314,11 +314,11 @@ void test_fc()
 	Blob* outputFCBlob = b.newBlob(make_shape(batch_size, 10));
 	Blob* outputSigBlob = b.newBlob(make_shape(batch_size, 10));
 	b.addNeuron(new FullyConnectedNeuron(inputBlob, layer1FCBlob, learning_rate));
-	b.addNeuron(new TanhNeuron(layer1FCBlob, layer1SigBlob));
+	b.addNeuron(new LeakyReLUNeuron(layer1FCBlob, layer1SigBlob, 0.05));
 	b.addNeuron(new FullyConnectedNeuron(layer1SigBlob, layer2FCBlob, learning_rate));
-	b.addNeuron(new TanhNeuron(layer2FCBlob, layer2SigBlob));
+	b.addNeuron(new LeakyReLUNeuron(layer2FCBlob, layer2SigBlob, 0.05));
 	b.addNeuron(new FullyConnectedNeuron(layer2SigBlob, outputFCBlob, learning_rate));
-	b.addNeuron(new TanhNeuron(outputFCBlob, outputSigBlob));
+	b.addNeuron(new LeakyReLUNeuron(outputFCBlob, outputSigBlob, 0.05));
 	b.setErrorFunction(new MeanSquaredError(inputBlob, outputSigBlob, nullptr));
 
 	Tensor inputs_train = openidx_input("Data/train-images.idx3-ubyte");
@@ -390,12 +390,12 @@ void test_conv()
 	Blob* l2tanhBlob = b.newBlob(make_shape(batch_size, 10));
 	b.addNeuron(new Im2ColNeuron(inputBlob, l1convBlob, 3, 3));
 	b.addNeuron(new ConvNeuron(l1convBlob, l1fcBlob, learning_rate));
-	b.addNeuron(new LeakyReLUNeuron(l1fcBlob, l1tanhBlob, 0));
+	b.addNeuron(new LeakyReLUNeuron(l1fcBlob, l1tanhBlob, 0.05));
 	b.addNeuron(new ReshapeNeuron(l1tanhBlob, l1tanhBlob, make_shape(batch_size, 10 * 26 * 26)));
 
 	l1tanhBlob->reshape(make_shape(batch_size, 10 * 26 * 26));
 	b.addNeuron(new FullyConnectedNeuron(l1tanhBlob, l2fcBlob, learning_rate));
-	b.addNeuron(new LeakyReLUNeuron(l2fcBlob, l2tanhBlob, 0));
+	b.addNeuron(new LeakyReLUNeuron(l2fcBlob, l2tanhBlob, 0.05));
 	//b.addNeuron(new FullyConnectedNeuron(layer2SigBlob, outputFCBlob, learning_rate));
 	//b.addNeuron(new TanhNeuron(outputFCBlob, outputSigBlob, learning_rate));
 	b.setErrorFunction(new MeanSquaredError(inputBlob, l2tanhBlob, nullptr));
