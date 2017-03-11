@@ -4,7 +4,7 @@ Im2ColNeuron::Im2ColNeuron() : Neuron()
 {
 }
 
-Im2ColNeuron::Im2ColNeuron(Blob* input, Blob* output, unsigned int field_width, unsigned int field_height)
+Im2ColNeuron::Im2ColNeuron(Blob* input, Blob* output, uint64_t field_width, uint64_t field_height)
 	: Neuron(input, output), FieldWidth(field_width), FieldHeight(field_height)
 {
 	BatchSize = input->Data.mShape[0];
@@ -42,19 +42,19 @@ void Im2ColNeuron::forward()
 	mOutput->Data = res;*/
 	assert(mInput->Data.mShape.size() == 4);
 	//Works only for odd receptive fields
-	for (int batch = 0; batch < BatchSize; batch++)
+	for (uint64_t batch = 0; batch < BatchSize; batch++)
 	{
-		int id = 0;
 		int sub_batch = 0;
-		for (int y = FieldHeight / 2; y < InputHeight - FieldHeight / 2; y++)
+		for (uint64_t y = FieldHeight / 2; y < InputHeight - FieldHeight / 2; y++)
 		{
-			for (int x = FieldWidth / 2; x < InputWidth - FieldWidth / 2; x++)
+			int id = 0;
+			for (uint64_t x = FieldWidth / 2; x < InputWidth - FieldWidth / 2; x++)
 			{
-				for (int d = 0; d < InputDepth; d++)
+				for (uint64_t d = 0; d < InputDepth; d++)
 				{
-					for (int i = y - FieldHeight / 2; i <= y + FieldHeight / 2; i++)
+					for (uint64_t i = y - FieldHeight / 2; i <= y + FieldHeight / 2; i++)
 					{
-						for (int j = x - FieldWidth / 2; j <= x + FieldWidth / 2; j++)
+						for (uint64_t j = x - FieldWidth / 2; j <= x + FieldWidth / 2; j++)
 						{
 							mOutput->Data(batch*FieldCount + sub_batch, id) = mInput->Data(batch, d, i, j);
 							id++;
