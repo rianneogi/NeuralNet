@@ -38,24 +38,34 @@ Tensor::Tensor(const Tensor& other) : mData(other.mData), mShape(other.mShape), 
 
 Float& Tensor::operator()(uint64_t a) const
 {
+	assert(a < mSize);
 	return mData[a];
 }
 
 Float& Tensor::operator()(uint64_t a, uint64_t b) const
 {
 	assert(mShape.size() >= 1);
+	assert(a < mShape[0]);
+	assert(b < mShape[1]);
 	return mData[a*mShape[1] + b];
 }
 
 Float& Tensor::operator()(uint64_t a, uint64_t b, uint64_t c) const
 {
 	assert(mShape.size() >= 2);
+	assert(a < mShape[0]);
+	assert(b < mShape[1]);
+	assert(c < mShape[2]);
 	return mData[a*mShape[1]*mShape[2] + b*mShape[2] + c];
 }
 
 Float& Tensor::operator()(uint64_t a, uint64_t b, uint64_t c, uint64_t d) const
 {
 	assert(mShape.size() >= 3);
+	assert(a < mShape[0]);
+	assert(b < mShape[1]);
+	assert(c < mShape[2]);
+	assert(d < mShape[3]);
 	return mData[a*mShape[1]*mShape[2]*mShape[3] + b*mShape[2]*mShape[3] + c*mShape[3] + d];
 }
 

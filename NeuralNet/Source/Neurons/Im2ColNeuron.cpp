@@ -41,15 +41,15 @@ void Im2ColNeuron::forward()
 	}
 	mOutput->Data = res;*/
 	assert(mInput->Data.mShape.size() == 4);
-	//Works only for odd receptive fields
+	//Works only for odd sized receptive fields
 	for (uint64_t batch = 0; batch < BatchSize; batch++)
 	{
-		int sub_batch = 0;
+		uint64_t sub_batch = 0;
 		for (uint64_t y = FieldHeight / 2; y < InputHeight - FieldHeight / 2; y++)
 		{
-			int id = 0;
 			for (uint64_t x = FieldWidth / 2; x < InputWidth - FieldWidth / 2; x++)
 			{
+				uint64_t id = 0;
 				for (uint64_t d = 0; d < InputDepth; d++)
 				{
 					for (uint64_t i = y - FieldHeight / 2; i <= y + FieldHeight / 2; i++)
