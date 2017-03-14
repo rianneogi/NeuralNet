@@ -36,8 +36,8 @@ public:
 	//Tensor subtensor(const TensorShape& begin, const TensorShape& size);
 	Tensor cut(uint64_t begin, uint64_t len) const; //cuts the tensor based on primary dimension
 
-	unsigned int rows() const;
-	unsigned int cols() const;
+	uint64_t rows() const;
+	uint64_t cols() const;
 
 	void print() const;
 };
@@ -49,9 +49,13 @@ TensorShape make_shape(uint64_t a, uint64_t b, uint64_t c, uint64_t d);
 
 inline void gemm(Tensor* m1, Tensor* m2, Tensor* res, CBLAS_TRANSPOSE trans_m1, CBLAS_TRANSPOSE trans_m2, Float alpha, Float beta)
 {
-	/*unsigned int M = trans_m1 == CblasNoTrans ? m1->rows() : m1->cols();
-	unsigned int N = trans_m2 == CblasNoTrans ? m2->rows() : m2->cols();
-	unsigned int K = trans_m1 == CblasNoTrans ? m1->cols() : m1->rows();*/
+	uint64_t M = trans_m1 == CblasNoTrans ? m1->rows() : m1->cols();
+	uint64_t N = trans_m2 == CblasNoTrans ? m2->cols() : m2->rows();
+	uint64_t K = trans_m1 == CblasNoTrans ? m1->cols() : m1->rows();
+	uint64_t L = trans_m2 == CblasNoTrans ? m2->rows() : m2->cols();
+	assert(K == L);
+	assert(M == res->rows());
+	assert(N == res->cols());
 	cblas_dgemm(CblasRowMajor, trans_m1, trans_m2,
 		res->rows(), //M
 		res->cols(), //N

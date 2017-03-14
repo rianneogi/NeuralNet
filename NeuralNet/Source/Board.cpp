@@ -26,6 +26,7 @@ void Board::addNeuron(Neuron* n)
 Blob* Board::newBlob(const TensorShape& shape)
 {
 	Blob* b = new Blob(shape);
+	mBlobs.push_back(b);
 	return b;
 }
 
@@ -71,7 +72,7 @@ Float Board::backprop(const Tensor& input, const Tensor& output)
 	return error;
 }
 
-Tensor Board::predict(Tensor input)
+Tensor Board::predict(const Tensor& input)
 {
 	mNeurons[0]->mInput->Data.mData = input.mData;
 
@@ -80,6 +81,8 @@ Tensor Board::predict(Tensor input)
 	{
 		mNeurons[i]->forward();
 	}
+	//assert(mNeurons[3]->mInput == mNeurons[3]->mOutput);
+	//mNeurons[3]->backprop();
 	return mNeurons[mNeurons.size()-1]->mOutput->Data;
 }
 

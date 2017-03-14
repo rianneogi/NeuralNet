@@ -22,8 +22,8 @@ FullyConnectedNeuron::FullyConnectedNeuron(Blob* input, Blob* output, Float lear
 	assert(input->Data.rows() == output->Data.rows());
 
 	Tmp1 = Tensor(make_shape(Weights.rows(), Weights.cols()));
-	Tmp2 = Tensor(make_shape(Biases.rows(), 1));
-	Ones = Tensor(make_shape(mOutput->Delta.cols(), 1));
+	Tmp2 = Tensor(make_shape(1, Biases.mSize));
+	Ones = Tensor(make_shape(1, BatchSize));
 	Ones.setconstant(1);
 }
 
@@ -38,9 +38,6 @@ FullyConnectedNeuron::~FullyConnectedNeuron()
 
 void FullyConnectedNeuron::forward()
 {
-	/*assert(mInput->Data.cols() == Weights.rows());
-	assert(mOutput->Data.cols() == Weights.cols());
-	assert(mOutput->Data.rows() == mInput->Data.rows());*/
 	gemm(&mInput->Data, &Weights, &mOutput->Data, CblasNoTrans, CblasNoTrans, 1, 0);;
 	for (unsigned int i = 0; i < mInput->Data.rows(); i++)
 	{
@@ -62,7 +59,7 @@ void FullyConnectedNeuron::backprop()
 	}
 
 	//Biases
-	gemm(&mOutput->Delta, &Ones, &Tmp2, CblasNoTrans, CblasNoTrans, LearningRate, 0);
+	gemm(&Ones, &mOutput->Delta, &Tmp2, CblasNoTrans, CblasNoTrans, LearningRate, 0);
 	
 	for (int i = 0; i < Biases.mSize; i++)
 	{

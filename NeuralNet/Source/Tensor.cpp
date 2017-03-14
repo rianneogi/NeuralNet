@@ -1,6 +1,7 @@
 #include "Tensor.h"
 
 #define USE_MALLOC
+//#define NN_DEBUG
 
 Tensor::Tensor() : mData(NULL), mSize(0), mSelfAllocated(false)
 {
@@ -38,34 +39,42 @@ Tensor::Tensor(const Tensor& other) : mData(other.mData), mShape(other.mShape), 
 
 Float& Tensor::operator()(uint64_t a) const
 {
+#ifdef NN_DEBUG
 	assert(a < mSize);
+#endif
 	return mData[a];
 }
 
 Float& Tensor::operator()(uint64_t a, uint64_t b) const
 {
+#ifdef NN_DEBUG
 	assert(mShape.size() >= 1);
 	assert(a < mShape[0]);
 	assert(b < mShape[1]);
+#endif
 	return mData[a*mShape[1] + b];
 }
 
 Float& Tensor::operator()(uint64_t a, uint64_t b, uint64_t c) const
 {
+#ifdef NN_DEBUG
 	assert(mShape.size() >= 2);
 	assert(a < mShape[0]);
 	assert(b < mShape[1]);
 	assert(c < mShape[2]);
+#endif
 	return mData[a*mShape[1]*mShape[2] + b*mShape[2] + c];
 }
 
 Float& Tensor::operator()(uint64_t a, uint64_t b, uint64_t c, uint64_t d) const
 {
+#ifdef NN_DEBUG
 	assert(mShape.size() >= 3);
 	assert(a < mShape[0]);
 	assert(b < mShape[1]);
 	assert(c < mShape[2]);
 	assert(d < mShape[3]);
+#endif
 	return mData[a*mShape[1]*mShape[2]*mShape[3] + b*mShape[2]*mShape[3] + c*mShape[3] + d];
 }
 
@@ -137,21 +146,27 @@ void Tensor::setidentity()
 Tensor Tensor::cut(uint64_t begin, uint64_t len) const
 {
 	//printf("%d %d %d\n", begin, len, mShape[0]);
+#ifdef NN_DEBUG
 	assert(begin + len <= mShape[0]);
+#endif
 	TensorShape shape = mShape;
 	shape[0] = len;
 	return Tensor(&mData[begin*(mSize/mShape[0])], shape);
 }
 
-unsigned int Tensor::rows() const
+uint64_t Tensor::rows() const
 {
+#ifdef NN_DEBUG
 	assert(mShape.size() >= 1);
+#endif
 	return mShape[0];
 }
 
-unsigned int Tensor::cols() const
+uint64_t Tensor::cols() const
 {
+#ifdef NN_DEBUG
 	assert(mShape.size() >= 2);
+#endif
 	return mShape[1];
 }
 

@@ -21,7 +21,7 @@ public:
 	Tensor forward(const Tensor& input);
 	Float backprop(const Tensor& input, const Tensor& output);
 
-	Tensor predict(Tensor input);
+	Tensor predict(const Tensor& input);
 
 	double train(const Tensor& inputs, const Tensor& outputs, unsigned int epochs, unsigned int batch_size);
 };

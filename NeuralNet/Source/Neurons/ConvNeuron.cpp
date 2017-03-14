@@ -28,8 +28,8 @@ ConvNeuron::ConvNeuron(Blob* input, Blob* output, Float learning_rate)
 	}
 
 	Tmp1 = Tensor(make_shape(Weights.rows(), Weights.cols()));
-	Tmp2 = Tensor(make_shape(Biases.rows(), 1));
-	Ones = Tensor(make_shape(mOutput->Delta.cols(), 1));
+	Tmp2 = Tensor(make_shape(1, Biases.mSize));
+	Ones = Tensor(make_shape(1, BatchSize));
 	Ones.setconstant(1);
 
 	//assert(output->Data.cols() == FieldHeight*FieldWidth);
@@ -66,7 +66,7 @@ void ConvNeuron::backprop()
 	}
 
 	//Biases
-	gemm(&mOutput->Delta, &Ones, &Tmp2, CblasNoTrans, CblasNoTrans, LearningRate, 0);
+	gemm(&Ones, &mOutput->Delta, &Tmp2, CblasNoTrans, CblasNoTrans, LearningRate, 0);
 
 	for (int i = 0; i < Biases.mSize; i++)
 	{
