@@ -395,7 +395,7 @@ void test_conv()
 
 	l1tanhBlob->reshape(make_shape(batch_size, 10 * 26 * 26));
 	b.addNeuron(new FullyConnectedNeuron(l1tanhBlob, l2fcBlob, learning_rate));
-	b.addNeuron(new LeakyReLUNeuron(l2fcBlob, l2tanhBlob, 0.05));
+	b.addNeuron(new SigmoidNeuron(l2fcBlob, l2tanhBlob));
 	//b.addNeuron(new FullyConnectedNeuron(layer2SigBlob, outputFCBlob, learning_rate));
 	//b.addNeuron(new TanhNeuron(outputFCBlob, outputSigBlob, learning_rate));
 	b.setErrorFunction(new MeanSquaredError(inputBlob, l2tanhBlob, nullptr));

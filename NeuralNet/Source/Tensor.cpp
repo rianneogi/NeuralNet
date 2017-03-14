@@ -1,7 +1,6 @@
 #include "Tensor.h"
 
 #define USE_MALLOC
-//#define NN_DEBUG
 
 Tensor::Tensor() : mData(NULL), mSize(0), mSelfAllocated(false)
 {
