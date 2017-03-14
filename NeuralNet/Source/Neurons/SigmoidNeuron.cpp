@@ -6,7 +6,7 @@ SigmoidNeuron::SigmoidNeuron() : Neuron()
 
 SigmoidNeuron::SigmoidNeuron(Blob* input, Blob* output) : Neuron(input, output)
 {
-	assert(input->Data.cols() == output->Data.cols() && input->Data.rows() == output->Data.rows());
+	assert(input->Data.mSize == output->Data.mSize);
 }
 
 SigmoidNeuron::~SigmoidNeuron()

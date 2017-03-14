@@ -181,6 +181,15 @@ void Tensor::print() const
 	}
 }
 
+void Tensor::printshape() const
+{
+	for (int i = 0; i < mShape.size(); i++)
+	{
+		printf("%d ", mShape[i]);
+	}
+	printf("\n");
+}
+
 TensorShape make_shape(uint64_t a)
 {
 	TensorShape shape;

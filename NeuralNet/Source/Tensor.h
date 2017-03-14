@@ -40,6 +40,7 @@ public:
 	uint64_t cols() const;
 
 	void print() const;
+	void printshape() const;
 };
 
 TensorShape make_shape(uint64_t a);

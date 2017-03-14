@@ -79,8 +79,6 @@ Tensor Board::predict(const Tensor& input)
 	{
 		mNeurons[i]->forward();
 	}
-	//assert(mNeurons[3]->mInput == mNeurons[3]->mOutput);
-	//mNeurons[3]->backprop();
 	return mNeurons[mNeurons.size()-1]->mOutput->Data;
 }
 
