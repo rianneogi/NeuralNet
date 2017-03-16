@@ -54,14 +54,14 @@ void FullyConnectedNeuron::backprop()
 {
 	//Weights
 	gemm(&mOutput->Delta, &Weights->Data, &mInput->Delta, CblasNoTrans, CblasTrans, 1, 0);
-	gemm(&mInput->Data, &mOutput->Delta, &Weights->Delta, CblasTrans, CblasNoTrans, LearningRate, 0);
+	gemm(&mInput->Data, &mOutput->Delta, &Weights->Delta, CblasTrans, CblasNoTrans, 1, 0);
 	/*for (int i = 0; i < Weights.mSize; i++)
 	{
 		Weights(i) -= Tmp1(i);
 	}
 */
 	//Biases
-	gemm(&Ones, &mOutput->Delta, &Biases->Delta, CblasNoTrans, CblasNoTrans, LearningRate, 0);
+	gemm(&Ones, &mOutput->Delta, &Biases->Delta, CblasNoTrans, CblasNoTrans, 1, 0);
 	
 	/*for (int i = 0; i < Biases.mSize; i++)
 	{

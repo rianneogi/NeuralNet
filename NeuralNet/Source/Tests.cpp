@@ -8,6 +8,7 @@
 #include "Neurons\Im2ColNeuron.h"
 #include "Neurons\ReshapeNeuron.h"
 #include "Optimizers\StandardOptimizer.h"
+#include "Optimizers\AdamOptimizer.h"
 #include "ErrorFunctions\MeanSquaredError.h"
 
 //Vector binaryrep(int x, int size)
@@ -310,6 +311,7 @@ void test_fc()
 	Board b;
 	int batch_size = 100;
 	double learning_rate = 0.005;
+	int epochs = 100;
 
 	Blob* inputBlob = b.newBlob(make_shape(batch_size, 784));
 	Blob* layer1FCBlob = b.newBlob(make_shape(batch_size, 14));
@@ -319,7 +321,7 @@ void test_fc()
 	Blob* outputFCBlob = b.newBlob(make_shape(batch_size, 10));
 	Blob* outputSigBlob = b.newBlob(make_shape(batch_size, 10));
 
-	b.setOptimizer(new StandardOptimizer(1.0));
+	b.setOptimizer(new AdamOptimizer(0.005));
 	b.setErrorFunction(new MeanSquaredError(inputBlob, outputSigBlob, nullptr));
 
 	b.addNeuron(new FullyConnectedNeuron(inputBlob, layer1FCBlob, learning_rate));
@@ -345,7 +347,7 @@ void test_fc()
 	Matrix outputs_test = b6.outputs;*/
 
 
-	b.train(inputs_train, outputs_train, 10, batch_size);
+	b.train(inputs_train, outputs_train, epochs, batch_size);
 
 	/*for (int i = 0; i < 10; i++)
 	{

@@ -137,6 +137,7 @@
     <ClCompile Include="Source\Neuron.cpp" />
     <ClCompile Include="Source\Neurons\SigmoidNeuron.cpp" />
     <ClCompile Include="Source\Neurons\TanhNeuron.cpp" />
+    <ClCompile Include="Source\Optimizers\AdamOptimizer.cpp" />
     <ClCompile Include="Source\Optimizers\StandardOptimizer.cpp" />
     <ClCompile Include="Source\Tensor.cpp" />
     <ClCompile Include="Source\Tests.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="Source\Neuron.h" />
     <ClInclude Include="Source\Neurons\SigmoidNeuron.h" />
     <ClInclude Include="Source\Neurons\TanhNeuron.h" />
+    <ClInclude Include="Source\Optimizers\AdamOptimizer.h" />
     <ClInclude Include="Source\Optimizers\StandardOptimizer.h" />
     <ClInclude Include="Source\Tensor.h" />
     <ClInclude Include="Source\Tests.h" />
