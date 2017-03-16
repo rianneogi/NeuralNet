@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Neurons/SigmoidNeuron.h"
+#include "Neuron.h"
 
 class ErrorFunction
 {

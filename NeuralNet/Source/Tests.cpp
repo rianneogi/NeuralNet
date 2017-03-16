@@ -1,9 +1,14 @@
 #include <intrin.h>
 #include "Tests.h"
 
+#include "Neurons\FullyConnectedNeuron.h"
+#include "Neurons\ConvNeuron.h"
+#include "Neurons\TanhNeuron.h"
+#include "Neurons\LeakyReLUNeuron.h"
 #include "Neurons\Im2ColNeuron.h"
 #include "Neurons\ReshapeNeuron.h"
-#include "Neurons\LeakyReLUNeuron.h"
+#include "Optimizers\StandardOptimizer.h"
+#include "ErrorFunctions\MeanSquaredError.h"
 
 //Vector binaryrep(int x, int size)
 //{
@@ -313,13 +318,17 @@ void test_fc()
 	Blob* layer2SigBlob = b.newBlob(make_shape(batch_size, 12));
 	Blob* outputFCBlob = b.newBlob(make_shape(batch_size, 10));
 	Blob* outputSigBlob = b.newBlob(make_shape(batch_size, 10));
+
+	b.setOptimizer(new StandardOptimizer(1.0));
+	b.setErrorFunction(new MeanSquaredError(inputBlob, outputSigBlob, nullptr));
+
 	b.addNeuron(new FullyConnectedNeuron(inputBlob, layer1FCBlob, learning_rate));
 	b.addNeuron(new LeakyReLUNeuron(layer1FCBlob, layer1SigBlob, 0.05));
-	b.addNeuron(new FullyConnectedNeuron(layer1SigBlob, layer2FCBlob, learning_rate));
-	b.addNeuron(new LeakyReLUNeuron(layer2FCBlob, layer2SigBlob, 0.05));
-	b.addNeuron(new FullyConnectedNeuron(layer2SigBlob, outputFCBlob, learning_rate));
-	b.addNeuron(new LeakyReLUNeuron(outputFCBlob, outputSigBlob, 0.05));
-	b.setErrorFunction(new MeanSquaredError(inputBlob, outputSigBlob, nullptr));
+	//b.addNeuron(new FullyConnectedNeuron(layer1SigBlob, layer2FCBlob, learning_rate));
+	//b.addNeuron(new LeakyReLUNeuron(layer2FCBlob, layer2SigBlob, 0.05));
+	b.addNeuron(new FullyConnectedNeuron(layer1SigBlob, outputFCBlob, learning_rate));
+	b.addNeuron(new TanhNeuron(outputFCBlob, outputSigBlob));
+	
 
 	Tensor inputs_train = openidx_input("Data/train-images.idx3-ubyte");
 	Tensor outputs_train = openidx_output("Data/train-labels.idx1-ubyte", 10);

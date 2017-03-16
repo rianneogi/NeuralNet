@@ -1,6 +1,6 @@
 #include "Board.h"
 
-Board::Board() : mErrorFunc(nullptr)
+Board::Board() : mErrorFunc(nullptr), mOptimizer(nullptr)
 {
 }
 
@@ -20,7 +20,13 @@ Board::~Board()
 
 void Board::addNeuron(Neuron* n)
 {
+	assert(mOptimizer != nullptr);
 	mNeurons.push_back(n);
+	auto variables = n->getVariables();
+	for (size_t i = 0; i < variables.size(); i++)
+	{
+		mOptimizer->addVariable(variables[i]);
+	}
 }
 
 Blob* Board::newBlob(const TensorShape& shape)
@@ -33,6 +39,11 @@ Blob* Board::newBlob(const TensorShape& shape)
 void Board::setErrorFunction(ErrorFunction* err_func)
 {
 	mErrorFunc = err_func;
+}
+
+void Board::setOptimizer(Optimizer* optimizer)
+{
+	mOptimizer = optimizer;
 }
 
 Tensor Board::forward(const Tensor& input)
@@ -84,6 +95,8 @@ Tensor Board::predict(const Tensor& input)
 
 double Board::train(const Tensor& inputs, const Tensor& outputs, unsigned int epochs, unsigned int batch_size)
 {
+	assert(mErrorFunc != nullptr);
+	assert(mOptimizer != nullptr);
 	assert(inputs.rows() == outputs.rows());
 	assert(inputs.rows() % batch_size == 0);
 	double error = 0.0;
@@ -101,6 +114,7 @@ double Board::train(const Tensor& inputs, const Tensor& outputs, unsigned int ep
 			//Tensor in = inputs.cut(batch_size*j, batch_size);
 			//printf("I: %d %d\n", inputs.cut(batch_size*j, batch_size).mSize, int(in.mSelfAllocated));
 			error += backprop(inputs.cut(batch_size*j, batch_size), outputs.cut(batch_size*j, batch_size));
+			mOptimizer->optimize();
 		}
 		/*for (int i = 0; i < inputs.size(); i++)
 		{
@@ -108,6 +122,7 @@ double Board::train(const Tensor& inputs, const Tensor& outputs, unsigned int ep
 		}*/
 		clock.Stop();
 		printf("Error %d: %f, epochs per sec: %f\n", i, error, ((i + 1)*1.0) / clock.ElapsedSeconds());
+		printf("Batches per sec: %f\n", (i+1.0)*(inputs.rows()*1.0 / batch_size) / clock.ElapsedSeconds());
 		//printf("Error %d: %f\n", j, error);
 	}
 	printf("Done training\n");

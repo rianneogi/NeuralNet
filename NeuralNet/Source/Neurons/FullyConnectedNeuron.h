@@ -8,10 +8,10 @@ public:
 	uint64_t InputSize;
 	uint64_t OutputSize;
 	uint64_t BatchSize;
-	Tensor Weights;
-	Tensor Biases;
-	Tensor Tmp1;
-	Tensor Tmp2;
+	Blob* Weights;
+	Blob* Biases;
+	/*Tensor WeightsDelta;
+	Tensor BiasesDelta;*/
 	Tensor Ones;
 
 	Float LearningRate;
@@ -22,5 +22,6 @@ public:
 
 	void forward();
 	void backprop();
+	std::vector<Blob*> getVariables();
 };
 

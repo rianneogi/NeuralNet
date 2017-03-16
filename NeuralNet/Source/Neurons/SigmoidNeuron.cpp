@@ -50,3 +50,8 @@ void SigmoidNeuron::backprop()
 		mInput->Delta(i) = mOutput->Delta(i)*mOutput->Data(i)*(1.0 - mOutput->Data(i));
 	}
 }
+
+std::vector<Blob*> SigmoidNeuron::getVariables()
+{
+	return std::vector<Blob*>();
+}

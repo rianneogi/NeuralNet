@@ -36,3 +36,8 @@ void ReshapeNeuron::backprop()
 		mInput->Delta(i) = mOutput->Delta(i);
 	}*/
 }
+
+std::vector<Blob*> ReshapeNeuron::getVariables()
+{
+	return std::vector<Blob*>();
+}

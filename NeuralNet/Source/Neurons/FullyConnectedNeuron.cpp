@@ -6,44 +6,46 @@ FullyConnectedNeuron::FullyConnectedNeuron() : Neuron(), LearningRate(1)
 
 FullyConnectedNeuron::FullyConnectedNeuron(Blob* input, Blob* output, Float learning_rate) : Neuron(input, output), LearningRate(learning_rate)
 {
-	Weights = Tensor(make_shape(input->Data.cols(), output->Data.cols()));
-	Biases = Tensor(make_shape(output->Data.cols()));
-	for (int i = 0; i < Weights.cols(); i++)
+	Weights = new Blob(make_shape(input->Data.cols(), output->Data.cols()));
+	Biases = new Blob(make_shape(1, output->Data.cols()));
+	for (int i = 0; i < Weights->Data.cols(); i++)
 	{
-		Biases(i) = rand_init();
-		for (int j = 0; j < Weights.rows(); j++)
+		Biases->Data(i) = rand_init();
+		for (int j = 0; j < Weights->Data.rows(); j++)
 		{
-			Weights(j, i) = rand_init();
+			Weights->Data(j, i) = rand_init();
 		}
 	}
-	InputSize = Weights.rows();
-	OutputSize = Weights.cols();
+	InputSize = Weights->Data.rows();
+	OutputSize = Weights->Data.cols();
 	BatchSize = output->Data.rows();
 	assert(input->Data.rows() == output->Data.rows());
 
-	Tmp1 = Tensor(make_shape(Weights.rows(), Weights.cols()));
-	Tmp2 = Tensor(make_shape(1, Biases.mSize));
+	//WeightsDelta = Tensor(make_shape(Weights->Data.rows(), Weights->Data.cols()));
+	//BiasesDelta = Tensor(make_shape(1, Biases->Data.mSize));
 	Ones = Tensor(make_shape(1, BatchSize));
 	Ones.setconstant(1);
 }
 
 FullyConnectedNeuron::~FullyConnectedNeuron()
 {
-	Weights.freememory();
+	/*Weights.freememory();
 	Biases.freememory();
-	Tmp1.freememory();
-	Tmp2.freememory();
+	WeightsDelta.freememory();
+	BiasesDelta.freememory();*/
+	delete Weights;
+	delete Biases;
 	Ones.freememory();
 }
 
 void FullyConnectedNeuron::forward()
 {
-	gemm(&mInput->Data, &Weights, &mOutput->Data, CblasNoTrans, CblasNoTrans, 1, 0);;
+	gemm(&mInput->Data, &Weights->Data, &mOutput->Data, CblasNoTrans, CblasNoTrans, 1, 0);;
 	for (unsigned int i = 0; i < mInput->Data.rows(); i++)
 	{
-		for (unsigned int j = 0; j < Biases.mSize; j++)
+		for (unsigned int j = 0; j < Biases->Data.mSize; j++)
 		{
-			mOutput->Data(i, j) += Biases(j);
+			mOutput->Data(i, j) += Biases->Data(j);
 		}
 	}
 }
@@ -51,18 +53,26 @@ void FullyConnectedNeuron::forward()
 void FullyConnectedNeuron::backprop()
 {
 	//Weights
-	gemm(&mOutput->Delta, &Weights, &mInput->Delta, CblasNoTrans, CblasTrans, 1, 0);
-	gemm(&mInput->Data, &mOutput->Delta, &Tmp1, CblasTrans, CblasNoTrans, LearningRate, 0);
-	for (int i = 0; i < Weights.mSize; i++)
+	gemm(&mOutput->Delta, &Weights->Data, &mInput->Delta, CblasNoTrans, CblasTrans, 1, 0);
+	gemm(&mInput->Data, &mOutput->Delta, &Weights->Delta, CblasTrans, CblasNoTrans, LearningRate, 0);
+	/*for (int i = 0; i < Weights.mSize; i++)
 	{
 		Weights(i) -= Tmp1(i);
 	}
-
+*/
 	//Biases
-	gemm(&Ones, &mOutput->Delta, &Tmp2, CblasNoTrans, CblasNoTrans, LearningRate, 0);
+	gemm(&Ones, &mOutput->Delta, &Biases->Delta, CblasNoTrans, CblasNoTrans, LearningRate, 0);
 	
-	for (int i = 0; i < Biases.mSize; i++)
+	/*for (int i = 0; i < Biases.mSize; i++)
 	{
 		Biases(i) -= Tmp2(i);
-	}
+	}*/
+}
+
+std::vector<Blob*> FullyConnectedNeuron::getVariables()
+{
+	std::vector<Blob*> v;
+	v.push_back(Weights);
+	v.push_back(Biases);
+	return v;
 }

@@ -12,5 +12,6 @@ public:
 
 	void forward();
 	void backprop();
+	std::vector<Blob*> getVariables();
 };
 

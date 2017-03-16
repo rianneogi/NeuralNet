@@ -4,7 +4,7 @@ int main()
 {
 	srand(time(0));
 
-	test_conv();
+	test_fc();
 
 	_getch();
 

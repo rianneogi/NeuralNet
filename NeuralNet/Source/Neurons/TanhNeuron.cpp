@@ -36,3 +36,8 @@ void TanhNeuron::backprop()
 		mInput->Delta(i) = mOutput->Delta(i)*(1.0 - mOutput->Data(i)*mOutput->Data(i));
 	}
 }
+
+std::vector<Blob*> TanhNeuron::getVariables()
+{
+	return std::vector<Blob*>();
+}

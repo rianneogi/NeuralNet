@@ -19,3 +19,8 @@ void Col2ImNeuron::forward()
 void Col2ImNeuron::backprop()
 {
 }
+
+std::vector<Blob*> Col2ImNeuron::getVariables()
+{
+	return std::vector<Blob*>();
+}

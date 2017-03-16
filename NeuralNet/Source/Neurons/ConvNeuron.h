@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FullyConnectedNeuron.h"
+#include "../Neuron.h"
 
 class ConvNeuron : public Neuron
 {
@@ -16,11 +16,9 @@ public:
 
 	uint64_t BatchSize;
 
-	Tensor Weights;
-	Tensor Biases;
+	Blob* Weights;
+	Blob* Biases;
 
-	Tensor Tmp1;
-	Tensor Tmp2;
 	Tensor Ones;
 
 	Float LearningRate;
@@ -31,5 +29,6 @@ public:
 
 	void forward();
 	void backprop();
+	std::vector<Blob*> getVariables();
 };
 

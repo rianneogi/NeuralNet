@@ -121,6 +121,7 @@
     <Manifest />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Optimizer.cpp" />
     <ClCompile Include="Source\Neurons\LeakyReLUNeuron.cpp" />
     <ClCompile Include="Source\Neurons\ReshapeNeuron.cpp" />
     <ClCompile Include="Source\Blob.cpp" />
@@ -136,11 +137,13 @@
     <ClCompile Include="Source\Neuron.cpp" />
     <ClCompile Include="Source\Neurons\SigmoidNeuron.cpp" />
     <ClCompile Include="Source\Neurons\TanhNeuron.cpp" />
+    <ClCompile Include="Source\Optimizers\StandardOptimizer.cpp" />
     <ClCompile Include="Source\Tensor.cpp" />
     <ClCompile Include="Source\Tests.cpp" />
     <ClCompile Include="Source\UtilFuncs.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Optimizer.h" />
     <ClInclude Include="Source\Neurons\LeakyReLUNeuron.h" />
     <ClInclude Include="Source\Neurons\ReshapeNeuron.h" />
     <ClInclude Include="Source\Blob.h" />
@@ -155,6 +158,7 @@
     <ClInclude Include="Source\Neuron.h" />
     <ClInclude Include="Source\Neurons\SigmoidNeuron.h" />
     <ClInclude Include="Source\Neurons\TanhNeuron.h" />
+    <ClInclude Include="Source\Optimizers\StandardOptimizer.h" />
     <ClInclude Include="Source\Tensor.h" />
     <ClInclude Include="Source\Tests.h" />
     <ClInclude Include="Source\Typedefs.h" />

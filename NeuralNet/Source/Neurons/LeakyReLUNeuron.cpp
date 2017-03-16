@@ -30,3 +30,8 @@ void LeakyReLUNeuron::backprop()
 		mInput->Delta(i) = mOutput->Data(i) < 0.0? LeakFactor*mOutput->Delta(i): mOutput->Delta(i);
 	}
 }
+
+std::vector<Blob*> LeakyReLUNeuron::getVariables()
+{
+	return std::vector<Blob*>();
+}

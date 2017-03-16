@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ConvNeuron.h"
+#include "../Neuron.h"
 
 //Fully connected Tanh Neuron
 //	Input: Matrix: Batch of input vectors
@@ -21,5 +21,6 @@ public:
 
 	void forward();
 	void backprop();
+	std::vector<Blob*> getVariables();
 };
 
