@@ -142,6 +142,7 @@
     <ClCompile Include="Source\Tensor.cpp" />
     <ClCompile Include="Source\Tests.cpp" />
     <ClCompile Include="Source\UtilFuncs.cpp" />
+    <ClCompile Include="Source\TensorGPU.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Optimizer.h" />
@@ -165,6 +166,7 @@
     <ClInclude Include="Source\Tests.h" />
     <ClInclude Include="Source\Typedefs.h" />
     <ClInclude Include="Source\UtilFuncs.h" />
+    <ClInclude Include="Source\TensorGPU.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

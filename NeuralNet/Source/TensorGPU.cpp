@@ -1,12 +1,10 @@
-#include "Tensor.h"
+#include "TensorGPU.h"
 
-#define USE_MALLOC
-
-Tensor::Tensor() : mData(NULL), mSize(0)
+TensorGPU::TensorGPU() : mData(NULL), mSize(0)
 {
 }
 
-Tensor::Tensor(const TensorShape& shape) : mData(NULL), mShape(shape), mSize(1)
+TensorGPU::TensorGPU(const TensorShape& shape) : mData(NULL), mShape(shape), mSize(1)
 {
 	assert(shape.size() <= 4 && "Max supported tensor shape is 4");
 	for (unsigned int x : mShape)
@@ -17,7 +15,7 @@ Tensor::Tensor(const TensorShape& shape) : mData(NULL), mShape(shape), mSize(1)
 	allocate();
 }
 
-Tensor::Tensor(Float* data, const TensorShape& shape) : mData(data), mShape(shape), mSize(1)
+TensorGPU::TensorGPU(Float* data, const TensorShape& shape) : mData(data), mShape(shape), mSize(1)
 {
 	assert(shape.size() <= 4 && "Max supported tensor shape is 4");
 	for (unsigned int x : mShape)
@@ -26,17 +24,17 @@ Tensor::Tensor(Float* data, const TensorShape& shape) : mData(data), mShape(shap
 	}
 }
 
-Tensor::~Tensor()
+TensorGPU::~TensorGPU()
 {
 	//if(mSelfAllocated)
 	//	freememory();
 }
 
-Tensor::Tensor(const Tensor& other) : mData(other.mData), mShape(other.mShape), mSize(other.mSize)
+TensorGPU::TensorGPU(const TensorGPU& other) : mData(other.mData), mShape(other.mShape), mSize(other.mSize)
 {
 }
 
-Float& Tensor::operator()(uint64_t a) const
+Float& TensorGPU::operator()(uint64_t a) const
 {
 #ifdef NN_DEBUG
 	assert(a < mSize);
@@ -44,7 +42,7 @@ Float& Tensor::operator()(uint64_t a) const
 	return mData[a];
 }
 
-Float& Tensor::operator()(uint64_t a, uint64_t b) const
+Float& TensorGPU::operator()(uint64_t a, uint64_t b) const
 {
 #ifdef NN_DEBUG
 	assert(mShape.size() >= 1);
@@ -54,7 +52,7 @@ Float& Tensor::operator()(uint64_t a, uint64_t b) const
 	return mData[a*mShape[1] + b];
 }
 
-Float& Tensor::operator()(uint64_t a, uint64_t b, uint64_t c) const
+Float& TensorGPU::operator()(uint64_t a, uint64_t b, uint64_t c) const
 {
 #ifdef NN_DEBUG
 	assert(mShape.size() >= 2);
@@ -62,10 +60,10 @@ Float& Tensor::operator()(uint64_t a, uint64_t b, uint64_t c) const
 	assert(b < mShape[1]);
 	assert(c < mShape[2]);
 #endif
-	return mData[a*mShape[1]*mShape[2] + b*mShape[2] + c];
+	return mData[a*mShape[1] * mShape[2] + b*mShape[2] + c];
 }
 
-Float& Tensor::operator()(uint64_t a, uint64_t b, uint64_t c, uint64_t d) const
+Float& TensorGPU::operator()(uint64_t a, uint64_t b, uint64_t c, uint64_t d) const
 {
 #ifdef NN_DEBUG
 	assert(mShape.size() >= 3);
@@ -74,10 +72,10 @@ Float& Tensor::operator()(uint64_t a, uint64_t b, uint64_t c, uint64_t d) const
 	assert(c < mShape[2]);
 	assert(d < mShape[3]);
 #endif
-	return mData[a*mShape[1]*mShape[2]*mShape[3] + b*mShape[2]*mShape[3] + c*mShape[3] + d];
+	return mData[a*mShape[1] * mShape[2] * mShape[3] + b*mShape[2] * mShape[3] + c*mShape[3] + d];
 }
 
-void Tensor::allocate()
+void TensorGPU::allocate()
 {
 	//printf("Allocation tensor of size: %d\n", mSize);
 #ifdef USE_MALLOC
@@ -91,7 +89,7 @@ void Tensor::allocate()
 #endif
 }
 
-void Tensor::freememory()
+void TensorGPU::freememory()
 {
 	if (mData != NULL)
 	{
@@ -106,12 +104,12 @@ void Tensor::freememory()
 	}
 }
 
-void Tensor::setzero()
+void TensorGPU::setzero()
 {
 	memset(mData, 0, sizeof(Float)*mSize);
 }
 
-void Tensor::setconstant(Float c)
+void TensorGPU::setconstant(Float c)
 {
 	for (int i = 0; i < mSize; i++)
 	{
@@ -119,7 +117,7 @@ void Tensor::setconstant(Float c)
 	}
 }
 
-void Tensor::setidentity()
+void TensorGPU::setidentity()
 {
 	setzero();
 	assert(mShape.size() == 2 && "Not a matrix");
@@ -130,19 +128,7 @@ void Tensor::setidentity()
 	}
 }
 
-//Tensor Tensor::subtensor(const TensorShape& begin, const TensorShape& size)
-//{
-//	assert(begin.size() == mShape.size() && size.size() == mShape.size());
-//	unsigned int ptr = 0;
-//	for (unsigned int i = 0; i <= begin.size(); i++)
-//	{
-//		ptr *= mShape[i];
-//		ptr += begin[i];
-//	}
-//	return Tensor(&mData[ptr], size);
-//}
-
-Tensor Tensor::cut(uint64_t begin, uint64_t len) const
+TensorGPU TensorGPU::cut(uint64_t begin, uint64_t len) const
 {
 	//printf("%d %d %d\n", begin, len, mShape[0]);
 #ifdef NN_DEBUG
@@ -150,10 +136,10 @@ Tensor Tensor::cut(uint64_t begin, uint64_t len) const
 #endif
 	TensorShape shape = mShape;
 	shape[0] = len;
-	return Tensor(&mData[begin*(mSize/mShape[0])], shape);
+	return TensorGPU(&mData[begin*(mSize / mShape[0])], shape);
 }
 
-uint64_t Tensor::rows() const
+uint64_t TensorGPU::rows() const
 {
 #ifdef NN_DEBUG
 	assert(mShape.size() >= 1);
@@ -161,7 +147,7 @@ uint64_t Tensor::rows() const
 	return mShape[0];
 }
 
-uint64_t Tensor::cols() const
+uint64_t TensorGPU::cols() const
 {
 #ifdef NN_DEBUG
 	assert(mShape.size() >= 2);
@@ -169,7 +155,7 @@ uint64_t Tensor::cols() const
 	return mShape[1];
 }
 
-void Tensor::print() const
+void TensorGPU::print() const
 {
 	for (int i = 0; i < mShape[0]; i++)
 	{
@@ -181,45 +167,11 @@ void Tensor::print() const
 	}
 }
 
-void Tensor::printshape() const
+void TensorGPU::printshape() const
 {
 	for (int i = 0; i < mShape.size(); i++)
 	{
 		printf("%d ", mShape[i]);
 	}
 	printf("\n");
-}
-
-TensorShape make_shape(uint64_t a)
-{
-	TensorShape shape;
-	shape.push_back(a);
-	return shape;
-}
-
-TensorShape make_shape(uint64_t a, uint64_t b)
-{
-	TensorShape shape;
-	shape.push_back(a);
-	shape.push_back(b);
-	return shape;
-}
-
-TensorShape make_shape(uint64_t a, uint64_t b, uint64_t c)
-{
-	TensorShape shape;
-	shape.push_back(a);
-	shape.push_back(b);
-	shape.push_back(c);
-	return shape;
-}
-
-TensorShape make_shape(uint64_t a, uint64_t b, uint64_t c, uint64_t d)
-{
-	TensorShape shape;
-	shape.push_back(a);
-	shape.push_back(b);
-	shape.push_back(c);
-	shape.push_back(d);
-	return shape;
 }

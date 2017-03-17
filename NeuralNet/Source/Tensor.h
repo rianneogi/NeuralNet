@@ -11,7 +11,6 @@ public:
 	TensorShape mShape;
 	uint64_t mSize;
 	Float* mData;
-	bool mSelfAllocated;
 
 	Tensor();
 	Tensor(const Tensor& other);
