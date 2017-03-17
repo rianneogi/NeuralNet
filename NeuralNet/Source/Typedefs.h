@@ -1,7 +1,7 @@
 #pragma once
 
 //#define NN_DEBUG
-#define USE_GPU
+//#define USE_GPU
 
 #include "math.h"
 #include <vector>
@@ -16,6 +16,6 @@
 
 #ifdef USE_GPU
 typedef cl_float Float;
-#elif
+#else
 typedef double Float;
 #endif
