@@ -2,9 +2,6 @@
 
 #include "Tensor.h"
 
-extern cl_context gCLContext;
-extern cl_command_queue gCLQueue;
-
 class TensorGPU
 {
 public:
@@ -48,7 +45,7 @@ public:
 
 void cl_error(cl_int err);
 
-inline void gemm_gpu(TensorGPU* m1, TensorGPU* m2, TensorGPU* res, clblasTranspose trans_m1, clblasTranspose trans_m2, Float alpha, Float beta)
+inline void gemm_gpu(Tensor* m1, Tensor* m2, Tensor* res, clblasTranspose trans_m1, clblasTranspose trans_m2, Float alpha, Float beta)
 {
 #ifdef NN_DEBUG
 	uint64_t M = trans_m1 == CblasNoTrans ? m1->rows() : m1->cols();
@@ -75,7 +72,7 @@ inline void gemm_gpu(TensorGPU* m1, TensorGPU* m2, TensorGPU* res, clblasTranspo
 		printf("ERROR: sgemm: %d\n", err);
 		cl_error(err);
 	}
-	printf("%d\n", event);
+	//printf("%d %d %d\n", m1->mMemory, m2->mMemory, res->mMemory);
 	err = clWaitForEvents(1, &event); 
 	if (err != CL_SUCCESS)
 	{

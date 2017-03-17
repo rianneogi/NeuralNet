@@ -43,7 +43,7 @@ ConvNeuron::~ConvNeuron()
 	BiasesDelta.freememory();*/
 	delete Weights;
 	delete Biases;
-	Ones.freememory();
+	Ones.freemem();
 }
 
 void ConvNeuron::forward()

@@ -11,8 +11,8 @@ Blob::Blob(const TensorShape& shape) : Data(shape), Delta(shape)
 
 Blob::~Blob()
 {
-	Data.freememory();
-	Delta.freememory();
+	Data.freemem();
+	Delta.freemem();
 }
 
 void Blob::reshape(const TensorShape& shape)

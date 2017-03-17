@@ -19,8 +19,8 @@ AdamOptimizer::~AdamOptimizer()
 	assert(Momentum.size() == Velocity.size());
 	for (size_t i = 0; i < Momentum.size(); i++)
 	{
-		Momentum[i].freememory();
-		Velocity[i].freememory();
+		Momentum[i].freemem();
+		Velocity[i].freemem();
 	}
 }
 

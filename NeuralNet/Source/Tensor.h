@@ -1,7 +1,9 @@
 #pragma once
 
 #include "UtilFuncs.h"
-//#include <unsupported\Eigen\CXX11\src\Tensor\TensorMap.h>
+
+extern cl_context gCLContext;
+extern cl_command_queue gCLQueue;
 
 typedef std::vector<uint64_t> TensorShape;
 
@@ -11,6 +13,7 @@ public:
 	TensorShape mShape;
 	uint64_t mSize;
 	Float* mData;
+	cl_mem mMemory;
 
 	Tensor();
 	Tensor(const Tensor& other);
@@ -25,8 +28,15 @@ public:
 	Float& operator()(uint64_t a, uint64_t b, uint64_t c) const;
 	Float& operator()(uint64_t a, uint64_t b, uint64_t c, uint64_t d) const;
 
-	void allocate();
-	void freememory();
+	void allocateCPU();
+	void allocateGPU();
+
+	void freemem();
+	void freeCPU();
+	void freeGPU();
+
+	void copyToGPU();
+	void copyToCPU();
 
 	void setzero();
 	void setconstant(Float c);
@@ -58,7 +68,7 @@ inline void gemm_cpu(Tensor* m1, Tensor* m2, Tensor* res, CBLAS_TRANSPOSE trans_
 	assert(M == res->rows());
 	assert(N == res->cols());
 #endif
-	cblas_dgemm(CblasRowMajor, trans_m1, trans_m2,
+	cblas_sgemm(CblasRowMajor, trans_m1, trans_m2,
 		res->rows(), //M
 		res->cols(), //N
 		trans_m1 == CblasNoTrans ? m1->cols() : m1->rows(), //K

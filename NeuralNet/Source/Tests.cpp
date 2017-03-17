@@ -329,10 +329,10 @@ void test_fc()
 	}
 	printf("Accuracy: %f\n", (acc*1.0) / inputs_test.rows());
 
-	inputs_train.freememory();
-	inputs_test.freememory();
-	outputs_train.freememory();
-	outputs_test.freememory();
+	inputs_train.freeCPU();
+	inputs_test.freeCPU();
+	outputs_train.freeCPU();
+	outputs_test.freeCPU();
 
 	//nn.save("net_handwriting.txt");
 	_getch();
@@ -390,10 +390,10 @@ void test_conv()
 	}
 	printf("Accuracy: %f\n", (acc*1.0) / inputs_test.rows());
 
-	inputs_train.freememory();
-	inputs_test.freememory();
-	outputs_train.freememory();
-	outputs_test.freememory();
+	inputs_train.freeCPU();
+	inputs_test.freeCPU();
+	outputs_train.freeCPU();
+	outputs_test.freeCPU();
 
 	_getch();
 }
@@ -464,6 +464,12 @@ void test_gemm()
 	gemm_cpu(&t1_t, &t2, &t3, CblasTrans, CblasNoTrans, 1, 0);
 	t3.print();
 
+	t1.freeCPU();
+	t1_t.freeCPU();
+	t2.freeCPU();
+	t2_t.freeCPU();
+	t3.freeCPU();
+
 	_getch();
 }
 
@@ -512,7 +518,7 @@ void test_im2col()
 
 void test_gemm_gpu()
 {
-	TensorGPU t1(make_shape(2, 3));
+	Tensor t1(make_shape(2, 3));
 	t1(0, 0) = -1;
 	t1(0, 1) = 1;
 	t1(0, 2) = 4;
@@ -521,7 +527,7 @@ void test_gemm_gpu()
 	t1(1, 2) = -3;
 	t1.print();
 
-	TensorGPU t1_t(make_shape(3, 2));
+	Tensor t1_t(make_shape(3, 2));
 	t1_t(0, 0) = -1;
 	t1_t(1, 0) = 1;
 	t1_t(2, 0) = 4;
@@ -530,7 +536,7 @@ void test_gemm_gpu()
 	t1_t(2, 1) = -3;
 	t1_t.print();
 
-	TensorGPU t2(make_shape(3, 4));
+	Tensor t2(make_shape(3, 4));
 	t2(0, 0) = 2;
 	t2(0, 1) = 3;
 	t2(0, 2) = -2;
@@ -545,7 +551,7 @@ void test_gemm_gpu()
 	t2(2, 3) = 10;
 	t2.print();
 
-	TensorGPU t2_t(make_shape(4, 3));
+	Tensor t2_t(make_shape(4, 3));
 	t2_t(0, 0) = 2;
 	t2_t(1, 0) = 3;
 	t2_t(2, 0) = -2;
@@ -560,11 +566,19 @@ void test_gemm_gpu()
 	t2_t(3, 2) = 10;
 	t2_t.print();
 
-	TensorGPU t3(make_shape(2, 4));
+	Tensor t3(make_shape(2, 4));
 	t3.setzero();
 
+	t1.allocateGPU();
+	t1_t.allocateGPU();
+	t2.allocateGPU();
+	t2_t.allocateGPU();
+	t3.allocateGPU();
+	
 	t1.copyToGPU();
 	t2.copyToGPU();
+	t1_t.copyToGPU();
+	t2_t.copyToGPU();
 	t3.copyToGPU();
 
 	//Mat Mul
@@ -575,12 +589,21 @@ void test_gemm_gpu()
 	gemm_gpu(&t1, &t2, &t3, clblasNoTrans, clblasNoTrans, 1, 0);
 	t3.copyToCPU();
 	t3.print();
-	/*gemm_gpu(&t1_t, &t2_t, &t3, clblasTrans, clblasTrans, 1, 0);
+	gemm_gpu(&t1_t, &t2_t, &t3, clblasTrans, clblasTrans, 1, 0);
+	t3.copyToCPU();
 	t3.print();
 	gemm_gpu(&t1, &t2_t, &t3, clblasNoTrans, clblasTrans, 1, 0);
+	t3.copyToCPU();
 	t3.print();
 	gemm_gpu(&t1_t, &t2, &t3, clblasTrans, clblasNoTrans, 1, 0);
-	t3.print();*/
+	t3.copyToCPU();
+	t3.print();
+
+	t1.freemem();
+	t2.freemem();
+	t1_t.freemem();
+	t2_t.freemem();
+	t3.freemem();
 
 	_getch();
 }

@@ -17,5 +17,5 @@
 #ifdef USE_GPU
 typedef cl_float Float;
 #else
-typedef double Float;
+typedef float Float;
 #endif
