@@ -61,14 +61,14 @@ inline void gemm_gpu(TensorGPU* m1, TensorGPU* m2, TensorGPU* res, clblasTranspo
 #endif
 	cl_event event = NULL;
 	cl_int err = clblasSgemm(clblasRowMajor, trans_m1, trans_m2,
-		res->rows()-1, //M
-		res->cols()-1, //N
-		trans_m1 == clblasNoTrans ? m1->cols()-1 : m1->rows()-1, //K
+		res->rows(), //M
+		res->cols(), //N
+		trans_m1 == clblasNoTrans ? m1->cols() : m1->rows(), //K
 		alpha,
-		m1->mMemory, m1->cols()+1, m1->cols(),
-		m2->mMemory, m2->cols()+1, m2->cols(),
+		m1->mMemory, 0, m1->cols(),
+		m2->mMemory, 0, m2->cols(),
 		beta,
-		res->mMemory, res->cols()+1, res->cols(),
+		res->mMemory, 0, res->cols(),
 		1, &gCLQueue, 0, NULL, &event);
 	if (err != CL_SUCCESS)
 	{

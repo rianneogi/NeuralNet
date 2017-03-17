@@ -561,6 +561,11 @@ void test_gemm_gpu()
 	t2_t.print();
 
 	TensorGPU t3(make_shape(2, 4));
+	t3.setzero();
+
+	t1.copyToGPU();
+	t2.copyToGPU();
+	t3.copyToGPU();
 
 	//Mat Mul
 	/*clblasDgemm(clblasRowMajor, clblasNoTrans, clblasNoTrans, t1.cols(), t2.rows(),

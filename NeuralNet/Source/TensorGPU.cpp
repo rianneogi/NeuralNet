@@ -95,21 +95,27 @@ void TensorGPU::allocate()
 	{
 		printf("ERROR: allocating tensor GPU\n");
 	}
+	//size_t ld = -1;
+	//size_t size = -1;
+	//cl_int err;
+	//mMemory = clblasCreateMatrix(gCLContext, clblasRowMajor, rows(), cols(), sizeof(cl_float), 0, &ld, &size, &err);
+	////clblasWriteMatrix()
+	//printf("%d %d %d %d\n", rows(), cols(), ld, size);
 }
 
 void TensorGPU::freememory()
 {
-//	if (mData != NULL)
-//	{
-//		//printf("Freeing memory: %d\n", mSize);
-//#ifdef USE_MALLOC
-//		free(mData);
-//		mData = NULL;
-//#else
-//		delete[] mData;
-//		mData = NULL;
-//#endif
-//	}
+	if (mData != NULL)
+	{
+		//printf("Freeing memory: %d\n", mSize);
+#ifdef USE_MALLOC
+		free(mData);
+		mData = NULL;
+#else
+		delete[] mData;
+		mData = NULL;
+#endif
+	}
 	clReleaseMemObject(mMemory);
 }
 
@@ -120,7 +126,7 @@ void TensorGPU::setzero()
 
 void TensorGPU::setconstant(cl_float c)
 {
-	for (int i = 0; i < mSize; i++)
+	for (uint64_t i = 0; i < mSize; i++)
 	{
 		mData[i] = c;
 	}
@@ -131,7 +137,7 @@ void TensorGPU::setidentity()
 	setzero();
 	assert(mShape.size() == 2 && "Not a matrix");
 	assert(mShape[0] == mShape[1] && "Not a square matrix");
-	for (int i = 0; i < mShape[0]; i++)
+	for (uint64_t i = 0; i < mShape[0]; i++)
 	{
 		operator()(i, i) = 1;
 	}
@@ -155,6 +161,13 @@ void TensorGPU::copyToGPU()
 	{
 		printf("ERROR: copytoGPU: %d\n", err);
 	}
+	/*cl_int err = clblasWriteMatrix(clblasRowMajor, mSize * sizeof(cl_float), mSize * sizeof(cl_float), sizeof(cl_float), 
+		mData, 0, cols(), mMemory, 0, cols(),
+		gCLQueue, 1, NULL);
+	if (err != CL_SUCCESS)
+	{
+		printf("ERROR: copytoGPU: %d\n", err);
+	}*/
 }
 
 void TensorGPU::copyToCPU()
@@ -164,6 +177,13 @@ void TensorGPU::copyToCPU()
 	{
 		printf("ERROR: copytoCPU: %d\n", err);
 	}
+	/*cl_int err = clblasReadMatrix(clblasRowMajor, mSize * sizeof(cl_float), mSize * sizeof(cl_float), sizeof(cl_float), 
+		mMemory, 0, cols(), mData, 0, cols(),
+		gCLQueue, 1, NULL);
+	if (err != CL_SUCCESS)
+	{
+		printf("ERROR: copytoGPU: %d\n", err);
+	}*/
 }
 
 uint64_t TensorGPU::rows() const
@@ -212,7 +232,7 @@ void cl_error(cl_int err) {
 		printf("ERROR CL_DEVICE_NOT_AVAILABLE:\n  clCreateContext if a device in devices is currently not available even though the device was returned by clGetDeviceIDs.\n");
 		break;
 	case CL_COMPILER_NOT_AVAILABLE:
-		printf("ERROR CL_COMPILER_NOT_AVAILABLE:\n  clBuildProgram  if program is created with clCreateProgramWithSource and a compiler is not available i.e. CL_DEVICE_COMPILER_AVAILABLE specified in the table of OpenCL Device Queries for clGetDeviceInfo is set to CL_FALSE.\n");
+		//printf("ERROR CL_COMPILER_NOT_AVAILABLE:\n  clBuildProgram  if program is created with clCreateProgramWithSource and a compiler is not available i.e. CL_DEVICE_COMPILER_AVAILABLE specified in the table of OpenCL Device Queries for clGetDeviceInfo is set to CL_FALSE.\n");
 		break;
 	case CL_MEM_OBJECT_ALLOCATION_FAILURE:
 		printf("ERROR CL_MEM_OBJECT_ALLOCATION_FAILURE:\n  if there is a failure to allocate memory for buffer object.\n");
@@ -227,7 +247,6 @@ void cl_error(cl_int err) {
 		printf("ERROR CL_PROFILING_INFO_NOT_AVAILABLE:\n  clGetEventProfilingInfo if the CL_QUEUE_PROFILING_ENABLE flag is not set for the command-queue, if the execution status of the command identified by event is not CL_COMPLETE or if event is a user event object.\n");
 		break;
 	case CL_MEM_COPY_OVERLAP:
-		printf("ERROR CL_MEM_COPY_OVERLAP:\n  clEnqueueCopyBuffer, clEnqueueCopyBufferRect, clEnqueueCopyImage  if src_buffer and dst_buffer are the same buffer or subbuffer object and the source and destination regions overlap or if src_buffer and dst_buffer are different sub-buffers of the same associated buffer object and they overlap. The regions overlap if src_offset ? to dst_offset ? to src_offset + size – 1, or if dst_offset ? to src_offset ? to dst_offset + size – 1.\n");
 		break;
 	case CL_IMAGE_FORMAT_MISMATCH:
 		printf("ERROR CL_IMAGE_FORMAT_MISMATCH:\n  clEnqueueCopyImage  if src_image and dst_image do not use the same image format.\n");
