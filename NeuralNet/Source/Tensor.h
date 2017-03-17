@@ -69,7 +69,7 @@ inline void gemm(Tensor* m1, Tensor* m2, Tensor* res, clblasTranspose trans_m1, 
 		beta, 
 		res->mData, res->cols());
 }
-#elif
+#else
 inline void gemm(Tensor* m1, Tensor* m2, Tensor* res, CBLAS_TRANSPOSE trans_m1, CBLAS_TRANSPOSE trans_m2, Float alpha, Float beta)
 {
 #ifdef NN_DEBUG
