@@ -41,6 +41,7 @@ static const size_t off = 1;
 static const size_t offA = K + 1;   /* K + off */
 static const size_t offB = N + 1;   /* N + off */
 static const size_t offC = N + 1;   /* N + off */
+
 static void printResult(const char* str)
 {
 	size_t i, j, nrows;
@@ -149,7 +150,8 @@ int main()
 	srand(time(0));
 
 	initCL();
-	//test_conv();
+
+	test_gemm_gpu();
 
 	_getch();
 

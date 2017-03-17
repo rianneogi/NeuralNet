@@ -47,30 +47,7 @@ TensorShape make_shape(uint64_t a, uint64_t b);
 TensorShape make_shape(uint64_t a, uint64_t b, uint64_t c);
 TensorShape make_shape(uint64_t a, uint64_t b, uint64_t c, uint64_t d);
 
-#ifdef USE_GPU
-inline void gemm(Tensor* m1, Tensor* m2, Tensor* res, clblasTranspose trans_m1, clblasTranspose trans_m2, Float alpha, Float beta)
-{
-#ifdef NN_DEBUG
-	uint64_t M = trans_m1 == CblasNoTrans ? m1->rows() : m1->cols();
-	uint64_t N = trans_m2 == CblasNoTrans ? m2->cols() : m2->rows();
-	uint64_t K = trans_m1 == CblasNoTrans ? m1->cols() : m1->rows();
-	uint64_t L = trans_m2 == CblasNoTrans ? m2->rows() : m2->cols();
-	assert(K == L);
-	assert(M == res->rows());
-	assert(N == res->cols());
-#endif
-	clblasSgemm(clblasRowMajor, trans_m1, trans_m2,
-		res->rows(), //M
-		res->cols(), //N
-		trans_m1 == clblasNoTrans ? m1->cols() : m1->rows(), //K
-		alpha, 
-		m1->mData, m1->cols(),
-		m2->mData, m2->cols(),
-		beta, 
-		res->mData, res->cols());
-}
-#else
-inline void gemm(Tensor* m1, Tensor* m2, Tensor* res, CBLAS_TRANSPOSE trans_m1, CBLAS_TRANSPOSE trans_m2, Float alpha, Float beta)
+inline void gemm_cpu(Tensor* m1, Tensor* m2, Tensor* res, CBLAS_TRANSPOSE trans_m1, CBLAS_TRANSPOSE trans_m2, Float alpha, Float beta)
 {
 #ifdef NN_DEBUG
 	uint64_t M = trans_m1 == CblasNoTrans ? m1->rows() : m1->cols();
@@ -91,4 +68,3 @@ inline void gemm(Tensor* m1, Tensor* m2, Tensor* res, CBLAS_TRANSPOSE trans_m1, 
 		beta,
 		res->mData, res->cols());
 }
-#endif

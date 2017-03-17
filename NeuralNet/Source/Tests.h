@@ -9,3 +9,5 @@ void test_conv();
 void test_gemm();
 void test_tensor();
 void test_im2col();
+
+void test_gemm_gpu();

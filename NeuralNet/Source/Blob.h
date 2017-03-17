@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Tensor.h"
+#include "TensorGPU.h"
 
 class Blob
 {

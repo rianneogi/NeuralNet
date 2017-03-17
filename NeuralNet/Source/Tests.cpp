@@ -251,58 +251,6 @@ unsigned int getoutput(const Tensor& output)
 	return maxid;
 }
 
-void test_old()
-{
-	///*Matrix inputs_train = openidx_input("Data/train-images.idx3-ubyte");
-	//Matrix outputs_train = openidx_output("Data/train-labels.idx1-ubyte", 10);
-	//Matrix inputs_test = openidx_input("Data/t10k-images.idx3-ubyte");
-	//Matrix outputs_test = openidx_output("Data/t10k-labels.idx1-ubyte",10);*/
-
-	//TrainingData b1 = load_cifar("Data/cifar-10-batches-bin/data_batch_1.bin");
-	//TrainingData b2 = load_cifar("Data/cifar-10-batches-bin/data_batch_2.bin");
-	//TrainingData b3 = load_cifar("Data/cifar-10-batches-bin/data_batch_3.bin");
-	////TrainingData b4 = load_cifar("Data/cifar-10-batches-bin/data_batch_4.bin");
-	////TrainingData b5 = load_cifar("Data/cifar-10-batches-bin/data_batch_5.bin");
-	//TrainingData b6 = load_cifar("Data/cifar-10-batches-bin/test_batch.bin");
-
-	//Matrix inputs_test = b6.inputs;
-	//Matrix outputs_test = b6.outputs;
-
-	//NeuralNetVectorized nn(b1.inputs.rows(), 0.01, 100);
-	//nn.addLayer(100);
-	////nn.addLayer(100);
-	////nn.addLayer(100);
-	//nn.addLayer(b1.outputs.rows());
-	//nn.randomizeWeights();
-
-	////nn.load("net_handwriting.txt");
-
-	//nn.train(b1.inputs, b1.outputs, 10);
-	//nn.train(b2.inputs, b2.outputs, 10);
-	//nn.train(b3.inputs, b3.outputs, 10);
-	////nn.train(b4.inputs, b4.outputs, 10);
-	////nn.train(b5.inputs, b5.outputs, 10);
-
-	//int acc = 0;
-	//for (size_t i = 0; i < inputs_test.cols(); i++)
-	//{
-	//	if (getoutput(nn.predict(inputs_test.col(i))) == getoutput(outputs_test.col(i)))
-	//	{
-	//		acc++;
-	//	}
-	//	/*else
-	//	{
-	//	printinput(inputs_train.col(i));
-	//	printoutput(nn.forward(inputs_train.col(i)));
-	//	printf("%d %d\n", getoutput(nn.forward(inputs_train.col(i))), getoutput(outputs_train.col(i)));
-	//	}*/
-	//}
-	//printf("Accuracy: %f\n", (acc*1.0) / inputs_test.cols());
-
-	////nn.save("net_handwriting.txt");
-	//_getch();
-}
-
 void test_fc()
 {
 	//MNIST input size: 28x28 = 784
@@ -507,13 +455,13 @@ void test_gemm()
 	t1.rows(), 1, t1.mData, t1.rows(), t2.mData, t2.rows(), 0, t3.mData, t3.rows())*/
 	//cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, t1.rows(), t2.cols(),
 	//	t1.cols(), 1, t1.mData, t1.cols(), t2.mData, t2.cols(), 0, t3.mData, t3.cols());
-	gemm(&t1, &t2, &t3, CblasNoTrans, CblasNoTrans, 1, 0);
+	gemm_cpu(&t1, &t2, &t3, CblasNoTrans, CblasNoTrans, 1, 0);
 	t3.print();
-	gemm(&t1_t, &t2_t, &t3, CblasTrans, CblasTrans, 1, 0);
+	gemm_cpu(&t1_t, &t2_t, &t3, CblasTrans, CblasTrans, 1, 0);
 	t3.print();
-	gemm(&t1, &t2_t, &t3, CblasNoTrans, CblasTrans, 1, 0);
+	gemm_cpu(&t1, &t2_t, &t3, CblasNoTrans, CblasTrans, 1, 0);
 	t3.print();
-	gemm(&t1_t, &t2, &t3, CblasTrans, CblasNoTrans, 1, 0);
+	gemm_cpu(&t1_t, &t2, &t3, CblasTrans, CblasNoTrans, 1, 0);
 	t3.print();
 
 	_getch();
@@ -560,4 +508,74 @@ void test_im2col()
 	
 	b.forward(input);
 	l1convBlob->Data.print();
+}
+
+void test_gemm_gpu()
+{
+	TensorGPU t1(make_shape(2, 3));
+	t1(0, 0) = -1;
+	t1(0, 1) = 1;
+	t1(0, 2) = 4;
+	t1(1, 0) = -4;
+	t1(1, 1) = 0;
+	t1(1, 2) = -3;
+	t1.print();
+
+	TensorGPU t1_t(make_shape(3, 2));
+	t1_t(0, 0) = -1;
+	t1_t(1, 0) = 1;
+	t1_t(2, 0) = 4;
+	t1_t(0, 1) = -4;
+	t1_t(1, 1) = 0;
+	t1_t(2, 1) = -3;
+	t1_t.print();
+
+	TensorGPU t2(make_shape(3, 4));
+	t2(0, 0) = 2;
+	t2(0, 1) = 3;
+	t2(0, 2) = -2;
+	t2(0, 3) = 1;
+	t2(1, 0) = 4;
+	t2(1, 1) = 0;
+	t2(1, 2) = 5;
+	t2(1, 3) = 6;
+	t2(2, 0) = 7;
+	t2(2, 1) = 8;
+	t2(2, 2) = 9;
+	t2(2, 3) = 10;
+	t2.print();
+
+	TensorGPU t2_t(make_shape(4, 3));
+	t2_t(0, 0) = 2;
+	t2_t(1, 0) = 3;
+	t2_t(2, 0) = -2;
+	t2_t(3, 0) = 1;
+	t2_t(0, 1) = 4;
+	t2_t(1, 1) = 0;
+	t2_t(2, 1) = 5;
+	t2_t(3, 1) = 6;
+	t2_t(0, 2) = 7;
+	t2_t(1, 2) = 8;
+	t2_t(2, 2) = 9;
+	t2_t(3, 2) = 10;
+	t2_t.print();
+
+	TensorGPU t3(make_shape(2, 4));
+
+	//Mat Mul
+	/*clblasDgemm(clblasRowMajor, clblasNoTrans, clblasNoTrans, t1.cols(), t2.rows(),
+	t1.rows(), 1, t1.mData, t1.rows(), t2.mData, t2.rows(), 0, t3.mData, t3.rows())*/
+	//cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, t1.rows(), t2.cols(),
+	//	t1.cols(), 1, t1.mData, t1.cols(), t2.mData, t2.cols(), 0, t3.mData, t3.cols());
+	gemm_gpu(&t1, &t2, &t3, clblasNoTrans, clblasNoTrans, 1, 0);
+	t3.copyToCPU();
+	t3.print();
+	/*gemm_gpu(&t1_t, &t2_t, &t3, clblasTrans, clblasTrans, 1, 0);
+	t3.print();
+	gemm_gpu(&t1, &t2_t, &t3, clblasNoTrans, clblasTrans, 1, 0);
+	t3.print();
+	gemm_gpu(&t1_t, &t2, &t3, clblasTrans, clblasNoTrans, 1, 0);
+	t3.print();*/
+
+	_getch();
 }
