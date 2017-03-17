@@ -40,7 +40,11 @@ FullyConnectedNeuron::~FullyConnectedNeuron()
 
 void FullyConnectedNeuron::forward()
 {
-	gemm(&mInput->Data, &Weights->Data, &mOutput->Data, CblasNoTrans, CblasNoTrans, 1, 0);;
+#ifdef USE_GPU
+	gemm(&mInput->Data, &Weights->Data, &mOutput->Data, clblasNoTrans, clblasNoTrans, 1, 0);
+#elif
+	gemm(&mInput->Data, &Weights->Data, &mOutput->Data, CblasNoTrans, CblasNoTrans, 1, 0);
+#endif
 	for (unsigned int i = 0; i < mInput->Data.rows(); i++)
 	{
 		for (unsigned int j = 0; j < Biases->Data.mSize; j++)
@@ -52,21 +56,21 @@ void FullyConnectedNeuron::forward()
 
 void FullyConnectedNeuron::backprop()
 {
+#ifdef USE_GPU
+	//Weights
+	gemm(&mOutput->Delta, &Weights->Data, &mInput->Delta, clblasNoTrans, clblasTrans, 1, 0);
+	gemm(&mInput->Data, &mOutput->Delta, &Weights->Delta, clblasTrans, clblasNoTrans, 1, 0);
+
+	//Biases
+	gemm(&Ones, &mOutput->Delta, &Biases->Delta, clblasNoTrans, clblasNoTrans, 1, 0);
+#elif
 	//Weights
 	gemm(&mOutput->Delta, &Weights->Data, &mInput->Delta, CblasNoTrans, CblasTrans, 1, 0);
 	gemm(&mInput->Data, &mOutput->Delta, &Weights->Delta, CblasTrans, CblasNoTrans, 1, 0);
-	/*for (int i = 0; i < Weights.mSize; i++)
-	{
-		Weights(i) -= Tmp1(i);
-	}
-*/
+
 	//Biases
 	gemm(&Ones, &mOutput->Delta, &Biases->Delta, CblasNoTrans, CblasNoTrans, 1, 0);
-	
-	/*for (int i = 0; i < Biases.mSize; i++)
-	{
-		Biases(i) -= Tmp2(i);
-	}*/
+#endif
 }
 
 std::vector<Blob*> FullyConnectedNeuron::getVariables()

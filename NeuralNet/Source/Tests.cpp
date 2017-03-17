@@ -311,24 +311,28 @@ void test_fc()
 	Board b;
 	int batch_size = 100;
 	double learning_rate = 0.005;
-	int epochs = 100;
+	int epochs = 20;
 
 	Blob* inputBlob = b.newBlob(make_shape(batch_size, 784));
-	Blob* layer1FCBlob = b.newBlob(make_shape(batch_size, 14));
-	Blob* layer1SigBlob = b.newBlob(make_shape(batch_size, 14));
-	Blob* layer2FCBlob = b.newBlob(make_shape(batch_size, 12));
-	Blob* layer2SigBlob = b.newBlob(make_shape(batch_size, 12));
+	Blob* layer1FCBlob = b.newBlob(make_shape(batch_size, 100));
+	Blob* layer1SigBlob = b.newBlob(make_shape(batch_size, 100));
+	Blob* layer2FCBlob = b.newBlob(make_shape(batch_size, 50));
+	Blob* layer2SigBlob = b.newBlob(make_shape(batch_size, 50));
+	/*Blob* layer3FCBlob = b.newBlob(make_shape(batch_size, 12));
+	Blob* layer3SigBlob = b.newBlob(make_shape(batch_size, 12));*/
 	Blob* outputFCBlob = b.newBlob(make_shape(batch_size, 10));
 	Blob* outputSigBlob = b.newBlob(make_shape(batch_size, 10));
 
-	b.setOptimizer(new AdamOptimizer(0.005));
+	b.setOptimizer(new AdamOptimizer(0.0005));
 	b.setErrorFunction(new MeanSquaredError(inputBlob, outputSigBlob, nullptr));
 
 	b.addNeuron(new FullyConnectedNeuron(inputBlob, layer1FCBlob, learning_rate));
 	b.addNeuron(new LeakyReLUNeuron(layer1FCBlob, layer1SigBlob, 0.05));
-	//b.addNeuron(new FullyConnectedNeuron(layer1SigBlob, layer2FCBlob, learning_rate));
-	//b.addNeuron(new LeakyReLUNeuron(layer2FCBlob, layer2SigBlob, 0.05));
-	b.addNeuron(new FullyConnectedNeuron(layer1SigBlob, outputFCBlob, learning_rate));
+	b.addNeuron(new FullyConnectedNeuron(layer1SigBlob, layer2FCBlob, learning_rate));
+	b.addNeuron(new LeakyReLUNeuron(layer2FCBlob, layer2SigBlob, 0.05));
+	/*b.addNeuron(new FullyConnectedNeuron(layer2SigBlob, layer3FCBlob, learning_rate));
+	b.addNeuron(new LeakyReLUNeuron(layer3FCBlob, layer3SigBlob, 0.05));*/
+	b.addNeuron(new FullyConnectedNeuron(layer2SigBlob, outputFCBlob, learning_rate));
 	b.addNeuron(new TanhNeuron(outputFCBlob, outputSigBlob));
 	
 
@@ -401,6 +405,9 @@ void test_conv()
 	Blob* l2tanhBlob = b.newBlob(make_shape(batch_size, 10));
 	Blob* l3fcBlob = b.newBlob(make_shape(batch_size, 10));
 	Blob* l3tanhBlob = b.newBlob(make_shape(batch_size, 10));
+
+	b.setOptimizer(new AdamOptimizer(0.005));
+
 	b.addNeuron(new Im2ColNeuron(inputBlob, l1convBlob, 3, 3));
 	b.addNeuron(new ConvNeuron(l1convBlob, l1fcBlob, learning_rate));
 	b.addNeuron(new LeakyReLUNeuron(l1fcBlob, l1tanhBlob, 0.05));
