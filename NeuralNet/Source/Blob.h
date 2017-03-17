@@ -12,5 +12,8 @@ public:
 	Blob(const TensorShape& shape);
 	~Blob();
 
+	void copyToGPU();
+	void copyToCPU();
+
 	void reshape(const TensorShape& shape);
 };

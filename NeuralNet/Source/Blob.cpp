@@ -15,6 +15,18 @@ Blob::~Blob()
 	Delta.freemem();
 }
 
+void Blob::copyToGPU()
+{
+	Data.copyToGPU();
+	Delta.copyToGPU();
+}
+
+void Blob::copyToCPU()
+{
+	Data.copyToCPU();
+	Delta.copyToCPU();
+}
+
 void Blob::reshape(const TensorShape& shape)
 {
 	Data.mShape = shape;

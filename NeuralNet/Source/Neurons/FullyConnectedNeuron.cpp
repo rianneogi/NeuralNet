@@ -1,7 +1,5 @@
 #include "FullyConnectedNeuron.h"
 
-//#define USE_GPU
-
 FullyConnectedNeuron::FullyConnectedNeuron() : Neuron(), LearningRate(1)
 {
 }
@@ -18,6 +16,8 @@ FullyConnectedNeuron::FullyConnectedNeuron(Blob* input, Blob* output, Float lear
 			Weights->Data(j, i) = rand_init();
 		}
 	}
+	Biases->copyToGPU();
+	Weights->copyToGPU();
 	InputSize = Weights->Data.rows();
 	OutputSize = Weights->Data.cols();
 	BatchSize = output->Data.rows();
@@ -27,6 +27,7 @@ FullyConnectedNeuron::FullyConnectedNeuron(Blob* input, Blob* output, Float lear
 	//BiasesDelta = Tensor(make_shape(1, Biases->Data.mSize));
 	Ones = Tensor(make_shape(1, BatchSize));
 	Ones.setconstant(1);
+	Ones.copyToGPU();
 }
 
 FullyConnectedNeuron::~FullyConnectedNeuron()

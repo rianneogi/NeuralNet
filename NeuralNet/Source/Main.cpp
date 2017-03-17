@@ -151,7 +151,7 @@ int main()
 
 	initCL();
 
-	test_gemm_gpu();
+	test_fc();
 
 	_getch();
 
