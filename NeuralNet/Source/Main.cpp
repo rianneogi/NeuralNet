@@ -6,52 +6,16 @@ cl_context_properties gCLProperties[3] = { CL_CONTEXT_PLATFORM, 0, 0 };
 cl_context gCLContext = 0;
 cl_command_queue gCLQueue = 0;
 
-#define M  4
-#define N  3
-#define K  5
-static const clblasOrder order = clblasRowMajor;
-static const cl_float alpha = 10;
-static const clblasTranspose transA = clblasNoTrans;
-static const cl_float A[M*K] = {
-	11, 12, 13, 14, 15,
-	21, 22, 23, 24, 25,
-	31, 32, 33, 34, 35,
-	41, 42, 43, 44, 45,
-};
-static const size_t lda = K;        /* i.e. lda = K */
-static const clblasTranspose transB = clblasNoTrans;
-static const cl_float B[K*N] = {
-	11, 12, 13,
-	21, 22, 23,
-	31, 32, 33,
-	41, 42, 43,
-	51, 52, 53,
-};
-static const size_t ldb = N;        /* i.e. ldb = N */
-static const cl_float beta = 20;
-static cl_float C[M*N] = {
-	11, 12, 13,
-	21, 22, 23,
-	31, 32, 33,
-	41, 42, 43,
-};
-static const size_t ldc = N;        /* i.e. ldc = N */
-static cl_float result[M*N];
-static const size_t off = 1;
-static const size_t offA = K + 1;   /* K + off */
-static const size_t offB = N + 1;   /* N + off */
-static const size_t offC = N + 1;   /* N + off */
+cl_program gCLProgram;
+cl_kernel gKernelMatAdd;
+cl_kernel gKernelMatSub;
 
-static void printResult(const char* str)
-{
-	size_t i, j, nrows;
-	printf("%s:\n", str);
-	nrows = (sizeof(result) / sizeof(cl_float)) / ldc;
-	for (i = 0; i < nrows; i++) {
-		for (j = 0; j < ldc; j++) {
-			printf("%d ", (int)result[i * ldc + j]);
-		}
-		printf("\n");
+#include <CL\cl_ext.h>
+
+inline void checkErr(cl_int err, const char * name) {
+	if (err != CL_SUCCESS) {
+		std::cerr << "ERROR: " << name << " (" << err << ")" << std::endl;
+		_getch();
 	}
 }
 
@@ -67,6 +31,7 @@ int initCL()
 		printf("clGetPlatformIDs() failed with %d\n", err);
 		return 1;
 	}
+
 	err = clGetDeviceIDs(gCLPlatform, CL_DEVICE_TYPE_GPU, 1, &gCLDevice, NULL);
 	if (err != CL_SUCCESS) {
 		printf("clGetDeviceIDs() failed with %d\n", err);
@@ -92,46 +57,46 @@ int initCL()
 		clReleaseContext(gCLContext);
 		return 1;
 	}
-	/* Prepare OpenCL memory objects and place matrices inside them. */
-	bufA = clCreateBuffer(gCLContext, CL_MEM_READ_ONLY, M * K * sizeof(*A),
-		NULL, &err);
-	bufB = clCreateBuffer(gCLContext, CL_MEM_READ_ONLY, K * N * sizeof(*B),
-		NULL, &err);
-	bufC = clCreateBuffer(gCLContext, CL_MEM_READ_WRITE, M * N * sizeof(*C),
-		NULL, &err);
-	err = clEnqueueWriteBuffer(gCLQueue, bufA, CL_TRUE, 0,
-		M * K * sizeof(*A), A, 0, NULL, NULL);
-	err = clEnqueueWriteBuffer(gCLQueue, bufB, CL_TRUE, 0,
-		K * N * sizeof(*B), B, 0, NULL, NULL);
-	err = clEnqueueWriteBuffer(gCLQueue, bufC, CL_TRUE, 0,
-		M * N * sizeof(*C), C, 0, NULL, NULL);
-	/* Call clblas extended function. Perform gemm for the lower right sub-matrices */
-	err = clblasSgemm(order, transA, transB, M - off, N - off, K - off,
-		alpha, bufA, offA, lda,
-		bufB, offB, ldb, beta,
-		bufC, offC, ldc,
-		1, &gCLQueue, 0, NULL, &event);
-	if (err != CL_SUCCESS) {
-		printf("clblasSgemmEx() failed with %d\n", err);
-		ret = 1;
+
+	char* c = new char[100];
+
+	clGetDeviceInfo(gCLDevice, CL_DEVICE_NAME, 100, c, NULL);
+	printf("ext: %s\n", c);
+
+	std::ifstream file("Source/Kernels/matrix_funcs.cl");
+	checkErr(file.is_open() ? CL_SUCCESS : -1, "Kernels/matrix_funcs.cl");
+	std::string prog(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
+
+	gCLProgram = clCreateProgramWithSource(gCLContext, 1, (const char**)&prog, NULL, &err);
+	checkErr(err, "clCreateProgramFromSource");
+	err = clBuildProgram(gCLProgram, 1, &gCLDevice, NULL, NULL, NULL);
+	checkErr(err, "clBuildProgram");
+	if (err < 0)
+	{
+		size_t log_size;
+		clGetProgramBuildInfo(gCLProgram, gCLDevice, CL_PROGRAM_BUILD_LOG, 0, NULL, &log_size);
+		
+		char* program_log = (char*)malloc(log_size + 1);
+
+		program_log[log_size] = '\0';
+
+		clGetProgramBuildInfo(gCLProgram, gCLDevice, CL_PROGRAM_BUILD_LOG, log_size + 1, program_log, NULL);
+
+		std::cout << "Error::clBuildProgram: " << err << std::endl;
+		std::cout << program_log << std::endl;
+		free(program_log);
+		_getch();
+		//exit(0);
 	}
-	else {
-		/* Wait for calculations to be finished. */
-		err = clWaitForEvents(1, &event);
-		/* Fetch results of calculations from GPU memory. */
-		err = clEnqueueReadBuffer(gCLQueue, bufC, CL_TRUE, 0,
-			M * N * sizeof(*result),
-			result, 0, NULL, NULL);
-		/* At this point you will get the result of SGEMM placed in 'result' array. */
-		puts("");
-		printResult("clblasSgemmEx result");
-	}
-	/* Release OpenCL events. */
-	clReleaseEvent(event);
-	/* Release OpenCL memory objects. */
-	clReleaseMemObject(bufC);
-	clReleaseMemObject(bufB);
-	clReleaseMemObject(bufA);
+
+	gKernelMatAdd = clCreateKernel(gCLProgram, "MatAdd", &err);
+	checkErr(err, "MatAdd");
+	gKernelMatSub = clCreateKernel(gCLProgram, "MatSub", &err);
+	checkErr(err, "MatSub");
+	//cl::Program::Sources source(1, std::make_pair(prog.c_str(), prog.length() + 1));
+	//cl::Program program(context, source);
+	//err = program.build(devices, "");
+	//checkErr(err, "Program::build()");
 	
 	return ret;
 }
@@ -145,17 +110,17 @@ void cleanup()
 	clReleaseContext(gCLContext);
 }
 
-int main()
-{
-	srand(time(0));
-
-	initCL();
-
-	test_fc();
-
-	_getch();
-
-	cleanup();
-
-	return 0;
-}
+//int main()
+//{
+//	srand(time(0));
+//
+//	initCL();
+//
+//	test_kernel();
+//
+//	_getch();
+//
+//	cleanup();
+//
+//	return 0;
+//}

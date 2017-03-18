@@ -140,6 +140,7 @@
     <ClCompile Include="Source\Optimizers\AdamOptimizer.cpp" />
     <ClCompile Include="Source\Optimizers\StandardOptimizer.cpp" />
     <ClCompile Include="Source\Tensor.cpp" />
+    <ClCompile Include="Source\TensorShape.cpp" />
     <ClCompile Include="Source\Tests.cpp" />
     <ClCompile Include="Source\UtilFuncs.cpp" />
     <ClCompile Include="Source\TensorGPU.cpp" />
@@ -163,10 +164,14 @@
     <ClInclude Include="Source\Optimizers\AdamOptimizer.h" />
     <ClInclude Include="Source\Optimizers\StandardOptimizer.h" />
     <ClInclude Include="Source\Tensor.h" />
+    <ClInclude Include="Source\TensorShape.h" />
     <ClInclude Include="Source\Tests.h" />
     <ClInclude Include="Source\Typedefs.h" />
     <ClInclude Include="Source\UtilFuncs.h" />
     <ClInclude Include="Source\TensorGPU.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\Kernels\matrix_funcs.cl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

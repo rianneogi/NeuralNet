@@ -1,11 +1,9 @@
 #pragma once
 
-#include "UtilFuncs.h"
+#include "TensorShape.h"
 
 extern cl_context gCLContext;
 extern cl_command_queue gCLQueue;
-
-typedef std::vector<uint64_t> TensorShape;
 
 class Tensor
 {
@@ -49,13 +47,7 @@ public:
 	uint64_t cols() const;
 
 	void print() const;
-	void printshape() const;
 };
-
-TensorShape make_shape(uint64_t a);
-TensorShape make_shape(uint64_t a, uint64_t b);
-TensorShape make_shape(uint64_t a, uint64_t b, uint64_t c);
-TensorShape make_shape(uint64_t a, uint64_t b, uint64_t c, uint64_t d);
 
 inline void gemm_cpu(Tensor* m1, Tensor* m2, Tensor* res, CBLAS_TRANSPOSE trans_m1, CBLAS_TRANSPOSE trans_m2, Float alpha, Float beta)
 {

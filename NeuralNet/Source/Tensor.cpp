@@ -82,6 +82,10 @@ Float& Tensor::operator()(uint64_t a, uint64_t b, uint64_t c, uint64_t d) const
 
 void Tensor::allocateCPU()
 {
+	if (mData != NULL)
+	{
+		freeCPU();
+	}
 	//printf("Allocation tensor of size: %d\n", mSize);
 #ifdef USE_MALLOC
 	mData = (Float*)malloc(mSize * sizeof(Float));
@@ -96,6 +100,10 @@ void Tensor::allocateCPU()
 
 void Tensor::allocateGPU()
 {
+	if (mMemory != NULL)
+	{
+		freeGPU();
+	}
 	cl_int err;
 	mMemory = clCreateBuffer(gCLContext, CL_MEM_READ_WRITE, mSize * sizeof(cl_float), NULL, &err);
 	if (err != CL_SUCCESS)
@@ -246,47 +254,4 @@ void Tensor::print() const
 		}
 		printf("\n");
 	}
-}
-
-void Tensor::printshape() const
-{
-	for (int i = 0; i < mShape.size(); i++)
-	{
-		printf("%d ", mShape[i]);
-	}
-	printf("\n");
-}
-
-TensorShape make_shape(uint64_t a)
-{
-	TensorShape shape;
-	shape.push_back(a);
-	return shape;
-}
-
-TensorShape make_shape(uint64_t a, uint64_t b)
-{
-	TensorShape shape;
-	shape.push_back(a);
-	shape.push_back(b);
-	return shape;
-}
-
-TensorShape make_shape(uint64_t a, uint64_t b, uint64_t c)
-{
-	TensorShape shape;
-	shape.push_back(a);
-	shape.push_back(b);
-	shape.push_back(c);
-	return shape;
-}
-
-TensorShape make_shape(uint64_t a, uint64_t b, uint64_t c, uint64_t d)
-{
-	TensorShape shape;
-	shape.push_back(a);
-	shape.push_back(b);
-	shape.push_back(c);
-	shape.push_back(d);
-	return shape;
 }

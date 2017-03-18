@@ -104,6 +104,7 @@ Tensor openidx_input(std::string filename)
 	}
 	file.close();
 	delete[] data_32;
+	result.copyToGPU();
 	return result;
 }
 
@@ -147,6 +148,7 @@ Tensor openidx_output(std::string filename, size_t output_size)
 	}
 	file.close();
 	delete[] data_32;
+	result.copyToGPU();
 	return result;
 }
 
@@ -202,6 +204,8 @@ TrainingData load_cifar(std::string filename)
 	file.close();
 
 	TrainingData td(input, output);
+	td.inputs.copyToGPU();
+	td.outputs.copyToGPU();
 	return td;
 }
 
@@ -569,11 +573,11 @@ void test_gemm_gpu()
 	Tensor t3(make_shape(2, 4));
 	t3.setzero();
 
-	t1.allocateGPU();
+	/*t1.allocateGPU();
 	t1_t.allocateGPU();
 	t2.allocateGPU();
 	t2_t.allocateGPU();
-	t3.allocateGPU();
+	t3.allocateGPU();*/
 	
 	t1.copyToGPU();
 	t2.copyToGPU();
@@ -606,4 +610,36 @@ void test_gemm_gpu()
 	t3.freemem();
 
 	_getch();
+}
+
+void test_kernel()
+{
+	Tensor m1(make_shape(2, 2));
+	Tensor m2(make_shape(2, 2));
+	Tensor m3(make_shape(2, 2));
+	m3.setzero();
+
+	m1(0, 0) = 1;
+	m1(0, 1) = 1;
+	m1(1, 0) = 3;
+	m1(1, 1) = 4;
+
+	m2(0, 0) = 6;
+	m2(0, 1) = 7;
+	m2(1, 0) = 8;
+	m2(1, 1) = 9;
+
+	m1.copyToGPU();
+	m2.copyToGPU();
+	m3.copyToGPU();
+	m3.print();
+
+	clSetKernelArg(gKernelMatAdd, 0, sizeof(cl_mem), (void*)&m1.mMemory);
+	clSetKernelArg(gKernelMatAdd, 1, sizeof(cl_mem), (void*)&m2.mMemory);
+	clSetKernelArg(gKernelMatAdd, 2, sizeof(cl_mem), (void*)&m3.mMemory);
+
+	clEnqueueNDRangeKernel(gCLQueue, gKernelMatAdd, 1, NULL, &(m1.mSize), NULL, 0, NULL, NULL);
+	
+	m3.copyToCPU();
+	m3.print();
 }
