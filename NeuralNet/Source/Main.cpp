@@ -12,7 +12,7 @@ cl_kernel gKernelMatSub;
 
 #include <CL\cl_ext.h>
 
-inline void checkErr(cl_int err, const char * name) {
+inline void checkErr(cl_int err, const char* name) {
 	if (err != CL_SUCCESS) {
 		std::cerr << "ERROR: " << name << " (" << err << ")" << std::endl;
 		_getch();
@@ -110,17 +110,17 @@ void cleanup()
 	clReleaseContext(gCLContext);
 }
 
-//int main()
-//{
-//	srand(time(0));
-//
-//	initCL();
-//
-//	test_kernel();
-//
-//	_getch();
-//
-//	cleanup();
-//
-//	return 0;
-//}
+int main()
+{
+	srand(time(0));
+
+	//initCL();
+
+	test_tensor();
+
+	_getch();
+
+	cleanup();
+
+	return 0;
+}

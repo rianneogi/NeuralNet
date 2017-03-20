@@ -479,14 +479,17 @@ void test_gemm()
 
 void test_tensor()
 {
-	Tensor t(make_shape(10, 2));
+	Tensor t(make_shape(10, 10));
 	for (int i = 0; i < 10; i++)
 	{
-		t(i, 0) = 2*i;
-		t(i, 1) = 2 * i + 1;
+		for (int j = 0; j < 10; j++)
+		{
+			t(i, j) = i * 10 + j;
+		}
 	}
 	t.print();
-	Tensor s = t.cut(0, 2);
+	Tensor s(make_shape(10, 10));
+	s.copyFromTensor(t);
 	s.print();
 	_getch();
 }

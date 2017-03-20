@@ -1,7 +1,7 @@
 #pragma once
 
-//#define NN_DEBUG
-#define USE_GPU
+#define NN_DEBUG
+//#define USE_GPU
 
 #include "math.h"
 #include <vector>

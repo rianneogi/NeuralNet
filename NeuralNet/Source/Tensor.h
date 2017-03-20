@@ -12,19 +12,21 @@ public:
 	uint64_t mSize;
 	Float* mData;
 	cl_mem mMemory;
+	uint64_t mLD; //Size of leading dimension 
 
 	Tensor();
 	Tensor(const Tensor& other);
 	Tensor(const TensorShape& shape); //initialize tensor allocated with given shape
 	Tensor(Float* data, const TensorShape& shape); //initialize tensor pointing to existing data
+	Tensor(Float* data, const TensorShape& shape, uint64_t ld); //initialize tensor pointing to existing data and specify leading dimension
 	~Tensor();
-
-	//void operator=(const Tensor& other);
 
 	Float& operator()(uint64_t a) const;
 	Float& operator()(uint64_t a, uint64_t b) const;
 	Float& operator()(uint64_t a, uint64_t b, uint64_t c) const;
 	Float& operator()(uint64_t a, uint64_t b, uint64_t c, uint64_t d) const;
+
+	void copyFromTensor(const Tensor& other); //dupliates data from other tensor
 
 	void allocateCPU();
 	void allocateGPU();
@@ -42,6 +44,8 @@ public:
 
 	//Tensor subtensor(const TensorShape& begin, const TensorShape& size);
 	Tensor cut(uint64_t begin, uint64_t len) const; //cuts the tensor based on primary dimension
+	Tensor cut2(uint64_t begin, uint64_t len) const; //cuts the tensor based on secondary dimension
+	Tensor submatrix(uint64_t begin_row, uint64_t begin_col, uint64_t rows, uint64_t cols) const;
 
 	uint64_t rows() const;
 	uint64_t cols() const;
@@ -65,8 +69,8 @@ inline void gemm_cpu(Tensor* m1, Tensor* m2, Tensor* res, CBLAS_TRANSPOSE trans_
 		res->cols(), //N
 		trans_m1 == CblasNoTrans ? m1->cols() : m1->rows(), //K
 		alpha,
-		m1->mData, m1->cols(),
-		m2->mData, m2->cols(),
+		m1->mData, m1->mLD,
+		m2->mData, m2->mLD,
 		beta,
-		res->mData, res->cols());
+		res->mData, res->mLD);
 }
