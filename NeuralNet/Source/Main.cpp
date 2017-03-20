@@ -116,7 +116,7 @@ int main()
 
 	//initCL();
 
-	test_tensor();
+	test_conv();
 
 	_getch();
 

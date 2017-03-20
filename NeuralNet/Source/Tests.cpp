@@ -394,10 +394,10 @@ void test_conv()
 	}
 	printf("Accuracy: %f\n", (acc*1.0) / inputs_test.rows());
 
-	inputs_train.freeCPU();
-	inputs_test.freeCPU();
-	outputs_train.freeCPU();
-	outputs_test.freeCPU();
+	inputs_train.freemem();
+	inputs_test.freemem();
+	outputs_train.freemem();
+	outputs_test.freemem();
 
 	_getch();
 }
