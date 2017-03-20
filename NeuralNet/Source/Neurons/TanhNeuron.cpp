@@ -16,7 +16,7 @@ TanhNeuron::~TanhNeuron()
 void TanhNeuron::forward()
 {
 	/*mOutput->Data = mInput->Data.unaryExpr(&tanh_NN);*/
-	for (unsigned int i = 0; i < mOutput->Data.mSize; i++)
+	for (uint64_t i = 0; i < mOutput->Data.mSize; i++)
 	{
 		mOutput->Data(i) = tanh(mInput->Data(i));
 	}
@@ -31,7 +31,7 @@ void TanhNeuron::backprop()
 
 	////Biases = Biases - (mLearningRate*mOutput->Delta*Matrix::Constant(mOutput->Delta.cols(), 1, 1.0));
 
-	for (int i = 0; i < mInput->Delta.mSize; i++)
+	for (uint64_t i = 0; i < mInput->Delta.mSize; i++)
 	{
 		mInput->Delta(i) = mOutput->Delta(i)*(1.0 - mOutput->Data(i)*mOutput->Data(i));
 	}

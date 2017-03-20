@@ -24,7 +24,7 @@ void SigmoidNeuron::forward()
 	//mOutput->Data = mInput->Data.unaryExpr(&sigmoid);
 	////assert(mOutput->Data.cols() == BatchSize && mOutput->Data.rows() == OutputSize);
 
-	for (unsigned int i = 0; i < mOutput->Data.mSize; i++)
+	for (uint64_t i = 0; i < mOutput->Data.mSize; i++)
 	{
 		mOutput->Data(i) = sigmoid(mInput->Data(i));
 	}
@@ -45,7 +45,7 @@ void SigmoidNeuron::backprop()
 
 	////Biases = Biases - (mLearningRate*mOutput->Delta*Matrix::Constant(mOutput->Delta.cols(),1,1.0));
 
-	for (int i = 0; i < mInput->Delta.mSize; i++)
+	for (uint64_t i = 0; i < mInput->Delta.mSize; i++)
 	{
 		mInput->Delta(i) = mOutput->Delta(i)*mOutput->Data(i)*(1.0 - mOutput->Data(i));
 	}
