@@ -21,6 +21,8 @@ KingNeuron::KingNeuron(Blob* input, Blob* output, uint64_t field_width, uint64_t
 	OutputRows = output->Data.mShape[0];
 	FieldCount = InputWidth*InputHeight;
 	assert(OutputRows == BatchSize*FieldCount);
+
+	assert(pad_value.mSize == InputDepth);
 }
 
 KingNeuron::~KingNeuron()
@@ -43,13 +45,15 @@ void KingNeuron::forward()
 				{
 					if (i < 0 || i >= InputHeight)
 					{
-						memcpy(&mOutput->Data(batch*FieldCount + sub_batch, id), 0, FieldWidth*InputDepth * sizeof(Float));
+						memcpy(&mOutput->Data(batch*FieldCount + sub_batch, id), PadValue.mData, InputDepth * sizeof(Float));
+						memcpy(&mOutput->Data(batch*FieldCount + sub_batch, id+InputDepth), PadValue.mData, InputDepth * sizeof(Float));
+						memcpy(&mOutput->Data(batch*FieldCount + sub_batch, id+2*InputDepth), PadValue.mData, InputDepth * sizeof(Float));
 					}
 					else
 					{
 						if (x == 0)
 						{
-							memcpy(&mOutput->Data(batch*FieldCount + sub_batch, id), 0, InputDepth * sizeof(Float));
+							memcpy(&mOutput->Data(batch*FieldCount + sub_batch, id), PadValue.mData, InputDepth * sizeof(Float));
 							memcpy(&mOutput->Data(batch*FieldCount + sub_batch, id+InputDepth), 
 								&mInput->Data(batch, i, x, 0), 2*InputDepth * sizeof(Float));
 						}
@@ -57,7 +61,7 @@ void KingNeuron::forward()
 						{
 							memcpy(&mOutput->Data(batch*FieldCount + sub_batch, id),
 								&mInput->Data(batch, i, x-1, 0), 2 * InputDepth * sizeof(Float));
-							memcpy(&mOutput->Data(batch*FieldCount + sub_batch, id+2*InputDepth), 0, InputDepth * sizeof(Float));
+							memcpy(&mOutput->Data(batch*FieldCount + sub_batch, id+2*InputDepth), PadValue.mData, InputDepth * sizeof(Float));
 						}
 						else
 						{
