@@ -95,7 +95,7 @@ Float Board::backprop(const Tensor& input, const std::vector<Tensor*>& output)
 
 	for (size_t i = 0; i < mErrorFuncs.size(); i++)
 	{
-		mErrorFuncs[0]->mTarget = output[i];
+		mErrorFuncs[i]->mTarget = output[i];
 	}
 	
 	//Forward Pass

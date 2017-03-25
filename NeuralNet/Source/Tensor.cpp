@@ -300,4 +300,5 @@ void Tensor::print_raw() const
 	{
 		printf("%f ", operator()(i));
 	}
+	printf("\n");
 }
