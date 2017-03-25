@@ -293,3 +293,11 @@ void Tensor::print() const
 		printf("\n");
 	}
 }
+
+void Tensor::print_raw() const
+{
+	for (int i = 0; i < mSize; i++)
+	{
+		printf("%f ", operator()(i));
+	}
+}

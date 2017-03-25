@@ -11,9 +11,9 @@ Im2ColNeuron::Im2ColNeuron(Blob* input, Blob* output, uint64_t field_width, uint
 
 	assert(input->Data.mShape.size() == 4);
 
-	InputDepth = input->Data.mShape[1];
-	InputHeight = input->Data.mShape[2];
-	InputWidth = input->Data.mShape[3];
+	InputHeight = input->Data.mShape[1];
+	InputWidth = input->Data.mShape[2];
+	InputDepth = input->Data.mShape[3];
 
 	assert(output->Data.mShape.size() == 2);
 	OutputCols = output->Data.mShape[1];
@@ -49,25 +49,23 @@ void Im2ColNeuron::forward()
 			for (uint64_t x = FieldWidth / 2; x < InputWidth - FieldWidth / 2; x++)
 			{
 				uint64_t id = 0;
-				for (uint64_t d = 0; d < InputDepth; d++)
+				for (uint64_t i = y - FieldHeight / 2; i <= y + FieldHeight / 2; i++)
 				{
-					for (uint64_t i = y - FieldHeight / 2; i <= y + FieldHeight / 2; i++)
+					memcpy(&mOutput->Data(batch*FieldCount + sub_batch, id),
+						&mInput->Data(batch, i, x - FieldWidth / 2, 0), FieldWidth * InputDepth * sizeof(Float));
+					//uint64_t xid = id;
+					id += FieldWidth*InputDepth;
+					/*for (uint64_t j = x - FieldWidth / 2; j <= x + FieldWidth / 2; j++)
 					{
-						memcpy(&mOutput->Data(batch*FieldCount + sub_batch, id),
-							&mInput->Data(batch, d, i, x - FieldWidth / 2), FieldWidth * sizeof(Float));
-						//uint64_t xid = id;
-						id += FieldWidth;
-						/*for (uint64_t j = x - FieldWidth / 2; j <= x + FieldWidth / 2; j++)
-						{
-							assert(mOutput->Data(batch*FieldCount + sub_batch, xid) == mInput->Data(batch, d, i, j));
-							xid++;
-						}*/
-					}
+					assert(mOutput->Data(batch*FieldCount + sub_batch, xid) == mInput->Data(batch, d, i, j));
+					xid++;
+					}*/
 				}
 				sub_batch++;
 			}
 		}
 	}
+	//mInput->Data.print_raw();
 }
 
 void Im2ColNeuron::backprop()

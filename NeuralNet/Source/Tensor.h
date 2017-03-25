@@ -51,6 +51,7 @@ public:
 	uint64_t cols() const;
 
 	void print() const;
+	void print_raw() const;
 };
 
 inline void gemm_cpu(Tensor* m1, Tensor* m2, Tensor* res, CBLAS_TRANSPOSE trans_m1, CBLAS_TRANSPOSE trans_m2, Float alpha, Float beta)

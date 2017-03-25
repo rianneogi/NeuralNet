@@ -60,6 +60,7 @@ void ConvNeuron::forward()
 			mOutput->Data(i, j) += Biases->Data(j);
 		}
 	}
+	//mInput->Data.print();
 }
 
 void ConvNeuron::backprop()

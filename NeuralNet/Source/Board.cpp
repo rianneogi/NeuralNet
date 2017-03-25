@@ -74,11 +74,11 @@ Float Board::backprop(const Tensor& input, const Tensor& output)
 	}
 
 	//Calculate Error
-	double error = mErrorFuncs[0]->calculateError();
+	Float error = mErrorFuncs[0]->calculateError();
 
 	//printf("backward\n");
 	//Backward Pass
-	for (int i = mNeurons.size()-1; i >= 0; i--)
+	for (int i = mNeurons.size() - 1; i >= 0; i--)
 	{
 		//printf("bb: %d\n", i);
 		mNeurons[i]->backprop();
@@ -106,7 +106,7 @@ Float Board::backprop(const Tensor& input, const std::vector<Tensor*>& output)
 	}
 
 	//Calculate Error
-	double error = 0;
+	Float error = 0;
 	for (size_t i = 0; i < mErrorFuncs.size(); i++)
 	{
 		error += mErrorFuncs[i]->calculateError();
@@ -163,7 +163,7 @@ double Board::train(const Tensor& inputs, const Tensor& outputs, unsigned int ep
 		error += backprop(inputs[i], outputs[i]);
 		}*/
 		clock.Stop();
-		printf("Error %d: %f, epochs per sec: %f\n", i, error, ((i + 1)*1.0) / clock.ElapsedSeconds());
+		printf("Error %d: %f, epochs per sec: %f\n", i+1, error, ((i + 1)*1.0) / clock.ElapsedSeconds());
 		printf("Batches per sec: %f\n", (i+1.0)*(inputs.rows()*1.0 / batch_size) / clock.ElapsedSeconds());
 		//printf("Error %d: %f\n", j, error);
 	}
