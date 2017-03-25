@@ -14,17 +14,15 @@ MeanSquaredError::~MeanSquaredError()
 
 Float MeanSquaredError::calculateError()
 {
-	//double error = 0.5*((mOutput->Data - *mTarget).cwiseProduct(mOutput->Data - *mTarget)).sum();
-	//mOutput->Delta = (mOutput->Data - *mTarget);
-	//return error;
+	if (mTarget == nullptr) 
+		return 0;
 
 	Float error = 0;
 	for (int i = 0; i < mOutput->Data.mSize; i++)
 	{
 		error += 0.5*(mOutput->Data(i) - (*mTarget)(i))*(mOutput->Data(i) - (*mTarget)(i));
-		mOutput->Delta(i) = mOutput->Data(i) - (*mTarget)(i);
+		mOutput->Delta(i) += mOutput->Data(i) - (*mTarget)(i);
 	}
-	//printf("error %f\n", error);
 	return error;
 }
 
