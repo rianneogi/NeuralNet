@@ -128,3 +128,46 @@ double Board::train(const Tensor& inputs, const Tensor& outputs, unsigned int ep
 	printf("Done training\n");
 	return error;
 }
+
+void Board::save_variables(std::string filename)
+{
+	std::fstream file(filename, std::ios::out | std::ios::binary | std::ios::trunc);
+	if (!file.is_open())
+	{
+		printf("unable to open file for saving: %s\n", filename.c_str());
+		return;
+	}
+	for (size_t i = 0; i < mOptimizer->Variables.size(); i++)
+	{
+		for (uint64_t j = 0; j < mOptimizer->Variables[i]->Data.mSize; j++)
+		{
+			//file.write((const char*)&mBoard->mOptimizer->Variables[i]->Data.mData, sizeof(Float)*mBoard->mOptimizer->Variables[i]->Data.mSize);
+			file.write((const char*)&mOptimizer->Variables[i]->Data(j), sizeof(Float));
+			//file << mBoard->mOptimizer->Variables[i]->Data(j);
+		}
+		//file << "\n";
+	}
+	file.close();
+}
+
+void Board::load_variables(std::string filename)
+{
+	std::fstream file(filename, std::ios::in | std::ios::binary);
+	if (!file.is_open())
+	{
+		printf("unable to open file for loading: %s\n", filename.c_str());
+		return;
+	}
+	char* mem = new char[sizeof(Float)];
+	for (size_t i = 0; i <mOptimizer->Variables.size(); i++)
+	{
+		for (uint64_t j = 0; j < mOptimizer->Variables[i]->Data.mSize; j++)
+		{
+			file.read(mem, sizeof(Float));
+			memcpy(&mOptimizer->Variables[i]->Data(j), mem, sizeof(Float));
+			//file >> mBoard->mOptimizer->Variables[i]->Data(j);
+		}
+		//file << "\n";
+	}
+	file.close();
+}

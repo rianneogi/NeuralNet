@@ -26,5 +26,8 @@ public:
 	Tensor predict(const Tensor& input);
 
 	double train(const Tensor& inputs, const Tensor& outputs, unsigned int epochs, unsigned int batch_size);
+
+	void save_variables(std::string filename);
+	void load_variables(std::string filename);
 };
 
