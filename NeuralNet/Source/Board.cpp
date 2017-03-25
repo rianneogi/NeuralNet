@@ -209,3 +209,11 @@ void Board::load_variables(std::string filename)
 	}
 	file.close();
 }
+
+void Board::clear_deltas()
+{
+	for (size_t i = 0; i < mBlobs.size(); i++)
+	{
+		mBlobs[i]->Delta.setzero();
+	}
+}

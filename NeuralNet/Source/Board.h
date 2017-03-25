@@ -30,5 +30,7 @@ public:
 
 	void save_variables(std::string filename);
 	void load_variables(std::string filename);
+
+	void clear_deltas();
 };
 
