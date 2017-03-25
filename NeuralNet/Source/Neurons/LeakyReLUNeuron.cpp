@@ -27,7 +27,7 @@ void LeakyReLUNeuron::backprop()
 {
 	for (uint64_t i = 0; i < mInput->Data.mSize; i++)
 	{
-		mInput->Delta(i) = mOutput->Data(i) < 0.0? LeakFactor*mOutput->Delta(i): mOutput->Delta(i);
+		mInput->Delta(i) += mOutput->Data(i) < 0.0? LeakFactor*mOutput->Delta(i): mOutput->Delta(i);
 	}
 }
 
