@@ -1,13 +1,16 @@
 #include "Board.h"
 
-Board::Board() : mErrorFunc(nullptr), mOptimizer(nullptr)
+Board::Board() : mOptimizer(nullptr)
 {
 }
 
 Board::~Board()
 {
 	//Free memory
-	delete mErrorFunc;
+	for (size_t i = 0; i < mErrorFuncs.size(); i++)
+	{
+		delete mErrorFuncs[i];
+	}
 	for (size_t i = 0; i < mNeurons.size(); i++)
 	{
 		delete mNeurons[i];
@@ -16,6 +19,7 @@ Board::~Board()
 	{
 		delete mBlobs[i];
 	}
+	delete mOptimizer;
 }
 
 void Board::addNeuron(Neuron* n)
@@ -36,9 +40,9 @@ Blob* Board::newBlob(const TensorShape& shape)
 	return b;
 }
 
-void Board::setErrorFunction(ErrorFunction* err_func)
+void Board::addErrorFunction(ErrorFunction* err_func)
 {
-	mErrorFunc = err_func;
+	mErrorFuncs.push_back(err_func);
 }
 
 void Board::setOptimizer(Optimizer* optimizer)
@@ -59,7 +63,7 @@ Tensor Board::forward(const Tensor& input)
 Float Board::backprop(const Tensor& input, const Tensor& output)
 {
 	mNeurons[0]->mInput->Data.mData = input.mData;
-	mErrorFunc->mTarget = &output;
+	mErrorFuncs[0]->mTarget = &output;
 	//Forward Pass
 	for (size_t i = 0; i < mNeurons.size(); i++)
 	{
@@ -68,11 +72,45 @@ Float Board::backprop(const Tensor& input, const Tensor& output)
 	}
 
 	//Calculate Error
-	double error = mErrorFunc->calculateError();
+	double error = mErrorFuncs[0]->calculateError();
 
 	//printf("backward\n");
 	//Backward Pass
 	for (int i = mNeurons.size()-1; i >= 0; i--)
+	{
+		//printf("bb: %d\n", i);
+		mNeurons[i]->backprop();
+	}
+
+	return error;
+}
+
+Float Board::backprop(const Tensor& input, const std::vector<Tensor*>& output)
+{
+	mNeurons[0]->mInput->Data.mData = input.mData;
+
+	for (size_t i = 0; i < mErrorFuncs.size(); i++)
+	{
+		mErrorFuncs[0]->mTarget = output[i];
+	}
+	
+	//Forward Pass
+	for (size_t i = 0; i < mNeurons.size(); i++)
+	{
+		//printf("ff: %d\n", i);
+		mNeurons[i]->forward();
+	}
+
+	//Calculate Error
+	double error = 0;
+	for (size_t i = 0; i < mErrorFuncs.size(); i++)
+	{
+		error += mErrorFuncs[i]->calculateError();
+	}
+
+	//printf("backward\n");
+	//Backward Pass
+	for (int i = mNeurons.size() - 1; i >= 0; i--)
 	{
 		//printf("bb: %d\n", i);
 		mNeurons[i]->backprop();
@@ -95,7 +133,7 @@ Tensor Board::predict(const Tensor& input)
 
 double Board::train(const Tensor& inputs, const Tensor& outputs, unsigned int epochs, unsigned int batch_size)
 {
-	assert(mErrorFunc != nullptr);
+	assert(mErrorFuncs.size() > 0);
 	assert(mOptimizer != nullptr);
 	assert(inputs.rows() == outputs.rows());
 	assert(inputs.rows() % batch_size == 0);

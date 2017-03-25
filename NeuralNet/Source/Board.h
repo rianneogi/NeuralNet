@@ -7,7 +7,7 @@ class Board
 public:
 	std::vector<Neuron*> mNeurons;
 	std::vector<Blob*> mBlobs;
-	ErrorFunction* mErrorFunc;
+	std::vector<ErrorFunction*> mErrorFuncs;
 	Optimizer* mOptimizer;
 	//Matrix Input;
 
@@ -16,12 +16,13 @@ public:
 
 	void addNeuron(Neuron* n);
 	Blob* newBlob(const TensorShape& shape);
-	void setErrorFunction(ErrorFunction* err_func);
+	void addErrorFunction(ErrorFunction* err_func);
 	void setOptimizer(Optimizer* optimizer);
 	//void addEdge(unsigned int n1, unsigned int n2);
 
 	Tensor forward(const Tensor& input);
 	Float backprop(const Tensor& input, const Tensor& output);
+	Float backprop(const Tensor& input, const std::vector<Tensor*>& output);
 
 	Tensor predict(const Tensor& input);
 
