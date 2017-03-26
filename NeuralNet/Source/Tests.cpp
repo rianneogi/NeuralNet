@@ -348,7 +348,7 @@ void test_conv()
 	int batch_size = 100;
 	double learning_rate = 0.0005;
 
-	Blob* inputBlob = b.newBlob(make_shape(batch_size, 1, 28, 28));
+	Blob* inputBlob = b.newBlob(make_shape(batch_size, 28, 28, 1));
 	Blob* l1convBlob = b.newBlob(make_shape(batch_size*26*26, 9));
 	Blob* l1fcBlob = b.newBlob(make_shape(batch_size * 26 * 26, 10));
 	Blob* l1tanhBlob = b.newBlob(make_shape(batch_size, 10*26*26)); //reshape in tanh neuron
