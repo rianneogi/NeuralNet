@@ -9,7 +9,8 @@ public:
 	std::vector<Blob*> mBlobs;
 	std::vector<ErrorFunction*> mErrorFuncs;
 	Optimizer* mOptimizer;
-	//Matrix Input;
+
+	std::vector<Tensor*> mPlaceholders;
 
 	Board();
 	~Board();
@@ -18,7 +19,7 @@ public:
 	Blob* newBlob(const TensorShape& shape);
 	void addErrorFunction(ErrorFunction* err_func);
 	void setOptimizer(Optimizer* optimizer);
-	//void addEdge(unsigned int n1, unsigned int n2);
+	void addPlaceholder(Tensor* placeholder);
 
 	Tensor forward(const Tensor& input);
 	Float backprop(const Tensor& input, const Tensor& output);

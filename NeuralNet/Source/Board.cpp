@@ -50,9 +50,14 @@ void Board::setOptimizer(Optimizer* optimizer)
 	mOptimizer = optimizer;
 }
 
+void Board::addPlaceholder(Tensor* placeholder)
+{
+	mPlaceholders.push_back(placeholder);
+}
+
 Tensor Board::forward(const Tensor& input)
 {
-	mNeurons[0]->mInput->Data = input;
+	mNeurons[0]->mInput->Data.mData = input.mData;
 	for (size_t i = 0; i < mNeurons.size(); i++)
 	{
 		mNeurons[i]->forward();
