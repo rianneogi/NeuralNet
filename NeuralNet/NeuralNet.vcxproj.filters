@@ -105,6 +105,9 @@
     <ClCompile Include="Source\Neurons\FileNeuron.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ErrorFunctions\L1Error.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Blob.h">
@@ -183,6 +186,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Neurons\FileNeuron.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ErrorFunctions\L1Error.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

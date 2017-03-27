@@ -4,6 +4,10 @@ MeanSquaredError::MeanSquaredError() : ErrorFunction()
 {
 }
 
+MeanSquaredError::MeanSquaredError(Blob* input, Blob* output) : ErrorFunction(input, output, nullptr)
+{
+}
+
 MeanSquaredError::MeanSquaredError(Blob* input, Blob* output, const Tensor* target) : ErrorFunction(input, output, target)
 {
 }
