@@ -12,6 +12,8 @@ public:
 
 	std::vector<Tensor*> mPlaceholders;
 
+	bool mUseOptimizer;
+
 	Board();
 	~Board();
 

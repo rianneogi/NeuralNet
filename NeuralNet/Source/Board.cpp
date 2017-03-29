@@ -1,6 +1,6 @@
 #include "Board.h"
 
-Board::Board() : mOptimizer(nullptr)
+Board::Board() : mOptimizer(nullptr), mUseOptimizer(true)
 {
 }
 
@@ -143,7 +143,7 @@ Tensor Board::predict(const Tensor& input)
 double Board::train(const Tensor& inputs, const Tensor& outputs, unsigned int epochs, unsigned int batch_size)
 {
 	assert(mErrorFuncs.size() > 0);
-	assert(mOptimizer != nullptr);
+	//assert(mOptimizer != nullptr);
 	assert(inputs.rows() == outputs.rows());
 	assert(inputs.rows() % batch_size == 0);
 	double error = 0.0;
@@ -155,13 +155,10 @@ double Board::train(const Tensor& inputs, const Tensor& outputs, unsigned int ep
 		error = 0.0;
 		for (int j = 0; j < inputs.rows() / batch_size; j++)
 		{
-			//error += backprop(inputs.block(0, batch_size*j, inputs.rows(), batch_size), outputs.block(0, batch_size*j, outputs.rows(), batch_size));
-			//printf("Batch: %d\n", j);
-			//printf("bs: %d\n", batch_size);
-			//Tensor in = inputs.cut(batch_size*j, batch_size);
-			//printf("I: %d %d\n", inputs.cut(batch_size*j, batch_size).mSize, int(in.mSelfAllocated));
 			error += backprop(inputs.cut(batch_size*j, batch_size), outputs.cut(batch_size*j, batch_size));
-			mOptimizer->optimize();
+
+			if(mUseOptimizer)
+				mOptimizer->optimize();
 		}
 		/*for (int i = 0; i < inputs.size(); i++)
 		{
