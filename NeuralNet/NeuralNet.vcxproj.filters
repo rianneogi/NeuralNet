@@ -108,6 +108,9 @@
     <ClCompile Include="Source\ErrorFunctions\L1Error.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ErrorFunctions\UnitError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Blob.h">
@@ -189,6 +192,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\ErrorFunctions\L1Error.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ErrorFunctions\UnitError.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

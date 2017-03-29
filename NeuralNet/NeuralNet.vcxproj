@@ -122,6 +122,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\ErrorFunctions\L1Error.cpp" />
+    <ClCompile Include="Source\ErrorFunctions\UnitError.cpp" />
     <ClCompile Include="Source\Neurons\FileNeuron.cpp" />
     <ClCompile Include="Source\Neurons\KingNeuron.cpp" />
     <ClCompile Include="Source\Neurons\RankNeuron.cpp" />
@@ -151,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\ErrorFunctions\L1Error.h" />
+    <ClInclude Include="Source\ErrorFunctions\UnitError.h" />
     <ClInclude Include="Source\Neurons\FileNeuron.h" />
     <ClInclude Include="Source\Neurons\KingNeuron.h" />
     <ClInclude Include="Source\Neurons\RankNeuron.h" />
