@@ -24,7 +24,7 @@ Float UnitError::calculateError()
 	Float error = 0;
 	for (int i = 0; i < mOutput->Data.mSize; i++)
 	{
-		error += (mOutput->Data(i) - (*mTarget)(i));
+		error += abs(mOutput->Data(i) - (*mTarget)(i));
 		mOutput->Delta(i) += 1.0;
 	}
 

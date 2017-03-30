@@ -216,6 +216,15 @@ void Board::load_variables(std::string filename)
 	file.close();
 }
 
+void Board::copy_variables(const Board* b)
+{
+	for (size_t i = 0; i < mOptimizer->Variables.size(); i++)
+	{
+		memcpy(mOptimizer->Variables[i]->Data.mData, b->mOptimizer->Variables[i]->Data.mData, 
+			sizeof(Float)*mOptimizer->Variables[i]->Data.mSize);
+	}
+}
+
 void Board::clear_deltas()
 {
 	for (size_t i = 0; i < mBlobs.size(); i++)

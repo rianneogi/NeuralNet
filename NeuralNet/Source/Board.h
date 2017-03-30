@@ -33,6 +33,7 @@ public:
 
 	void save_variables(std::string filename);
 	void load_variables(std::string filename);
+	void copy_variables(const Board* b);
 
 	void clear_deltas();
 };
