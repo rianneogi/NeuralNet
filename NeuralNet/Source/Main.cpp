@@ -110,17 +110,17 @@ void cleanup()
 	clReleaseContext(gCLContext);
 }
 
-//int main()
-//{
-//	srand(time(0));
-//
-//	//initCL();
-//
-//	test_conv();
-//
-//	_getch();
-//
-//	cleanup();
-//
-//	return 0;
-//}
+int main()
+{
+	srand(time(0));
+
+	//initCL();
+
+	test_conv2();
+
+	_getch();
+
+	cleanup();
+
+	return 0;
+}

@@ -25,6 +25,7 @@ Float UnitError::calculateError()
 	for (int i = 0; i < mOutput->Data.mSize; i++)
 	{
 		error += abs(mOutput->Data(i) - (*mTarget)(i));
+		printf("err %f, %f, %f\n", abs(mOutput->Data(i) - (*mTarget)(i)), mOutput->Data(i), (*mTarget)(i));
 		mOutput->Delta(i) += 1.0;
 	}
 

@@ -157,7 +157,7 @@ double Board::train(const Tensor& inputs, const Tensor& outputs, unsigned int ep
 		{
 			error += backprop(inputs.cut(batch_size*j, batch_size), outputs.cut(batch_size*j, batch_size));
 
-			if(mUseOptimizer)
+			if (mUseOptimizer)
 				mOptimizer->optimize();
 		}
 		/*for (int i = 0; i < inputs.size(); i++)

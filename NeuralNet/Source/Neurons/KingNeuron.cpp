@@ -7,10 +7,9 @@ KingNeuron::KingNeuron()
 KingNeuron::KingNeuron(Blob* input, Blob* output, uint64_t field_width, uint64_t field_height, Tensor pad_value)
 	: Neuron(input, output), FieldWidth(field_width), FieldHeight(field_height), PadValue(pad_value)
 {
-	BatchSize = input->Data.mShape[0];
-
 	assert(input->Data.mShape.size() == 4);
 
+	BatchSize = input->Data.mShape[0];
 	InputHeight = input->Data.mShape[1];
 	InputWidth = input->Data.mShape[2];
 	InputDepth = input->Data.mShape[3];
