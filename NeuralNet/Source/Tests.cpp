@@ -650,24 +650,24 @@ void test_kernel()
 	m3.print();
 }
 
-void test_conv2()
+void test_diag()
 {
 	Board b;
-	int batch_size = 3;
-	int width = 9;
-	int height = 9;
+	int batch_size = 1;
+	int width = 3;
+	int height = 3;
 	int depth = 3;
 	double learning_rate = 0.0005;
 
 	b.setOptimizer(new AdamOptimizer(learning_rate));
 
 	Blob* inputBlob = b.newBlob(make_shape(batch_size, height, width, depth));
-	Blob* l1convBlob = b.newBlob(make_shape(batch_size * width, height*depth));
+	Blob* l1convBlob = b.newBlob(make_shape(batch_size * 2*(width+height-1), height*depth));
 
 	Tensor t(make_shape(depth));
 	t.setzero();
 	
-	b.addNeuron(new FileNeuron(inputBlob, l1convBlob));
+	b.addNeuron(new DiagNeuron(inputBlob, l1convBlob, t));
 
 	Tensor input(make_shape(batch_size, height, width, depth));
 	for (int i = 0; i < batch_size; i++)
@@ -686,6 +686,8 @@ void test_conv2()
 	b.forward(input);
 
 	l1convBlob->Data.print();
+
+	printf("\n %f %f %f \n", 2*input.sum(), l1convBlob->Data.sum(), 2 * input.sum() - l1convBlob->Data.sum());
 
 	_getch();
 }

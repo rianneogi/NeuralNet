@@ -222,6 +222,16 @@ void Tensor::setidentity()
 	}
 }
 
+Float Tensor::sum()
+{
+	Float res = 0.0;
+	for (uint64_t i = 0; i < mSize; i++)
+	{
+		res += mData[i];
+	}
+	return res;
+}
+
 //Tensor Tensor::subtensor(const TensorShape& begin, const TensorShape& size)
 //{
 //	assert(begin.size() == mShape.size() && size.size() == mShape.size());

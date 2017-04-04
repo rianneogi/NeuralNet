@@ -42,6 +42,8 @@ public:
 	void setconstant(Float c);
 	void setidentity();
 
+	Float sum();
+
 	//Tensor subtensor(const TensorShape& begin, const TensorShape& size);
 	Tensor cut(uint64_t begin, uint64_t len) const; //cuts the tensor based on primary dimension
 	Tensor cut2(uint64_t begin, uint64_t len) const; //cuts the tensor based on secondary dimension

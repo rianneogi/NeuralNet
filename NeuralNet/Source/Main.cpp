@@ -116,7 +116,7 @@ int main()
 
 	//initCL();
 
-	test_conv2();
+	test_diag();
 
 	_getch();
 

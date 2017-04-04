@@ -15,4 +15,4 @@ void test_im2col();
 void test_gemm_gpu();
 void test_kernel();
 
-void test_conv2();
+void test_diag();
