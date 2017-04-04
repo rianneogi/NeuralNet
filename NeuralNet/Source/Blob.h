@@ -18,5 +18,7 @@ public:
 
 	void reshape(const TensorShape& shape);
 
-	Blob* cut(uint64_t start, uint64_t len);
+	Blob* cut(uint64_t start, uint64_t len) const;
+	Blob* cut2(uint64_t start, uint64_t len) const;
+	Blob* submatrix(uint64_t begin_row, uint64_t begin_col, uint64_t rows, uint64_t cols) const;
 };

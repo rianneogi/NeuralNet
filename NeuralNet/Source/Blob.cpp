@@ -38,7 +38,17 @@ void Blob::reshape(const TensorShape& shape)
 	Delta.mShape = shape;
 }
 
-Blob* Blob::cut(uint64_t start, uint64_t len)
+Blob* Blob::cut(uint64_t start, uint64_t len) const
 {
 	return (new Blob(Data.cut(start, len), Delta.cut(start, len)));
+}
+
+Blob* Blob::cut2(uint64_t start, uint64_t len) const
+{
+	return (new Blob(Data.cut2(start, len), Delta.cut2(start, len)));
+}
+
+Blob* Blob::submatrix(uint64_t begin_row, uint64_t begin_col, uint64_t rows, uint64_t cols) const
+{
+	return (new Blob(Data.submatrix(begin_row, begin_col, rows, cols), Delta.submatrix(begin_row, begin_col, rows, cols)));
 }
