@@ -482,18 +482,60 @@ void test_gemm()
 
 void test_tensor()
 {
-	Tensor t(make_shape(10, 10));
+	Tensor t1(make_shape(10, 10));
 	for (int i = 0; i < 10; i++)
 	{
 		for (int j = 0; j < 10; j++)
 		{
-			t(i, j) = i * 10 + j;
+			t1(i, j) = i * 10 + j;
 		}
 	}
-	t.print();
-	Tensor s(make_shape(10, 10));
-	s.copyFromTensor(t);
+
+	Tensor t2(make_shape(10, 10));
+	for (int i = 0; i < 10; i++)
+	{
+		for (int j = 0; j < 10; j++)
+		{
+			t2(i, j) = 100 + i * 10 + j;
+		}
+	}
+
+	Tensor tx = t1.submatrix(2, 2, 2, 3);
+	Tensor ty = t2.submatrix(2, 2, 3, 4);
+
+	Tensor ti(make_shape(2, 3));
+	for (int i = 2; i < 4; i++)
+	{
+		for (int j = 2; j < 5; j++)
+		{
+			ti(i-2, j-2) = i * 10 + j;
+		}
+	}
+
+	Tensor tj(make_shape(3, 4));
+	for (int i = 2; i < 5; i++)
+	{
+		for (int j = 2; j < 6; j++)
+		{
+			tj(i-2, j-2) = 100 + i * 10 + j;
+		}
+	}
+
+	Tensor s(make_shape(2, 4));
+	s.setzero();
+	Tensor s2(make_shape(2, 4));
+	s2.setzero();
+
+	tx.print();
+	ty.print();
+	ti.print();
+	tj.print();
+
+	gemm_cpu(&tx, &ty, &s, CblasNoTrans, CblasNoTrans, 1, 0);
+	gemm_cpu(&ti, &tj, &s2, CblasNoTrans, CblasNoTrans, 1, 0);
+
 	s.print();
+	s2.print();
 	_getch();
 }
 
@@ -653,9 +695,9 @@ void test_kernel()
 void test_diag()
 {
 	Board b;
-	int batch_size = 1;
-	int width = 3;
-	int height = 3;
+	int batch_size = 3;
+	int width = 8;
+	int height = 8;
 	int depth = 3;
 	double learning_rate = 0.0005;
 

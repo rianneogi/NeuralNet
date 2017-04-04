@@ -116,7 +116,7 @@ void cleanup()
 //
 //	//initCL();
 //
-//	test_diag();
+//	test_tensor();
 //
 //	_getch();
 //

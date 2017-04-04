@@ -222,6 +222,12 @@ void Tensor::setidentity()
 	}
 }
 
+void Tensor::reshape(const TensorShape& shape)
+{
+	mShape = shape;
+	mLD = shape[mShape.size()-1];
+}
+
 Float Tensor::sum()
 {
 	Float res = 0.0;

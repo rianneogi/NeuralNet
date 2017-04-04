@@ -17,8 +17,7 @@ ReshapeNeuron::~ReshapeNeuron()
 
 void ReshapeNeuron::forward()
 {
-	mOutput->Data.mShape = OutputShape;
-	mOutput->Delta.mShape = OutputShape;
+	mOutput->reshape(OutputShape);
 	//memcpy(&mOutput->Data, &mInput->Data, sizeof(Float)*mInput->Data.mSize);
 	/*for (int i = 0; i < mOutput->Data.mSize; i++)
 	{
@@ -28,8 +27,7 @@ void ReshapeNeuron::forward()
 
 void ReshapeNeuron::backprop()
 {
-	mOutput->Data.mShape = InputShape;
-	mOutput->Delta.mShape = InputShape;
+	//mOutput->reshape(InputShape);
 	//memcpy(&mInput->Delta, &mOutput->Delta, sizeof(Float)*mInput->Delta.mSize);
 	/*for (int i = 0; i < mInput->Delta.mSize; i++)
 	{

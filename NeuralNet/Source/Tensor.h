@@ -42,6 +42,8 @@ public:
 	void setconstant(Float c);
 	void setidentity();
 
+	void reshape(const TensorShape& shape);
+
 	Float sum();
 
 	//Tensor subtensor(const TensorShape& begin, const TensorShape& size);

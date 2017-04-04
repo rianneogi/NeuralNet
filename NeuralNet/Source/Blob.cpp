@@ -34,8 +34,8 @@ void Blob::copyToCPU()
 
 void Blob::reshape(const TensorShape& shape)
 {
-	Data.mShape = shape;
-	Delta.mShape = shape;
+	Data.reshape(shape);
+	Delta.reshape(shape);
 }
 
 Blob* Blob::cut(uint64_t start, uint64_t len) const
