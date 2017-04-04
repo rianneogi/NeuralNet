@@ -7,7 +7,9 @@ ConvNeuron::ConvNeuron() : Neuron(), LearningRate(1)
 ConvNeuron::ConvNeuron(Blob* input, Blob* output, Float learning_rate)
 	: Neuron(input, output), LearningRate(learning_rate)
 {
-	//assert(input->Data.mShape[0] == output->Data.mShape[0]);
+	assert(input->Data.mShape.size() == 2);
+	assert(output->Data.mShape.size() == 2);
+	assert(input->Data.mShape[0] == output->Data.mShape[0]);
 	BatchSize = input->Data.mShape[0];
 
 	InputSize = input->Data.mShape[1];

@@ -27,7 +27,7 @@ void ReshapeNeuron::forward()
 
 void ReshapeNeuron::backprop()
 {
-	//mOutput->reshape(InputShape);
+	mOutput->reshape(InputShape);
 	//memcpy(&mInput->Delta, &mOutput->Delta, sizeof(Float)*mInput->Delta.mSize);
 	/*for (int i = 0; i < mInput->Delta.mSize; i++)
 	{

@@ -6,6 +6,8 @@ FullyConnectedNeuron::FullyConnectedNeuron() : Neuron(), LearningRate(1)
 
 FullyConnectedNeuron::FullyConnectedNeuron(Blob* input, Blob* output, Float learning_rate) : Neuron(input, output), LearningRate(learning_rate)
 {
+	assert(input->Data.mShape.size() == 2);
+	assert(output->Data.mShape.size() == 2);
 	Weights = new Blob(make_shape(input->Data.cols(), output->Data.cols()));
 	Biases = new Blob(make_shape(1, output->Data.cols()));
 	for (int i = 0; i < Weights->Data.cols(); i++)
