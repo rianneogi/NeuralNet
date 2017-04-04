@@ -34,7 +34,7 @@ void FileNeuron::forward()
 		{
 			for (uint64_t y = 0; y < InputHeight; y++)
 			{
-				memcpy(&mOutput->Data(id, y), &mInput->Data(batch, y, x, 0), InputDepth * sizeof(Float));
+				memcpy(&mOutput->Data(id, y*InputDepth), &mInput->Data(batch, y, x, 0), InputDepth * sizeof(Float));
 			}
 			id++;
 		}
