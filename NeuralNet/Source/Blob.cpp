@@ -9,6 +9,11 @@ Blob::Blob(const TensorShape& shape) : Data(shape), Delta(shape)
 {
 }
 
+Blob::Blob(Tensor data, Tensor delta) : Data(data), Delta(delta)
+{
+	assert(data.mSize == delta.mSize);
+}
+
 Blob::~Blob()
 {
 	Data.freemem();
@@ -31,4 +36,9 @@ void Blob::reshape(const TensorShape& shape)
 {
 	Data.mShape = shape;
 	Delta.mShape = shape;
+}
+
+Blob* Blob::cut(uint64_t start, uint64_t len)
+{
+	return (new Blob(Data.cut(start, len), Delta.cut(start, len)));
 }
