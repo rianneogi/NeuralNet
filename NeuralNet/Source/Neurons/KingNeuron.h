@@ -11,8 +11,8 @@ public:
 	uint64_t OutputCols;
 	uint64_t OutputRows;
 
-	uint64_t FieldWidth;
-	uint64_t FieldHeight;
+	int64_t FieldWidth;
+	int64_t FieldHeight;
 
 	uint64_t FieldCount;
 
@@ -21,7 +21,7 @@ public:
 	Tensor PadValue;
 
 	KingNeuron();
-	KingNeuron(Blob* input, Blob* output, uint64_t field_width, uint64_t field_height, Tensor pad_value);
+	KingNeuron(Blob* input, Blob* output, int64_t field_width, int64_t field_height, Tensor pad_value);
 	~KingNeuron();
 
 	void forward();

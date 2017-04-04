@@ -4,7 +4,7 @@ KingNeuron::KingNeuron()
 {
 }
 
-KingNeuron::KingNeuron(Blob* input, Blob* output, uint64_t field_width, uint64_t field_height, Tensor pad_value)
+KingNeuron::KingNeuron(Blob* input, Blob* output, int64_t field_width, int64_t field_height, Tensor pad_value)
 	: Neuron(input, output), FieldWidth(field_width), FieldHeight(field_height), PadValue(pad_value)
 {
 	assert(input->Data.mShape.size() == 4);
@@ -32,15 +32,15 @@ KingNeuron::~KingNeuron()
 void KingNeuron::forward()
 {
 	//works only for Field size = 3
-	for (uint64_t batch = 0; batch < BatchSize; batch++)
+	for (int64_t batch = 0; batch < BatchSize; batch++)
 	{
-		uint64_t sub_batch = 0;
-		for (uint64_t y = 0; y < InputHeight; y++)
+		int64_t sub_batch = 0;
+		for (int64_t y = 0; y < InputHeight; y++)
 		{
-			for (uint64_t x = 0; x < InputWidth; x++)
+			for (int64_t x = 0; x < InputWidth; x++)
 			{
-				uint64_t id = 0;
-				for (uint64_t i = y - FieldHeight / 2; i <= y + FieldHeight / 2; i++)
+				int64_t id = 0;
+				for (int64_t i = y - FieldHeight / 2; i <= y + FieldHeight / 2; i++)
 				{
 					if (i < 0 || i >= InputHeight)
 					{

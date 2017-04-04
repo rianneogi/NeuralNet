@@ -31,7 +31,6 @@ DiagNeuron::~DiagNeuron()
 
 void DiagNeuron::forward()
 {
-	//works only for Field size = 3
 	for (uint64_t batch = 0; batch < BatchSize; batch++)
 	{
 		uint64_t sub_batch = 0;

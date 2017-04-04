@@ -651,62 +651,39 @@ void test_kernel()
 void test_conv2()
 {
 	Board b;
-	int batch_size = 100;
+	int batch_size = 9;
+	int width = 9;
+	int height = 9;
+	int depth = 3;
 	double learning_rate = 0.0005;
 
-	Blob* inputBlob = b.newBlob(make_shape(batch_size, 28, 28, 1));
-	Blob* l1convBlob = b.newBlob(make_shape(batch_size * 28 * 28, 9));
-	Blob* l1fcBlob = b.newBlob(make_shape(batch_size * 28 * 28, 10));
-	Blob* l1tanhBlob = b.newBlob(make_shape(batch_size, 10 * 28 * 28)); //reshape in tanh neuron
-																		//Blob* l2inputBlob = b.newBlob(make_shape(batch_size, 10 * 26 * 26));
-	Blob* l2fcBlob = b.newBlob(make_shape(batch_size, 10));
-	Blob* l2tanhBlob = b.newBlob(make_shape(batch_size, 10));
-	Blob* l3fcBlob = b.newBlob(make_shape(batch_size, 10));
-	Blob* l3tanhBlob = b.newBlob(make_shape(batch_size, 10));
+	b.setOptimizer(new AdamOptimizer(learning_rate));
 
-	Tensor t(make_shape(1));
+	Blob* inputBlob = b.newBlob(make_shape(batch_size, height, width, depth));
+	Blob* l1convBlob = b.newBlob(make_shape(batch_size * height * width, 9*depth));
+
+	Tensor t(make_shape(depth));
 	t.setzero();
-
-	b.setOptimizer(new AdamOptimizer(0.005));
-
+	
 	b.addNeuron(new KingNeuron(inputBlob, l1convBlob, 3, 3, t));
-	b.addNeuron(new ConvNeuron(l1convBlob, l1fcBlob, learning_rate));
-	b.addNeuron(new LeakyReLUNeuron(l1fcBlob, l1tanhBlob, 0.05));
-	//b.addNeuron(new ReshapeNeuron(l1tanhBlob, l1tanhBlob, make_shape(batch_size, 10 * 26 * 26)));
 
-	//l1tanhBlob->reshape(make_shape(batch_size, 10 * 26 * 26));
-	b.addNeuron(new FullyConnectedNeuron(l1tanhBlob, l2fcBlob, learning_rate));
-	b.addNeuron(new LeakyReLUNeuron(l2fcBlob, l2tanhBlob, 0.05));
-	b.addNeuron(new FullyConnectedNeuron(l2tanhBlob, l3fcBlob, learning_rate));
-	b.addNeuron(new TanhNeuron(l3fcBlob, l3tanhBlob));
-	b.addErrorFunction(new MeanSquaredError(inputBlob, l3tanhBlob, nullptr));
-	//l1tanhBlob->reshape(make_shape(batch_size * 26 * 26, 10));
-
-	Tensor inputs_train = openidx_input("Data/train-images.idx3-ubyte");
-	Tensor outputs_train = openidx_output("Data/train-labels.idx1-ubyte", 10);
-	Tensor inputs_test = openidx_input("Data/t10k-images.idx3-ubyte");
-	Tensor outputs_test = openidx_output("Data/t10k-labels.idx1-ubyte", 10);
-
-	b.train(inputs_train, outputs_train, 10, batch_size);
-
-	int acc = 0;
-	for (size_t i = 0; i < inputs_test.rows() / batch_size; i++)
+	Tensor input(make_shape(batch_size, height, width, depth));
+	for (int i = 0; i < batch_size; i++)
 	{
-		Tensor o = b.predict(inputs_test.cut(i*batch_size, batch_size));
-		for (int j = 0; j < batch_size; j++)
+		for (int j = 0; j < height; j++)
 		{
-			if (getoutput(o.cut(j, 1)) == getoutput(outputs_test.cut(i*batch_size + j, 1)))
+			for (int k = 0; k < width; k++)
 			{
-				acc++;
+				for (int l = 0; l < depth; l++)
+				{
+					input(i, j, k, l) = 1000 * (i + 1) + 100 * (j + 1) + 10 * (k + 1) + (l + 1);
+				}
 			}
 		}
 	}
-	printf("Accuracy: %f\n", (acc*1.0) / inputs_test.rows());
+	b.forward(input);
 
-	inputs_train.freemem();
-	inputs_test.freemem();
-	outputs_train.freemem();
-	outputs_test.freemem();
+	l1convBlob->Data.print();
 
 	_getch();
 }
