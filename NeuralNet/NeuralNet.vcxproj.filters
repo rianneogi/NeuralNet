@@ -90,9 +90,6 @@
     <ClCompile Include="Source\Optimizers\AdamOptimizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\TensorGPU.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\TensorShape.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -177,9 +174,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Optimizers\AdamOptimizer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TensorGPU.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\TensorShape.h">

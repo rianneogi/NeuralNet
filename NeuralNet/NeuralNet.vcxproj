@@ -149,7 +149,6 @@
     <ClCompile Include="Source\TensorShape.cpp" />
     <ClCompile Include="Source\Tests.cpp" />
     <ClCompile Include="Source\UtilFuncs.cpp" />
-    <ClCompile Include="Source\TensorGPU.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\ErrorFunctions\L1Error.h" />
@@ -180,7 +179,6 @@
     <ClInclude Include="Source\Tests.h" />
     <ClInclude Include="Source\Typedefs.h" />
     <ClInclude Include="Source\UtilFuncs.h" />
-    <ClInclude Include="Source\TensorGPU.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Kernels\matrix_funcs.cl" />
