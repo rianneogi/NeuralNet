@@ -4,11 +4,11 @@ UnitError::UnitError() : ErrorFunction()
 {
 }
 
-UnitError::UnitError(Blob* input, Blob* output) : ErrorFunction(input, output, nullptr)
+UnitError::UnitError(Blob* input, Blob* output) : ErrorFunction(input, output, new Tensor(output->Data.mShape))
 {
 }
 
-UnitError::UnitError(Blob* input, Blob* output, const Tensor* target) : ErrorFunction(input, output, target)
+UnitError::UnitError(Blob* input, Blob* output, Tensor* target) : ErrorFunction(input, output, target)
 {
 }
 

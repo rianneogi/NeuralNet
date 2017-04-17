@@ -65,7 +65,7 @@ Tensor Board::forward(const Tensor& input)
 	return mNeurons[mNeurons.size()-1]->mOutput->Data;
 }
 
-Float Board::backprop(const Tensor& input, const Tensor& output)
+Float Board::backprop(const Tensor& input, Tensor& output)
 {
 	clear_deltas();
 
@@ -134,6 +134,7 @@ Float Board::backprop(const std::vector<Tensor*>& placeholders)
 	clear_deltas();
 
 	//Set placeholders
+	assert(placeholders.size() == mPlaceholders.size());
 	for (size_t i = 0; i < mPlaceholders.size(); i++)
 	{
 		mPlaceholders[i]->mData = placeholders[i]->mData;

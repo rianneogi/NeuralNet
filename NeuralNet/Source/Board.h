@@ -23,7 +23,7 @@ public:
 	void addPlaceholder(Tensor* placeholder);
 
 	Tensor forward(const Tensor& input);
-	Float backprop(const Tensor& input, const Tensor& output);
+	Float backprop(const Tensor& input, Tensor& output);
 	Float backprop(const Tensor& input, const std::vector<Tensor*>& output);
 	Float backprop(const std::vector<Tensor*>& placeholders);
 
