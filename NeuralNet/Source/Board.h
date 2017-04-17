@@ -9,7 +9,6 @@ public:
 	std::vector<Blob*> mBlobs;
 	std::vector<ErrorFunction*> mErrorFuncs;
 	Optimizer* mOptimizer;
-
 	std::vector<Tensor*> mPlaceholders;
 
 	bool mUseOptimizer;
@@ -26,6 +25,7 @@ public:
 	Tensor forward(const Tensor& input);
 	Float backprop(const Tensor& input, const Tensor& output);
 	Float backprop(const Tensor& input, const std::vector<Tensor*>& output);
+	Float backprop(const std::vector<Tensor*>& placeholders);
 
 	Tensor predict(const Tensor& input);
 

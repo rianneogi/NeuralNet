@@ -71,6 +71,7 @@ Float Board::backprop(const Tensor& input, const Tensor& output)
 
 	mNeurons[0]->mInput->Data.mData = input.mData;
 	mErrorFuncs[0]->mTarget = &output;
+
 	//Forward Pass
 	for (size_t i = 0; i < mNeurons.size(); i++)
 	{
@@ -122,6 +123,34 @@ Float Board::backprop(const Tensor& input, const std::vector<Tensor*>& output)
 	for (int i = mNeurons.size() - 1; i >= 0; i--)
 	{
 		//printf("bb: %d\n", i);
+		mNeurons[i]->backprop();
+	}
+
+	return error;
+}
+
+Float Board::backprop(const std::vector<Tensor*>& placeholders)
+{
+	clear_deltas();
+
+	//Set placeholders
+	for (size_t i = 0; i < mPlaceholders.size(); i++)
+	{
+		mPlaceholders[i]->mData = placeholders[i]->mData;
+	}
+
+	//Forward Pass
+	for (size_t i = 0; i < mNeurons.size(); i++)
+	{
+		mNeurons[i]->forward();
+	}
+
+	//Calculate Error
+	Float error = mErrorFuncs[0]->calculateError();
+
+	//Backward Pass
+	for (int i = mNeurons.size() - 1; i >= 0; i--)
+	{
 		mNeurons[i]->backprop();
 	}
 
