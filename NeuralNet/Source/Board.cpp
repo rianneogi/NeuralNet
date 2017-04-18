@@ -71,7 +71,10 @@ Tensor Board::forward(const std::vector<Tensor*>& placeholders)
 	assert(placeholders.size() == mPlaceholders.size());
 	for (size_t i = 0; i < mPlaceholders.size(); i++)
 	{
-		mPlaceholders[i]->mData = placeholders[i]->mData;
+		if (placeholders[i] == nullptr)
+			mPlaceholders[i] = nullptr;
+		else
+			mPlaceholders[i]->mData = placeholders[i]->mData;
 	}
 
 	//Forward pass
