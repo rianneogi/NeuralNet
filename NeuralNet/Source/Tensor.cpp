@@ -6,9 +6,9 @@ Tensor::Tensor() : mData(NULL), mSize(0), mMemory(NULL), mLD(0)
 {
 }
 
-Tensor::Tensor(const Tensor& other) : mData(other.mData), mShape(other.mShape), mSize(other.mSize), mMemory(other.mMemory)
-{
-}
+//Tensor::Tensor(const Tensor& other) : mData(other.mData), mShape(other.mShape), mSize(other.mSize), mMemory(other.mMemory), mLD(other.mLD)
+//{
+//}
 
 Tensor::Tensor(const TensorShape& shape) : mData(NULL), mShape(shape), mSize(1), mMemory(NULL), mLD(mShape[mShape.size() - 1])
 {
@@ -33,7 +33,7 @@ Tensor::Tensor(Float* data, const TensorShape& shape) : mData(data), mShape(shap
 	}
 }
 
-Tensor::Tensor(Float* data, const TensorShape & shape, uint64_t ld) : mData(data), mShape(shape), mSize(1), mMemory(NULL), mLD(ld)
+Tensor::Tensor(Float* data, const TensorShape& shape, uint64_t ld) : mData(data), mShape(shape), mSize(1), mMemory(NULL), mLD(ld)
 {
 	assert(shape.size() <= 4 && "Max supported tensor shape is 4");
 	for (unsigned int x : mShape)

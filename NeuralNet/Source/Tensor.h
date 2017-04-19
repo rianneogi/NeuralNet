@@ -15,7 +15,7 @@ public:
 	uint64_t mLD; //Size of leading dimension 
 
 	Tensor();
-	Tensor(const Tensor& other);
+	//Tensor(const Tensor& other);
 	Tensor(const TensorShape& shape); //initialize tensor allocated with given shape
 	Tensor(Float* data, const TensorShape& shape); //initialize tensor pointing to existing data
 	Tensor(Float* data, const TensorShape& shape, uint64_t ld); //initialize tensor pointing to existing data and specify leading dimension
