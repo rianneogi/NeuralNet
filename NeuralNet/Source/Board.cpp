@@ -95,18 +95,15 @@ Float Board::backprop(const Tensor& input, Tensor& output)
 	//Forward Pass
 	for (size_t i = 0; i < mNeurons.size(); i++)
 	{
-		//printf("ff: %d\n", i);
 		mNeurons[i]->forward();
 	}
 
 	//Calculate Error
 	Float error = mErrorFuncs[0]->calculateError();
 
-	//printf("backward\n");
 	//Backward Pass
 	for (int i = mNeurons.size() - 1; i >= 0; i--)
 	{
-		//printf("bb: %d\n", i);
 		mNeurons[i]->backprop();
 	}
 

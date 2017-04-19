@@ -53,7 +53,8 @@ Float& Tensor::operator()(uint64_t a) const
 #ifdef NN_DEBUG
 	assert(a < mSize);
 #endif
-	return mData[a];
+	//return mData[a];
+	return mData[(a/mShape[mShape.size()-1])*mLD + a%mShape[mShape.size()-1]];
 }
 
 Float& Tensor::operator()(uint64_t a, uint64_t b) const
