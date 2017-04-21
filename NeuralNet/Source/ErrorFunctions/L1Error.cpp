@@ -4,11 +4,11 @@ L1Error::L1Error() : ErrorFunction()
 {
 }
 
-L1Error::L1Error(Blob* input, Blob* output) : ErrorFunction(input, output, new Tensor(output->Data.mShape))
+L1Error::L1Error(Blob* output) : ErrorFunction(output, new Tensor(output->Data.mShape))
 {
 }
 
-L1Error::L1Error(Blob* input, Blob* output, Tensor* target) : ErrorFunction(input, output, target)
+L1Error::L1Error(Blob* output, Tensor* target) : ErrorFunction(output, target)
 {
 }
 

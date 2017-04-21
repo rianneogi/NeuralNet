@@ -29,17 +29,6 @@ Im2ColNeuron::~Im2ColNeuron()
 
 void Im2ColNeuron::forward()
 {
-	/*Matrix res(1, (InputWidth - 1 - KernelWidth)*(InputHeight - 1 - KernelHeight));
-	for (unsigned int x = KernelWidth / 2; x < InputWidth - 1 - KernelWidth / 2; x++)
-	{
-		for (unsigned int y = KernelHeight / 2; y < InputHeight - 1 - KernelHeight / 2; y++)
-		{
-			Matrix m = mInput->Data.block(x, y, KernelHeight, KernelWidth).array();
-			m.resize(m.cols()*m.rows(), 1);
-			res << m;
-		}
-	}
-	mOutput->Data = res;*/
 	//Works only for odd sized receptive fields
 	for (uint64_t batch = 0; batch < BatchSize; batch++)
 	{
@@ -53,13 +42,8 @@ void Im2ColNeuron::forward()
 				{
 					memcpy(&mOutput->Data(batch*FieldCount + sub_batch, id),
 						&mInput->Data(batch, i, x - FieldWidth / 2, 0), FieldWidth * InputDepth * sizeof(Float));
-					//uint64_t xid = id;
+
 					id += FieldWidth*InputDepth;
-					/*for (uint64_t j = x - FieldWidth / 2; j <= x + FieldWidth / 2; j++)
-					{
-					assert(mOutput->Data(batch*FieldCount + sub_batch, xid) == mInput->Data(batch, d, i, j));
-					xid++;
-					}*/
 				}
 				sub_batch++;
 			}

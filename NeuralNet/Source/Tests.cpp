@@ -279,7 +279,7 @@ void test_fc()
 	Blob* outputSigBlob = b.newBlob(make_shape(batch_size, 10));
 
 	b.setOptimizer(new AdamOptimizer(0.0005));
-	b.addErrorFunction(new MeanSquaredError(inputBlob, outputSigBlob, nullptr));
+	b.addErrorFunction(new MeanSquaredError(outputSigBlob, nullptr));
 
 	b.addNeuron(new FullyConnectedNeuron(inputBlob, layer1FCBlob, learning_rate));
 	b.addNeuron(new LeakyReLUNeuron(layer1FCBlob, layer1SigBlob, 0.05));
@@ -373,7 +373,7 @@ void test_conv()
 	b.addNeuron(new LeakyReLUNeuron(l2fcBlob, l2tanhBlob, 0.05));
 	b.addNeuron(new FullyConnectedNeuron(l2tanhBlob, l3fcBlob, learning_rate));
 	b.addNeuron(new TanhNeuron(l3fcBlob, l3tanhBlob));
-	b.addErrorFunction(new MeanSquaredError(inputBlob, l3tanhBlob, nullptr));
+	b.addErrorFunction(new MeanSquaredError(l3tanhBlob, nullptr));
 	//l1tanhBlob->reshape(make_shape(batch_size * 26 * 26, 10));
 
 	Tensor inputs_train = openidx_input("Data/train-images.idx3-ubyte");
