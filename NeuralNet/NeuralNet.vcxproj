@@ -121,6 +121,7 @@
     <Manifest />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ErrorFunctions\CrossEntropyError.cpp" />
     <ClCompile Include="Source\ErrorFunctions\L1Error.cpp" />
     <ClCompile Include="Source\ErrorFunctions\UnitError.cpp" />
     <ClCompile Include="Source\Neurons\DiagNeuron.cpp" />
@@ -152,6 +153,7 @@
     <ClCompile Include="Source\UtilFuncs.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\ErrorFunctions\CrossEntropyError.h" />
     <ClInclude Include="Source\ErrorFunctions\L1Error.h" />
     <ClInclude Include="Source\ErrorFunctions\UnitError.h" />
     <ClInclude Include="Source\Neurons\DiagNeuron.h" />
