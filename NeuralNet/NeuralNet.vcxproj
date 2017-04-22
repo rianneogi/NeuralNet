@@ -127,6 +127,7 @@
     <ClCompile Include="Source\Neurons\FileNeuron.cpp" />
     <ClCompile Include="Source\Neurons\KingNeuron.cpp" />
     <ClCompile Include="Source\Neurons\RankNeuron.cpp" />
+    <ClCompile Include="Source\Neurons\StepNeuron.cpp" />
     <ClCompile Include="Source\Optimizer.cpp" />
     <ClCompile Include="Source\Neurons\LeakyReLUNeuron.cpp" />
     <ClCompile Include="Source\Neurons\ReshapeNeuron.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="Source\Neurons\FileNeuron.h" />
     <ClInclude Include="Source\Neurons\KingNeuron.h" />
     <ClInclude Include="Source\Neurons\RankNeuron.h" />
+    <ClInclude Include="Source\Neurons\StepNeuron.h" />
     <ClInclude Include="Source\Optimizer.h" />
     <ClInclude Include="Source\Neurons\LeakyReLUNeuron.h" />
     <ClInclude Include="Source\Neurons\ReshapeNeuron.h" />
