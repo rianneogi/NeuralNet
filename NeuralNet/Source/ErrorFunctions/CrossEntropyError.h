@@ -7,7 +7,7 @@ class CrossEntropyError : public ErrorFunction
 public:
 	CrossEntropyError();
 	CrossEntropyError(Blob* output);
-	CrossEntropyError(Blob* output, Tensor* target);
+	CrossEntropyError(Blob* output, Tensor target);
 	~CrossEntropyError();
 
 	Float calculateError();

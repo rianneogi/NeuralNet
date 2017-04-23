@@ -9,7 +9,7 @@ class UnitError : public ErrorFunction
 public:
 	UnitError();
 	UnitError(Blob* output);
-	UnitError(Blob* output, Tensor* target);
+	UnitError(Blob* output, Tensor target);
 	~UnitError();
 
 	Float calculateError();

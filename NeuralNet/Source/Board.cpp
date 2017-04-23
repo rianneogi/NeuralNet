@@ -87,7 +87,7 @@ Float Board::backprop(const Tensor& input, Tensor& output)
 	clear_deltas();
 
 	mNeurons[0]->mInput->Data.mData = input.mData;
-	mErrorFuncs[0]->mTarget = &output;
+	mErrorFuncs[0]->mTarget = output;
 
 	//Forward Pass
 	for (size_t i = 0; i < mNeurons.size(); i++)
@@ -115,7 +115,7 @@ Float Board::backprop(const Tensor& input, std::vector<Tensor>& output)
 
 	for (size_t i = 0; i < mErrorFuncs.size(); i++)
 	{
-		mErrorFuncs[i]->mTarget = &output[i];
+		mErrorFuncs[i]->mTarget = output[i];
 	}
 	
 	//Forward Pass

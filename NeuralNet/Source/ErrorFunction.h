@@ -6,10 +6,11 @@ class ErrorFunction
 {
 public:
 	Blob* mOutput;
-	Tensor* mTarget;
+	Tensor mTarget;
 
 	ErrorFunction();
-	ErrorFunction(Blob* output, Tensor* target);
+	ErrorFunction(Blob* output);
+	ErrorFunction(Blob* output, Tensor target);
 	~ErrorFunction();
 
 	virtual Float calculateError() = 0;
