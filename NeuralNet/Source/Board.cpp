@@ -50,7 +50,7 @@ void Board::setOptimizer(Optimizer* optimizer)
 	mOptimizer = optimizer;
 }
 
-void Board::addPlaceholder(Tensor* placeholder)
+void Board::addPlaceholder(Tensor placeholder)
 {
 	mPlaceholders.push_back(placeholder);
 }
@@ -65,16 +65,13 @@ Tensor Board::forward(const Tensor& input)
 	return mNeurons[mNeurons.size()-1]->mOutput->Data;
 }
 
-Tensor Board::forward(const std::vector<Tensor*>& placeholders)
+Tensor Board::forward(const std::vector<Tensor>& placeholders)
 {
 	//Set placeholders
 	assert(placeholders.size() == mPlaceholders.size());
 	for (size_t i = 0; i < mPlaceholders.size(); i++)
 	{
-		if (placeholders[i] == nullptr)
-			mPlaceholders[i] = nullptr;
-		else
-			mPlaceholders[i]->mData = placeholders[i]->mData;
+			mPlaceholders[i].mData = placeholders[i].mData;
 	}
 
 	//Forward pass
@@ -110,7 +107,7 @@ Float Board::backprop(const Tensor& input, Tensor& output)
 	return error;
 }
 
-Float Board::backprop(const Tensor& input, const std::vector<Tensor*>& output)
+Float Board::backprop(const Tensor& input, std::vector<Tensor>& output)
 {
 	clear_deltas();
 
@@ -118,7 +115,7 @@ Float Board::backprop(const Tensor& input, const std::vector<Tensor*>& output)
 
 	for (size_t i = 0; i < mErrorFuncs.size(); i++)
 	{
-		mErrorFuncs[i]->mTarget = output[i];
+		mErrorFuncs[i]->mTarget = &output[i];
 	}
 	
 	//Forward Pass
@@ -146,7 +143,7 @@ Float Board::backprop(const Tensor& input, const std::vector<Tensor*>& output)
 	return error;
 }
 
-Float Board::backprop(const std::vector<Tensor*>& placeholders)
+Float Board::backprop(const std::vector<Tensor>& placeholders)
 {
 	clear_deltas();
 
@@ -154,7 +151,7 @@ Float Board::backprop(const std::vector<Tensor*>& placeholders)
 	assert(placeholders.size() == mPlaceholders.size());
 	for (size_t i = 0; i < mPlaceholders.size(); i++)
 	{
-		mPlaceholders[i]->mData = placeholders[i]->mData;
+		mPlaceholders[i].mData = placeholders[i].mData;
 	}
 
 	//Forward Pass

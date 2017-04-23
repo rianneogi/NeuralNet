@@ -9,7 +9,7 @@ public:
 	std::vector<Blob*> mBlobs;
 	std::vector<ErrorFunction*> mErrorFuncs;
 	Optimizer* mOptimizer;
-	std::vector<Tensor*> mPlaceholders;
+	std::vector<Tensor> mPlaceholders;
 
 	bool mUseOptimizer;
 
@@ -20,13 +20,13 @@ public:
 	Blob* newBlob(const TensorShape& shape);
 	void addErrorFunction(ErrorFunction* err_func);
 	void setOptimizer(Optimizer* optimizer);
-	void addPlaceholder(Tensor* placeholder);
+	void addPlaceholder(Tensor placeholder);
 
 	Tensor forward(const Tensor& input);
-	Tensor forward(const std::vector<Tensor*>& placeholders);
+	Tensor forward(const std::vector<Tensor>& placeholders);
 	Float backprop(const Tensor& input, Tensor& output);
-	Float backprop(const Tensor& input, const std::vector<Tensor*>& output);
-	Float backprop(const std::vector<Tensor*>& placeholders);
+	Float backprop(const Tensor& input, std::vector<Tensor>& output);
+	Float backprop(const std::vector<Tensor>& placeholders);
 
 	Tensor predict(const Tensor& input);
 
