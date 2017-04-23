@@ -127,6 +127,7 @@
     <ClCompile Include="Source\Neurons\DiagNeuron.cpp" />
     <ClCompile Include="Source\Neurons\FileNeuron.cpp" />
     <ClCompile Include="Source\Neurons\KingNeuron.cpp" />
+    <ClCompile Include="Source\Neurons\KnightNeuron.cpp" />
     <ClCompile Include="Source\Neurons\RankNeuron.cpp" />
     <ClCompile Include="Source\Neurons\StepNeuron.cpp" />
     <ClCompile Include="Source\Optimizer.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="Source\Neurons\DiagNeuron.h" />
     <ClInclude Include="Source\Neurons\FileNeuron.h" />
     <ClInclude Include="Source\Neurons\KingNeuron.h" />
+    <ClInclude Include="Source\Neurons\KnightNeuron.h" />
     <ClInclude Include="Source\Neurons\RankNeuron.h" />
     <ClInclude Include="Source\Neurons\StepNeuron.h" />
     <ClInclude Include="Source\Optimizer.h" />

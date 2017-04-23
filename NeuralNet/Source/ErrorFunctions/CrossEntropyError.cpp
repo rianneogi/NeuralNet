@@ -25,7 +25,7 @@ Float CrossEntropyError::calculateError()
 	for (int i = 0; i < mOutput->Data.mSize; i++)
 	{
 		error += -((*mTarget)(i)*log(mOutput->Data(i)) + (1.0 - (*mTarget)(i))*log((1.0 - mOutput->Data(i))));
-		mOutput->Delta(i) += (*mTarget)(i)*(1.0 / log(mOutput->Data(i))) - (1.0 - (*mTarget)(i))*(1.0 / (1.0 - mOutput->Data(i)));
+		mOutput->Delta(i) += (*mTarget)(i)*(1.0 / mOutput->Data(i)) - (1.0 - (*mTarget)(i))*(1.0 / (1.0 - mOutput->Data(i)));
 	}
 
 	return error;
