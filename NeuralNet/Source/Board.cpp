@@ -50,7 +50,7 @@ void Board::setOptimizer(Optimizer* optimizer)
 	mOptimizer = optimizer;
 }
 
-void Board::addPlaceholder(Tensor placeholder)
+void Board::addPlaceholder(Tensor* placeholder)
 {
 	mPlaceholders.push_back(placeholder);
 }
@@ -65,13 +65,14 @@ Tensor Board::forward(const Tensor& input)
 	return mNeurons[mNeurons.size()-1]->mOutput->Data;
 }
 
-Tensor Board::forward(const std::vector<Tensor>& placeholders)
+Tensor Board::forward(const std::vector<Tensor*>& placeholders)
 {
 	//Set placeholders
 	assert(placeholders.size() == mPlaceholders.size());
 	for (size_t i = 0; i < mPlaceholders.size(); i++)
 	{
-			mPlaceholders[i].mData = placeholders[i].mData;
+		mPlaceholders[i]->mData = placeholders[i]->mData;
+		printf("data set to %d\n", mPlaceholders[i]->mData);
 	}
 
 	//Forward pass
@@ -143,7 +144,7 @@ Float Board::backprop(const Tensor& input, std::vector<Tensor>& output)
 	return error;
 }
 
-Float Board::backprop(const std::vector<Tensor>& placeholders)
+Float Board::backprop(const std::vector<Tensor*>& placeholders)
 {
 	clear_deltas();
 
@@ -151,7 +152,7 @@ Float Board::backprop(const std::vector<Tensor>& placeholders)
 	assert(placeholders.size() == mPlaceholders.size());
 	for (size_t i = 0; i < mPlaceholders.size(); i++)
 	{
-		mPlaceholders[i].mData = placeholders[i].mData;
+		mPlaceholders[i]->mData = placeholders[i]->mData;
 	}
 
 	//Forward Pass
@@ -222,7 +223,7 @@ void Board::save_variables(std::string filename)
 	std::fstream file(filename, std::ios::out | std::ios::binary | std::ios::trunc);
 	if (!file.is_open())
 	{
-		printf("unable to open file for saving: %s\n", filename.c_str());
+		printf("ERROR: Unable to open file for saving: %s\n", filename.c_str());
 		return;
 	}
 	for (size_t i = 0; i < mOptimizer->Variables.size(); i++)
@@ -243,11 +244,11 @@ void Board::load_variables(std::string filename)
 	std::fstream file(filename, std::ios::in | std::ios::binary);
 	if (!file.is_open())
 	{
-		printf("unable to open file for loading: %s\n", filename.c_str());
+		printf("ERROR: Unable to open file for loading: %s\n", filename.c_str());
 		return;
 	}
 	char* mem = new char[sizeof(Float)];
-	for (size_t i = 0; i <mOptimizer->Variables.size(); i++)
+	for (size_t i = 0; i < mOptimizer->Variables.size(); i++)
 	{
 		for (uint64_t j = 0; j < mOptimizer->Variables[i]->Data.mSize; j++)
 		{
