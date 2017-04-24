@@ -65,14 +65,13 @@ Tensor Board::forward(const Tensor& input)
 	return mNeurons[mNeurons.size()-1]->mOutput->Data;
 }
 
-Tensor Board::forward(const std::vector<Tensor*>& placeholders)
+Tensor Board::forward(const std::vector<Tensor>& placeholders)
 {
 	//Set placeholders
 	assert(placeholders.size() == mPlaceholders.size());
 	for (size_t i = 0; i < mPlaceholders.size(); i++)
 	{
-		mPlaceholders[i]->mData = placeholders[i]->mData;
-		printf("data set to %d\n", mPlaceholders[i]->mData);
+		mPlaceholders[i]->mData = placeholders[i].mData;
 	}
 
 	//Forward pass
@@ -144,7 +143,7 @@ Float Board::backprop(const Tensor& input, std::vector<Tensor>& output)
 	return error;
 }
 
-Float Board::backprop(const std::vector<Tensor*>& placeholders)
+Float Board::backprop(const std::vector<Tensor>& placeholders)
 {
 	clear_deltas();
 
@@ -152,7 +151,7 @@ Float Board::backprop(const std::vector<Tensor*>& placeholders)
 	assert(placeholders.size() == mPlaceholders.size());
 	for (size_t i = 0; i < mPlaceholders.size(); i++)
 	{
-		mPlaceholders[i]->mData = placeholders[i]->mData;
+		mPlaceholders[i]->mData = placeholders[i].mData;
 	}
 
 	//Forward Pass
