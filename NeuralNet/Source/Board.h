@@ -17,6 +17,7 @@ public:
 	~Board();
 
 	void addNeuron(Neuron* n);
+	void addNeuronWithFixedVariables(Neuron* n);
 	Blob* newBlob(const TensorShape& shape);
 	void addErrorFunction(ErrorFunction* err_func);
 	void setOptimizer(Optimizer* optimizer);

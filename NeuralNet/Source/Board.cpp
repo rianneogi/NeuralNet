@@ -33,6 +33,11 @@ void Board::addNeuron(Neuron* n)
 	}
 }
 
+void Board::addNeuronWithFixedVariables(Neuron* n)
+{
+	mNeurons.push_back(n);
+}
+
 Blob* Board::newBlob(const TensorShape& shape)
 {
 	Blob* b = new Blob(shape);
