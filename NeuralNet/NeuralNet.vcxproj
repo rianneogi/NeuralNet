@@ -124,6 +124,8 @@
     <ClCompile Include="Source\ErrorFunctions\CrossEntropyError.cpp" />
     <ClCompile Include="Source\ErrorFunctions\L1Error.cpp" />
     <ClCompile Include="Source\ErrorFunctions\UnitError.cpp" />
+    <ClCompile Include="Source\Initializer.cpp" />
+    <ClCompile Include="Source\Initializers\RangeInitializer.cpp" />
     <ClCompile Include="Source\Neurons\DiagNeuron.cpp" />
     <ClCompile Include="Source\Neurons\FileNeuron.cpp" />
     <ClCompile Include="Source\Neurons\KingNeuron.cpp" />
@@ -157,6 +159,8 @@
     <ClInclude Include="Source\ErrorFunctions\CrossEntropyError.h" />
     <ClInclude Include="Source\ErrorFunctions\L1Error.h" />
     <ClInclude Include="Source\ErrorFunctions\UnitError.h" />
+    <ClInclude Include="Source\Initializer.h" />
+    <ClInclude Include="Source\Initializers\RangeInitializer.h" />
     <ClInclude Include="Source\Neurons\DiagNeuron.h" />
     <ClInclude Include="Source\Neurons\FileNeuron.h" />
     <ClInclude Include="Source\Neurons\KingNeuron.h" />
