@@ -281,13 +281,13 @@ void test_fc()
 	b.setOptimizer(new AdamOptimizer(0.0005));
 	b.addErrorFunction(new MeanSquaredError(outputSigBlob));
 
-	b.addNeuron(new FullyConnectedNeuron(inputBlob, layer1FCBlob, learning_rate));
+	b.addNeuron(new FullyConnectedNeuron(inputBlob, layer1FCBlob));
 	b.addNeuron(new LeakyReLUNeuron(layer1FCBlob, layer1SigBlob, 0.05));
-	b.addNeuron(new FullyConnectedNeuron(layer1SigBlob, layer2FCBlob, learning_rate));
+	b.addNeuron(new FullyConnectedNeuron(layer1SigBlob, layer2FCBlob));
 	b.addNeuron(new LeakyReLUNeuron(layer2FCBlob, layer2SigBlob, 0.05));
 	/*b.addNeuron(new FullyConnectedNeuron(layer2SigBlob, layer3FCBlob, learning_rate));
 	b.addNeuron(new LeakyReLUNeuron(layer3FCBlob, layer3SigBlob, 0.05));*/
-	b.addNeuron(new FullyConnectedNeuron(layer2SigBlob, outputFCBlob, learning_rate));
+	b.addNeuron(new FullyConnectedNeuron(layer2SigBlob, outputFCBlob));
 	b.addNeuron(new TanhNeuron(outputFCBlob, outputSigBlob));
 	
 
@@ -369,9 +369,9 @@ void test_conv()
 	//b.addNeuron(new ReshapeNeuron(l1tanhBlob, l1tanhBlob, make_shape(batch_size, 10 * 26 * 26)));
 
 	//l1tanhBlob->reshape(make_shape(batch_size, 10 * 26 * 26));
-	b.addNeuron(new FullyConnectedNeuron(l1tanhBlob, l2fcBlob, learning_rate));
+	b.addNeuron(new FullyConnectedNeuron(l1tanhBlob, l2fcBlob));
 	b.addNeuron(new LeakyReLUNeuron(l2fcBlob, l2tanhBlob, 0.05));
-	b.addNeuron(new FullyConnectedNeuron(l2tanhBlob, l3fcBlob, learning_rate));
+	b.addNeuron(new FullyConnectedNeuron(l2tanhBlob, l3fcBlob));
 	b.addNeuron(new TanhNeuron(l3fcBlob, l3tanhBlob));
 	b.addErrorFunction(new MeanSquaredError(l3tanhBlob));
 	//l1tanhBlob->reshape(make_shape(batch_size * 26 * 26, 10));

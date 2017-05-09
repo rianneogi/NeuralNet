@@ -14,10 +14,9 @@ public:
 	Tensor BiasesDelta;*/
 	Tensor Ones;
 
-	Float LearningRate;
-
 	FullyConnectedNeuron(); 
-	FullyConnectedNeuron(Blob* input, Blob* output, Float learning_rate);
+	FullyConnectedNeuron(Blob* input, Blob* output);
+	FullyConnectedNeuron(Blob* input, Blob* output, Float init_start, Float init_end);
 	~FullyConnectedNeuron();
 
 	void forward();

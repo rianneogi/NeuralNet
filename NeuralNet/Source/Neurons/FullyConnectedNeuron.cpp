@@ -1,10 +1,14 @@
 #include "FullyConnectedNeuron.h"
 
-FullyConnectedNeuron::FullyConnectedNeuron() : Neuron(), LearningRate(1)
+FullyConnectedNeuron::FullyConnectedNeuron() : Neuron()
 {
 }
 
-FullyConnectedNeuron::FullyConnectedNeuron(Blob* input, Blob* output, Float learning_rate) : Neuron(input, output), LearningRate(learning_rate)
+FullyConnectedNeuron::FullyConnectedNeuron(Blob* input, Blob* output) : FullyConnectedNeuron(input, output, -0.5, 0.5)
+{
+}
+
+FullyConnectedNeuron::FullyConnectedNeuron(Blob* input, Blob* output, Float init_start, Float init_end) : Neuron(input, output)
 {
 	assert(input->Data.mShape.size() == 2);
 	assert(output->Data.mShape.size() == 2);
@@ -12,10 +16,10 @@ FullyConnectedNeuron::FullyConnectedNeuron(Blob* input, Blob* output, Float lear
 	Biases = new Blob(make_shape(1, output->Data.cols()));
 	for (int i = 0; i < Weights->Data.cols(); i++)
 	{
-		Biases->Data(i) = rand_init();
+		Biases->Data(i) = rand_init(init_start, init_end);
 		for (int j = 0; j < Weights->Data.rows(); j++)
 		{
-			Weights->Data(j, i) = rand_init();
+			Weights->Data(j, i) = rand_init(init_start, init_end);
 		}
 	}
 	Biases->copyToGPU();

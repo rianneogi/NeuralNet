@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Blob.h"
+#include "Initializer.h"
 
 class Neuron
 {

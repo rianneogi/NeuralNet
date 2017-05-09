@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Neuron.h"
+#include "Blob.h"
 
 class Initializer
 {

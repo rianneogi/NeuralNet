@@ -22,10 +22,10 @@ ConvNeuron::ConvNeuron(Blob* input, Blob* output, Float learning_rate)
 	Biases = new Blob(make_shape(1, OutputDepth));
 	for (int i = 0; i < Weights->Data.cols(); i++)
 	{
-		Biases->Data(i) = rand_init();
+		Biases->Data(i) = rand_init(-0.5, 0.5);
 		for (int j = 0; j < Weights->Data.rows(); j++)
 		{
-			Weights->Data(j, i) = rand_init();
+			Weights->Data(j, i) = rand_init(-0.5, 0.5);
 		}
 	}
 

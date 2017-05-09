@@ -20,7 +20,7 @@ inline double square(double x)
 	return x*x;
 }
 
-inline double rand_init()
+inline double rand_init(Float start, Float end)
 {
-	return ((rand() % 1024) / 1024.0) - 0.5;
+	return ((rand() % 1024) / 1024.0)*(end-start) + start;
 }
