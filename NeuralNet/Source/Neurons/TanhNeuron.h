@@ -15,6 +15,9 @@
 class TanhNeuron : public Neuron
 {
 public:
+	Blob* mInput;
+	Blob* mOutput;
+
 	TanhNeuron();
 	TanhNeuron(Blob* input, Blob* output);
 	~TanhNeuron();

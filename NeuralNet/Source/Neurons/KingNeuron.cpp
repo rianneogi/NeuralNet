@@ -5,7 +5,7 @@ KingNeuron::KingNeuron()
 }
 
 KingNeuron::KingNeuron(Blob* input, Blob* output, int64_t field_width, int64_t field_height, Tensor pad_value)
-	: Neuron(input, output), FieldWidth(field_width), FieldHeight(field_height), PadValue(pad_value)
+	: mInput(input), mOutput(output), FieldWidth(field_width), FieldHeight(field_height), PadValue(pad_value)
 {
 	assert(input->Data.mShape.size() == 4);
 

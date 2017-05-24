@@ -4,6 +4,9 @@ class ReshapeNeuron :
 	public Neuron
 {
 public:
+	Blob* mInput;
+	Blob* mOutput;
+
 	TensorShape InputShape;
 	TensorShape OutputShape;
 

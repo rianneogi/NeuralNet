@@ -5,7 +5,7 @@ ConvNeuron::ConvNeuron() : Neuron(), LearningRate(1)
 }
 
 ConvNeuron::ConvNeuron(Blob* input, Blob* output, Float learning_rate)
-	: Neuron(input, output), LearningRate(learning_rate)
+	: mInput(input), mOutput(output), LearningRate(learning_rate)
 {
 	assert(input->Data.mShape.size() == 2);
 	assert(output->Data.mShape.size() == 2);

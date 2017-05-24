@@ -4,7 +4,7 @@ SigmoidNeuron::SigmoidNeuron() : Neuron()
 {
 }
 
-SigmoidNeuron::SigmoidNeuron(Blob* input, Blob* output) : Neuron(input, output)
+SigmoidNeuron::SigmoidNeuron(Blob* input, Blob* output) : mInput(input), mOutput(output)
 {
 	assert(input->Data.mSize == output->Data.mSize);
 }

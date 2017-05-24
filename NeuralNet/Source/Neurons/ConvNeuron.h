@@ -5,6 +5,9 @@
 class ConvNeuron : public Neuron
 {
 public:
+	Blob* mInput;
+	Blob* mOutput;
+
 	uint64_t InputSize;
 
 	uint64_t OutputWidth;

@@ -4,7 +4,7 @@ RankNeuron::RankNeuron()
 {
 }
 
-RankNeuron::RankNeuron(Blob* input, Blob* output) : Neuron(input, output)
+RankNeuron::RankNeuron(Blob* input, Blob* output) : mInput(input), mOutput(output)
 {
 	BatchSize = input->Data.mShape[0];
 

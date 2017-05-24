@@ -4,7 +4,7 @@ FileNeuron::FileNeuron()
 {
 }
 
-FileNeuron::FileNeuron(Blob* input, Blob* output) : Neuron(input, output)
+FileNeuron::FileNeuron(Blob* input, Blob* output) : mInput(input), mOutput(output)
 {
 	BatchSize = input->Data.mShape[0];
 

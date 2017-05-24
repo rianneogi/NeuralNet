@@ -5,6 +5,9 @@
 class FullyConnectedNeuron : public Neuron
 {
 public:
+	Blob* mInput;
+	Blob* mOutput;
+
 	uint64_t InputSize;
 	uint64_t OutputSize;
 	uint64_t BatchSize;

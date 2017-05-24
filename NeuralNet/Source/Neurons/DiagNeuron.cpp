@@ -5,7 +5,7 @@ DiagNeuron::DiagNeuron()
 }
 
 DiagNeuron::DiagNeuron(Blob* input, Blob* output, Tensor pad_value)
-	: Neuron(input, output), PadValue(pad_value)
+	: mInput(input), mOutput(output), PadValue(pad_value)
 {
 	assert(input->Data.mShape.size() == 4);
 

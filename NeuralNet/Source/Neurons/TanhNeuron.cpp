@@ -4,7 +4,7 @@ TanhNeuron::TanhNeuron() : Neuron()
 {
 }
 
-TanhNeuron::TanhNeuron(Blob* input, Blob* output) : Neuron(input, output)
+TanhNeuron::TanhNeuron(Blob* input, Blob* output) : mInput(input), mOutput(output)
 {
 	assert(input->Data.mSize == output->Data.mSize);
 }

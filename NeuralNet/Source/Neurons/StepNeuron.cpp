@@ -4,7 +4,7 @@ StepNeuron::StepNeuron() : Neuron()
 {
 }
 
-StepNeuron::StepNeuron(Blob* input, Blob* output) : Neuron(input, output)
+StepNeuron::StepNeuron(Blob* input, Blob* output) : mInput(input), mOutput(output)
 {
 	assert(input->Data.mSize == output->Data.mSize);
 }

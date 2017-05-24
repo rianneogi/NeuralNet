@@ -54,9 +54,6 @@
     <ClCompile Include="Source\UtilFuncs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Neurons\Col2ImNeuron.cpp">
-      <Filter>Source Files\Neurons</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Neurons\ConvNeuron.cpp">
       <Filter>Source Files\Neurons</Filter>
     </ClCompile>
@@ -126,9 +123,6 @@
     <ClCompile Include="Source\Initializers\RangeInitializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Neurons\LSTMNeuron.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Neurons\AddNeuron.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -163,9 +157,6 @@
     </ClInclude>
     <ClInclude Include="Source\UtilFuncs.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Neurons\Col2ImNeuron.h">
-      <Filter>Header Files\Neurons</Filter>
     </ClInclude>
     <ClInclude Include="Source\Neurons\ConvNeuron.h">
       <Filter>Header Files\Neurons</Filter>
@@ -234,9 +225,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Initializers\RangeInitializer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Neurons\LSTMNeuron.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Neurons\AddNeuron.h">

@@ -4,7 +4,7 @@ ReshapeNeuron::ReshapeNeuron()
 {
 }
 
-ReshapeNeuron::ReshapeNeuron(Blob* input, Blob* output, TensorShape output_shape) : Neuron(input, output)
+ReshapeNeuron::ReshapeNeuron(Blob* input, Blob* output, TensorShape output_shape) : mInput(input), mOutput(output)
 {
 	assert(input->Data.mSize == output->Data.mSize);
 	InputShape = input->Data.mShape;

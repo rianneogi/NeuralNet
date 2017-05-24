@@ -4,6 +4,9 @@
 class FileNeuron : public Neuron
 {
 public:
+	Blob* mInput;
+	Blob* mOutput;
+
 	uint64_t InputWidth;
 	uint64_t InputHeight;
 	uint64_t InputDepth;

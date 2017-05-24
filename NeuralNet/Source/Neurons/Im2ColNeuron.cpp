@@ -5,7 +5,7 @@ Im2ColNeuron::Im2ColNeuron() : Neuron()
 }
 
 Im2ColNeuron::Im2ColNeuron(Blob* input, Blob* output, uint64_t field_width, uint64_t field_height)
-	: Neuron(input, output), FieldWidth(field_width), FieldHeight(field_height)
+	: mInput(input), mOutput(output), FieldWidth(field_width), FieldHeight(field_height)
 {
 	BatchSize = input->Data.mShape[0];
 

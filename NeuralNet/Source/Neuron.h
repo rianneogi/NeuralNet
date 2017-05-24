@@ -5,11 +5,7 @@
 class Neuron
 {
 public:
-	Blob* mInput;
-	Blob* mOutput;
-
 	Neuron();
-	Neuron(Blob* input, Blob* output);
 	~Neuron();
 
 	virtual void forward() = 0;

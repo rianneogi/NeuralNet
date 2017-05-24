@@ -15,6 +15,9 @@
 class SigmoidNeuron : public Neuron
 {
 public:
+	Blob* mInput;
+	Blob* mOutput;
+
 	SigmoidNeuron();
 	SigmoidNeuron(Blob* input, Blob* output);
 	~SigmoidNeuron();

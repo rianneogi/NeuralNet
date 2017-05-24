@@ -7,7 +7,7 @@ LeakyReLUNeuron::LeakyReLUNeuron()
 }
 
 LeakyReLUNeuron::LeakyReLUNeuron(Blob* input, Blob* output, Float leak_factor) 
-	: Neuron(input, output), LeakFactor(leak_factor)
+	: mInput(input), mOutput(output), LeakFactor(leak_factor)
 {
 	assert(input->Data.mSize == output->Data.mSize);
 }

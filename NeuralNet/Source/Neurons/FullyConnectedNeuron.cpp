@@ -8,7 +8,8 @@ FullyConnectedNeuron::FullyConnectedNeuron(Blob* input, Blob* output) : FullyCon
 {
 }
 
-FullyConnectedNeuron::FullyConnectedNeuron(Blob* input, Blob* output, Float init_start, Float init_end) : Neuron(input, output)
+FullyConnectedNeuron::FullyConnectedNeuron(Blob* input, Blob* output, Float init_start, Float init_end) 
+	: mInput(input), mOutput(output)
 {
 	assert(input->Data.mShape.size() == 2);
 	assert(output->Data.mShape.size() == 2);

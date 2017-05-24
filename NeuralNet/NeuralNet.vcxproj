@@ -131,7 +131,6 @@
     <ClCompile Include="Source\Neurons\FileNeuron.cpp" />
     <ClCompile Include="Source\Neurons\KingNeuron.cpp" />
     <ClCompile Include="Source\Neurons\KnightNeuron.cpp" />
-    <ClCompile Include="Source\Neurons\LSTMNeuron.cpp" />
     <ClCompile Include="Source\Neurons\MultiplyNeuron.cpp" />
     <ClCompile Include="Source\Neurons\RankNeuron.cpp" />
     <ClCompile Include="Source\Neurons\StepNeuron.cpp" />
@@ -141,7 +140,6 @@
     <ClCompile Include="Source\Blob.cpp" />
     <ClCompile Include="Source\Board.cpp" />
     <ClCompile Include="Source\Clock.cpp" />
-    <ClCompile Include="Source\Neurons\Col2ImNeuron.cpp" />
     <ClCompile Include="Source\Neurons\ConvNeuron.cpp" />
     <ClCompile Include="Source\ErrorFunction.cpp" />
     <ClCompile Include="Source\Neurons\FullyConnectedNeuron.cpp" />
@@ -169,7 +167,6 @@
     <ClInclude Include="Source\Neurons\FileNeuron.h" />
     <ClInclude Include="Source\Neurons\KingNeuron.h" />
     <ClInclude Include="Source\Neurons\KnightNeuron.h" />
-    <ClInclude Include="Source\Neurons\LSTMNeuron.h" />
     <ClInclude Include="Source\Neurons\MultiplyNeuron.h" />
     <ClInclude Include="Source\Neurons\RankNeuron.h" />
     <ClInclude Include="Source\Neurons\StepNeuron.h" />
@@ -179,7 +176,6 @@
     <ClInclude Include="Source\Blob.h" />
     <ClInclude Include="Source\Board.h" />
     <ClInclude Include="Source\Clock.h" />
-    <ClInclude Include="Source\Neurons\Col2ImNeuron.h" />
     <ClInclude Include="Source\Neurons\ConvNeuron.h" />
     <ClInclude Include="Source\ErrorFunction.h" />
     <ClInclude Include="Source\Neurons\FullyConnectedNeuron.h" />

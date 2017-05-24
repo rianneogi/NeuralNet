@@ -4,6 +4,9 @@ class LeakyReLUNeuron :
 	public Neuron
 {
 public:
+	Blob* mInput;
+	Blob* mOutput;
+
 	Float LeakFactor;
 	
 	LeakyReLUNeuron();

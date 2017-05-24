@@ -5,7 +5,7 @@ KnightNeuron::KnightNeuron()
 }
 
 KnightNeuron::KnightNeuron(Blob* input, Blob* output, int64_t field_width, int64_t field_height, Tensor pad_value)
-	: Neuron(input, output), PadValue(pad_value)
+	: mInput(input), mOutput(output), PadValue(pad_value)
 {
 	assert(input->Data.mShape.size() == 4);
 

@@ -5,6 +5,9 @@
 class StepNeuron : public Neuron
 {
 public:
+	Blob* mInput;
+	Blob* mOutput;
+
 	StepNeuron();
 	StepNeuron(Blob* input, Blob* output);
 	~StepNeuron();
