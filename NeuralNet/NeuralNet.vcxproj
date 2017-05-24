@@ -126,10 +126,13 @@
     <ClCompile Include="Source\ErrorFunctions\UnitError.cpp" />
     <ClCompile Include="Source\Initializer.cpp" />
     <ClCompile Include="Source\Initializers\RangeInitializer.cpp" />
+    <ClCompile Include="Source\Neurons\AddNeuron.cpp" />
     <ClCompile Include="Source\Neurons\DiagNeuron.cpp" />
     <ClCompile Include="Source\Neurons\FileNeuron.cpp" />
     <ClCompile Include="Source\Neurons\KingNeuron.cpp" />
     <ClCompile Include="Source\Neurons\KnightNeuron.cpp" />
+    <ClCompile Include="Source\Neurons\LSTMNeuron.cpp" />
+    <ClCompile Include="Source\Neurons\MultiplyNeuron.cpp" />
     <ClCompile Include="Source\Neurons\RankNeuron.cpp" />
     <ClCompile Include="Source\Neurons\StepNeuron.cpp" />
     <ClCompile Include="Source\Optimizer.cpp" />
@@ -161,10 +164,13 @@
     <ClInclude Include="Source\ErrorFunctions\UnitError.h" />
     <ClInclude Include="Source\Initializer.h" />
     <ClInclude Include="Source\Initializers\RangeInitializer.h" />
+    <ClInclude Include="Source\Neurons\AddNeuron.h" />
     <ClInclude Include="Source\Neurons\DiagNeuron.h" />
     <ClInclude Include="Source\Neurons\FileNeuron.h" />
     <ClInclude Include="Source\Neurons\KingNeuron.h" />
     <ClInclude Include="Source\Neurons\KnightNeuron.h" />
+    <ClInclude Include="Source\Neurons\LSTMNeuron.h" />
+    <ClInclude Include="Source\Neurons\MultiplyNeuron.h" />
     <ClInclude Include="Source\Neurons\RankNeuron.h" />
     <ClInclude Include="Source\Neurons\StepNeuron.h" />
     <ClInclude Include="Source\Optimizer.h" />
