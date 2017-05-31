@@ -60,15 +60,15 @@ void Board::addPlaceholder(Tensor* placeholder)
 	mPlaceholders.push_back(placeholder);
 }
 
-Tensor Board::forward(const Tensor& input)
-{
-	mNeurons[0]->mInput->Data.mData = input.mData;
-	for (size_t i = 0; i < mNeurons.size(); i++)
-	{
-		mNeurons[i]->forward();
-	}
-	return mNeurons[mNeurons.size()-1]->mOutput->Data;
-}
+//Tensor Board::forward(const Tensor& input)
+//{
+//	mNeurons[0]->mInput->Data.mData = input.mData;
+//	for (size_t i = 0; i < mNeurons.size(); i++)
+//	{
+//		mNeurons[i]->forward();
+//	}
+//	return mNeurons[mNeurons.size()-1]->mOutput->Data;
+//}
 
 Tensor Board::forward(const std::vector<Tensor>& placeholders)
 {
@@ -84,69 +84,69 @@ Tensor Board::forward(const std::vector<Tensor>& placeholders)
 	{
 		mNeurons[i]->forward();
 	}
-	return mNeurons[mNeurons.size() - 1]->mOutput->Data;
+	return mBlobs[mBlobs.size()-1]->Data;
 }
 
-Float Board::backprop(const Tensor& input, Tensor& output)
-{
-	clear_deltas();
+//Float Board::backprop(const Tensor& input, Tensor& output)
+//{
+//	clear_deltas();
+//
+//	mNeurons[0]->mInput->Data.mData = input.mData;
+//	mErrorFuncs[0]->mTarget = output;
+//
+//	//Forward Pass
+//	for (size_t i = 0; i < mNeurons.size(); i++)
+//	{
+//		mNeurons[i]->forward();
+//	}
+//
+//	//Calculate Error
+//	Float error = mErrorFuncs[0]->calculateError();
+//
+//	//Backward Pass
+//	for (int i = mNeurons.size() - 1; i >= 0; i--)
+//	{
+//		mNeurons[i]->backprop();
+//	}
+//
+//	return error;
+//}
 
-	mNeurons[0]->mInput->Data.mData = input.mData;
-	mErrorFuncs[0]->mTarget = output;
-
-	//Forward Pass
-	for (size_t i = 0; i < mNeurons.size(); i++)
-	{
-		mNeurons[i]->forward();
-	}
-
-	//Calculate Error
-	Float error = mErrorFuncs[0]->calculateError();
-
-	//Backward Pass
-	for (int i = mNeurons.size() - 1; i >= 0; i--)
-	{
-		mNeurons[i]->backprop();
-	}
-
-	return error;
-}
-
-Float Board::backprop(const Tensor& input, std::vector<Tensor>& output)
-{
-	clear_deltas();
-
-	mNeurons[0]->mInput->Data.mData = input.mData;
-
-	for (size_t i = 0; i < mErrorFuncs.size(); i++)
-	{
-		mErrorFuncs[i]->mTarget = output[i];
-	}
-	
-	//Forward Pass
-	for (size_t i = 0; i < mNeurons.size(); i++)
-	{
-		//printf("ff: %d\n", i);
-		mNeurons[i]->forward();
-	}
-
-	//Calculate Error
-	Float error = 0;
-	for (size_t i = 0; i < mErrorFuncs.size(); i++)
-	{
-		error += mErrorFuncs[i]->calculateError();
-	}
-
-	//printf("backward\n");
-	//Backward Pass
-	for (int i = mNeurons.size() - 1; i >= 0; i--)
-	{
-		//printf("bb: %d\n", i);
-		mNeurons[i]->backprop();
-	}
-
-	return error;
-}
+//Float Board::backprop(const Tensor& input, std::vector<Tensor>& output)
+//{
+//	clear_deltas();
+//
+//	mNeurons[0]->mInput->Data.mData = input.mData;
+//
+//	for (size_t i = 0; i < mErrorFuncs.size(); i++)
+//	{
+//		mErrorFuncs[i]->mTarget = output[i];
+//	}
+//	
+//	//Forward Pass
+//	for (size_t i = 0; i < mNeurons.size(); i++)
+//	{
+//		//printf("ff: %d\n", i);
+//		mNeurons[i]->forward();
+//	}
+//
+//	//Calculate Error
+//	Float error = 0;
+//	for (size_t i = 0; i < mErrorFuncs.size(); i++)
+//	{
+//		error += mErrorFuncs[i]->calculateError();
+//	}
+//
+//	//printf("backward\n");
+//	//Backward Pass
+//	for (int i = mNeurons.size() - 1; i >= 0; i--)
+//	{
+//		//printf("bb: %d\n", i);
+//		mNeurons[i]->backprop();
+//	}
+//
+//	return error;
+//}
 
 Float Board::backprop(const std::vector<Tensor>& placeholders)
 {
@@ -177,17 +177,17 @@ Float Board::backprop(const std::vector<Tensor>& placeholders)
 	return error;
 }
 
-Tensor Board::predict(const Tensor& input)
-{
-	mNeurons[0]->mInput->Data.mData = input.mData;
-
-	//Forward Pass
-	for (size_t i = 0; i < mNeurons.size(); i++)
-	{
-		mNeurons[i]->forward();
-	}
-	return mNeurons[mNeurons.size()-1]->mOutput->Data;
-}
+//Tensor Board::predict(const Tensor& input)
+//{
+//	mNeurons[0]->mInput->Data.mData = input.mData;
+//
+//	//Forward Pass
+//	for (size_t i = 0; i < mNeurons.size(); i++)
+//	{
+//		mNeurons[i]->forward();
+//	}
+//	return mNeurons[mNeurons.size()-1]->mOutput->Data;
+//}
 
 double Board::train(const Tensor& inputs, const Tensor& outputs, unsigned int epochs, unsigned int batch_size)
 {
@@ -199,26 +199,33 @@ double Board::train(const Tensor& inputs, const Tensor& outputs, unsigned int ep
 	printf("Started training\n");
 	Clock clock;
 	clock.Start();
+	Tensor tmp_input;
+	Tensor tmp_output;
 	for (int i = 0; i < epochs; i++)
 	{
 		error = 0.0;
 		for (int j = 0; j < inputs.rows() / batch_size; j++)
 		{
-			error += backprop(inputs.cut(batch_size*j, batch_size), outputs.cut(batch_size*j, batch_size));
+			tmp_input = inputs.cut(batch_size*j, batch_size);
+			tmp_output = outputs.cut(batch_size*j, batch_size);
+			std::vector<Tensor> placeholders;
+			placeholders.push_back(tmp_input);
+			placeholders.push_back(tmp_output);
+
+			error += backprop(placeholders);
 
 			if (mUseOptimizer)
 				mOptimizer->optimize();
 		}
-		/*for (int i = 0; i < inputs.size(); i++)
-		{
-		error += backprop(inputs[i], outputs[i]);
-		}*/
 		clock.Stop();
 		printf("Error %d: %f, epochs per sec: %f\n", i+1, error, ((i + 1)*1.0) / clock.ElapsedSeconds());
 		printf("Batches per sec: %f\n", (i+1.0)*(inputs.rows()*1.0 / batch_size) / clock.ElapsedSeconds());
-		//printf("Error %d: %f\n", j, error);
 	}
 	printf("Done training\n");
+
+	tmp_input.freemem();
+	tmp_output.freemem();
+
 	return error;
 }
 

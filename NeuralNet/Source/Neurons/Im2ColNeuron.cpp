@@ -49,7 +49,6 @@ void Im2ColNeuron::forward()
 			}
 		}
 	}
-	//mInput->Data.print_raw();
 }
 
 void Im2ColNeuron::backprop()
