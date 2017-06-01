@@ -386,7 +386,7 @@ void test_conv()
 	int acc = 0;
 	for (size_t i = 0; i < inputs_test.rows() / batch_size; i++)
 	{
-		Tensor o = b.predict(inputs_test.cut(i*batch_size, batch_size));
+		Tensor o = b.forward(inputs_test.cut(i*batch_size, batch_size));
 		for (int j = 0; j < batch_size; j++)
 		{
 			if (getoutput(o.cut(j, 1)) == getoutput(outputs_test.cut(i*batch_size + j, 1)))
