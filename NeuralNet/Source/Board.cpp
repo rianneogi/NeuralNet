@@ -22,9 +22,10 @@ Board::~Board()
 	delete mOptimizer;
 }
 
-void Board::addNeuron(Neuron* n)
+void Board::addNeuron(Neuron* n, std::string name)
 {
 	assert(mOptimizer != nullptr);
+	mNeuronNames[name] = mNeurons.size();
 	mNeurons.push_back(n);
 	auto variables = n->getVariables();
 	for (size_t i = 0; i < variables.size(); i++)
@@ -33,14 +34,16 @@ void Board::addNeuron(Neuron* n)
 	}
 }
 
-void Board::addNeuronWithFixedVariables(Neuron* n)
+void Board::addNeuronWithFixedVariables(Neuron* n, std::string name)
 {
+	mNeuronNames[name] = mNeurons.size();
 	mNeurons.push_back(n);
 }
 
-Blob* Board::newBlob(const TensorShape& shape)
+Blob* Board::newBlob(const TensorShape& shape, std::string name)
 {
 	Blob* b = new Blob(shape);
+	mBlobNames[name] = mBlobs.size();
 	mBlobs.push_back(b);
 	return b;
 }
@@ -182,6 +185,35 @@ Tensor Board::forward(const Tensor& input1, const Tensor& input2, const Tensor& 
 //	return error;
 //}
 
+Float Board::backprop(const std::vector<Tensor>& placeholders)
+{
+	clear_deltas();
+
+	//Set placeholders
+	assert(placeholders.size() == mPlaceholders.size());
+	for (size_t i = 0; i < mPlaceholders.size(); i++)
+	{
+		mPlaceholders[i]->mData = placeholders[i].mData;
+	}
+
+	//Forward Pass
+	for (size_t i = 0; i < mNeurons.size(); i++)
+	{
+		mNeurons[i]->forward();
+	}
+
+	//Calculate Error
+	Float error = mErrorFuncs[0]->calculateError();
+
+	//Backward Pass
+	for (int i = mNeurons.size() - 1; i >= 0; i--)
+	{
+		mNeurons[i]->backprop();
+	}
+
+	return error;
+}
+
 Float Board::backprop(const Tensor& input1)
 {
 	std::vector<Tensor> v;
@@ -214,35 +246,6 @@ Float Board::backprop(const Tensor& input1, const Tensor& input2, const Tensor& 
 	v.push_back(input3);
 	v.push_back(input4);
 	return backprop(v);
-}
-
-Float Board::backprop(const std::vector<Tensor>& placeholders)
-{
-	clear_deltas();
-
-	//Set placeholders
-	assert(placeholders.size() == mPlaceholders.size());
-	for (size_t i = 0; i < mPlaceholders.size(); i++)
-	{
-		mPlaceholders[i]->mData = placeholders[i].mData;
-	}
-
-	//Forward Pass
-	for (size_t i = 0; i < mNeurons.size(); i++)
-	{
-		mNeurons[i]->forward();
-	}
-
-	//Calculate Error
-	Float error = mErrorFuncs[0]->calculateError();
-
-	//Backward Pass
-	for (int i = mNeurons.size() - 1; i >= 0; i--)
-	{
-		mNeurons[i]->backprop();
-	}
-
-	return error;
 }
 
 //Tensor Board::predict(const Tensor& input)
@@ -347,6 +350,26 @@ void Board::copy_variables(const Board* b)
 		memcpy(mOptimizer->Variables[i]->Data.mData, b->mOptimizer->Variables[i]->Data.mData, 
 			sizeof(Float)*mOptimizer->Variables[i]->Data.mSize);
 	}
+}
+
+Neuron* Board::getNeuron(std::string name)
+{
+	return mNeurons[mNeuronNames[name]];
+}
+
+size_t Board::getNeuronID(std::string name)
+{
+	return mNeuronNames[name];
+}
+
+Blob* Board::getBlob(std::string name)
+{
+	return mBlobs[mBlobNames[name]];
+}
+
+size_t Board::getBlobID(std::string name)
+{
+	return mBlobNames[name];
 }
 
 void Board::clear_deltas()
