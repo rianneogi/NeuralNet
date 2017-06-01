@@ -25,8 +25,16 @@ public:
 
 	//Tensor forward(const Tensor& input);
 	Tensor forward(const std::vector<Tensor>& placeholders);
+	Tensor forward(const Tensor& input1);
+	Tensor forward(const Tensor& input1, const Tensor& input2);
+	Tensor forward(const Tensor& input1, const Tensor& input2, const Tensor& input3);
+	Tensor forward(const Tensor& input1, const Tensor& input2, const Tensor& input3, const Tensor& input4);
 	//Float backprop(const Tensor& input, Tensor& output);
 	//Float backprop(const Tensor& input, std::vector<Tensor>& output);
+	Float backprop(const Tensor& input1);
+	Float backprop(const Tensor& input1, const Tensor& input2);
+	Float backprop(const Tensor& input1, const Tensor& input2, const Tensor& input3);
+	Float backprop(const Tensor& input1, const Tensor& input2, const Tensor& input3, const Tensor& input4);
 	Float backprop(const std::vector<Tensor>& placeholders);
 
 	//Tensor predict(const Tensor& input);

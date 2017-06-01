@@ -87,6 +87,40 @@ Tensor Board::forward(const std::vector<Tensor>& placeholders)
 	return mBlobs[mBlobs.size()-1]->Data;
 }
 
+Tensor Board::forward(const Tensor& input1)
+{
+	std::vector<Tensor> v;
+	v.push_back(input1);
+	return forward(v);
+}
+
+Tensor Board::forward(const Tensor& input1, const Tensor& input2)
+{
+	std::vector<Tensor> v;
+	v.push_back(input1);
+	v.push_back(input2);
+	return forward(v);
+}
+
+Tensor Board::forward(const Tensor& input1, const Tensor& input2, const Tensor& input3)
+{
+	std::vector<Tensor> v;
+	v.push_back(input1);
+	v.push_back(input2);
+	v.push_back(input3);
+	return forward(v);
+}
+
+Tensor Board::forward(const Tensor& input1, const Tensor& input2, const Tensor& input3, const Tensor& input4)
+{
+	std::vector<Tensor> v;
+	v.push_back(input1);
+	v.push_back(input2);
+	v.push_back(input3);
+	v.push_back(input4);
+	return forward(v);
+}
+
 //Float Board::backprop(const Tensor& input, Tensor& output)
 //{
 //	clear_deltas();
@@ -147,6 +181,40 @@ Tensor Board::forward(const std::vector<Tensor>& placeholders)
 //
 //	return error;
 //}
+
+Float Board::backprop(const Tensor& input1)
+{
+	std::vector<Tensor> v;
+	v.push_back(input1);
+	return backprop(v);
+}
+
+Float Board::backprop(const Tensor& input1, const Tensor& input2)
+{
+	std::vector<Tensor> v;
+	v.push_back(input1);
+	v.push_back(input2);
+	return backprop(v);
+}
+
+Float Board::backprop(const Tensor& input1, const Tensor& input2, const Tensor& input3)
+{
+	std::vector<Tensor> v;
+	v.push_back(input1);
+	v.push_back(input2);
+	v.push_back(input3);
+	return backprop(v);
+}
+
+Float Board::backprop(const Tensor& input1, const Tensor& input2, const Tensor& input3, const Tensor& input4)
+{
+	std::vector<Tensor> v;
+	v.push_back(input1);
+	v.push_back(input2);
+	v.push_back(input3);
+	v.push_back(input4);
+	return backprop(v);
+}
 
 Float Board::backprop(const std::vector<Tensor>& placeholders)
 {
