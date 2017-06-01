@@ -3,6 +3,7 @@
 #include "Optimizer.h"
 
 #include <map>
+#include <string>
 
 class Board
 {
@@ -21,8 +22,11 @@ public:
 	Board();
 	~Board();
 
+	void addNeuron(Neuron* n);
 	void addNeuron(Neuron* n, std::string name);
+	void addNeuronWithFixedVariables(Neuron* n);
 	void addNeuronWithFixedVariables(Neuron* n, std::string name);
+	Blob* newBlob(const TensorShape& shape);
 	Blob* newBlob(const TensorShape& shape, std::string name);
 	void addErrorFunction(ErrorFunction* err_func);
 	void setOptimizer(Optimizer* optimizer);

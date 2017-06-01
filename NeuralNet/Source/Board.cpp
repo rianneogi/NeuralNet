@@ -22,6 +22,11 @@ Board::~Board()
 	delete mOptimizer;
 }
 
+void Board::addNeuron(Neuron* n)
+{
+	addNeuron(n, std::to_string(mNeurons.size()));
+}
+
 void Board::addNeuron(Neuron* n, std::string name)
 {
 	assert(mOptimizer != nullptr);
@@ -34,10 +39,20 @@ void Board::addNeuron(Neuron* n, std::string name)
 	}
 }
 
+void Board::addNeuronWithFixedVariables(Neuron* n)
+{
+	addNeuronWithFixedVariables(n, std::to_string(mNeurons.size()));
+}
+
 void Board::addNeuronWithFixedVariables(Neuron* n, std::string name)
 {
 	mNeuronNames[name] = mNeurons.size();
 	mNeurons.push_back(n);
+}
+
+Blob * Board::newBlob(const TensorShape& shape)
+{
+	return newBlob(shape, std::to_string(mBlobs.size()));
 }
 
 Blob* Board::newBlob(const TensorShape& shape, std::string name)
