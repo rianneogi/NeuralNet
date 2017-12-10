@@ -265,7 +265,7 @@ void test_fc()
 
 	Board b;
 	int batch_size = 100;
-	double learning_rate = 0.005;
+	double learning_rate = 0.0005;
 	int epochs = 20;
 
 	Blob* inputBlob = b.newBlob(make_shape(batch_size, 784));
@@ -278,7 +278,7 @@ void test_fc()
 	Blob* outputFCBlob = b.newBlob(make_shape(batch_size, 10));
 	Blob* outputSigBlob = b.newBlob(make_shape(batch_size, 10));
 
-	b.setOptimizer(new AdamOptimizer(0.0005));
+	b.setOptimizer(new SharedOptimizer(learning_rate, 10));
 	b.addErrorFunction(new MeanSquaredError(outputSigBlob));
 
 	b.addNeuron(new FullyConnectedNeuron(inputBlob, layer1FCBlob));
@@ -289,6 +289,9 @@ void test_fc()
 	b.addNeuron(new LeakyReLUNeuron(layer3FCBlob, layer3SigBlob, 0.05));*/
 	b.addNeuron(new FullyConnectedNeuron(layer2SigBlob, outputFCBlob));
 	b.addNeuron(new TanhNeuron(outputFCBlob, outputSigBlob));
+
+	b.addPlaceholder(&inputBlob->Data);
+	b.addPlaceholder(&b.mErrorFuncs[0]->mTarget);
 	
 
 	Tensor inputs_train = openidx_input("Data/train-images.idx3-ubyte");

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Board.h"
+#include "NNInclude.h"
 
 extern cl_kernel gKernelMatAdd;
 extern cl_kernel gKernelMatSub;

@@ -150,6 +150,7 @@
     <ClCompile Include="Source\Neurons\SigmoidNeuron.cpp" />
     <ClCompile Include="Source\Neurons\TanhNeuron.cpp" />
     <ClCompile Include="Source\Optimizers\AdamOptimizer.cpp" />
+    <ClCompile Include="Source\Optimizers\SharedOptimizer.cpp" />
     <ClCompile Include="Source\Optimizers\StandardOptimizer.cpp" />
     <ClCompile Include="Source\Tensor.cpp" />
     <ClCompile Include="Source\TensorShape.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="Source\Neurons\MultiplyNeuron.h" />
     <ClInclude Include="Source\Neurons\RankNeuron.h" />
     <ClInclude Include="Source\Neurons\StepNeuron.h" />
+    <ClInclude Include="Source\NNInclude.h" />
     <ClInclude Include="Source\Optimizer.h" />
     <ClInclude Include="Source\Neurons\LeakyReLUNeuron.h" />
     <ClInclude Include="Source\Neurons\ReshapeNeuron.h" />
@@ -185,6 +187,7 @@
     <ClInclude Include="Source\Neurons\SigmoidNeuron.h" />
     <ClInclude Include="Source\Neurons\TanhNeuron.h" />
     <ClInclude Include="Source\Optimizers\AdamOptimizer.h" />
+    <ClInclude Include="Source\Optimizers\SharedOptimizer.h" />
     <ClInclude Include="Source\Optimizers\StandardOptimizer.h" />
     <ClInclude Include="Source\Tensor.h" />
     <ClInclude Include="Source\TensorShape.h" />

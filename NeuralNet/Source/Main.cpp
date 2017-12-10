@@ -101,7 +101,7 @@ int initCL()
 	return ret;
 }
 
-void cleanup()
+void cleanupOpenCL()
 {
 	/* Finalize work with clblas. */
 	clblasTeardown();
@@ -116,11 +116,11 @@ void cleanup()
 //
 //	//initCL();
 //
-//	test_tensor();
+//	test_fc();
 //
 //	_getch();
 //
-//	cleanup();
+//	cleanupOpenCL();
 //
 //	return 0;
 //}

@@ -2,7 +2,7 @@
 
 Neuron::Neuron()
 {
-	printf("WARNING: default constructor for neuron called\n");
+	//printf("WARNING: default constructor for neuron called\n");
 }
 
 Neuron::~Neuron()
