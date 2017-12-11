@@ -3,7 +3,7 @@
 #include "../Neuron.h"
 
 //Converts a 4D Tensor into a 2D Tensor for matrix multiplication
-//Input: BatchSize x InputDepth x InputHeight x InputWidth
+//Input: BatchSize x InputHeight x InputWidth x InputDepth
 //Output: BatchSize*(InputWidth - FieldWidth + 1)*(InputHeight - FieldHeight + 1) x FieldWidth*FieldHeight*InputDepth
 
 class Im2ColNeuron : public Neuron
